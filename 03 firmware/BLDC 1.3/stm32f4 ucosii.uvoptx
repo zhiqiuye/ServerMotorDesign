@@ -174,7 +174,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -206,9 +205,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>58</LineNumber>
+          <LineNumber>56</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134229174</Address>
+          <Address>134228728</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -222,9 +221,9 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>51</LineNumber>
+          <LineNumber>49</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134229146</Address>
+          <Address>134228700</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -234,6 +233,22 @@
           <Filename>.\User\app.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>83</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134220162</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\User\current_filter.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\BLDC_Driver\User/current_filter.c\83</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

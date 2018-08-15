@@ -87,8 +87,25 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 //			GPIOC->ODR	|=	0x0001;															//置高C1
 			ADC_SoftwareStartConv(ADC1);													//开启ADC采样
 			polarity	=	0;
+			
+			if(m_motor_ctrl.u8_is_currloop_open ==	1)
+			{
+				//产生目标正弦电流信号，计算时间4us
+#ifdef	USE_CURRENT_TRACE
+				f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 1000.0f );
+				step_cnt++;
+				if(step_cnt >= 2000)
+					step_cnt = 0;
+				m_motor_ctrl.f_set_current		=	f_sin;
+#endif
+				m_current_pid.curr_pid.Ref_In	=	m_motor_ctrl.f_set_current;
+				if(m_motor_rt_para.u8_data_refreshed	==	1)
+				{
+					Curr_PID_Cal(&(m_current_pid.curr_pid));									//有刷新电流值，电流环更新程序部分
+					m_motor_rt_para.u8_data_refreshed	=	0;
+				}
+			}
 		}
-		
 		TIM_ClearITPendingBit(TIM1,TIM_IT_Update);											//清除TIM1中断标志
 //		GPIOC->ODR	&=	0xFFFE;
 	}
@@ -107,17 +124,17 @@ void	TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
-		//产生目标正弦电流信号，计算时间4us
-#ifdef	USE_CURRENT_TRACE
-		f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 1000.0f );
-		step_cnt++;
-		if(step_cnt >= 2000)
-			step_cnt = 0;
-		m_current_pid.curr_pid.Ref_In	=	0.5f;//f_sin;
-#endif
-//		m_current_pid.curr_pid.Ref_In	=	m_motor_ctrl.f_set_current;
-		
-		Curr_PID_Cal(&(m_current_pid.curr_pid));											//电流环更新程序部分
+//		//产生目标正弦电流信号，计算时间4us
+//#ifdef	USE_CURRENT_TRACE
+//		f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 1000.0f );
+//		step_cnt++;
+//		if(step_cnt >= 2000)
+//			step_cnt = 0;
+//		m_current_pid.curr_pid.Ref_In	=	0.5f;//f_sin;
+//#endif
+////		m_current_pid.curr_pid.Ref_In	=	m_motor_ctrl.f_set_current;
+//		
+//		Curr_PID_Cal(&(m_current_pid.curr_pid));											//电流环更新程序部分
 		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);											//清除中断标志位
 	}
 }
@@ -200,16 +217,11 @@ void	DMA2_Stream0_IRQHandler(void)
 {
 	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
 	{
-		//电源电压采用分压，分压系数为10/92 = 0.108695，测量值Uraw与实际电压U关系为
-		//		U = Uraw * 3.3 / 4096 / 0.108695 
-		//
-		//	
 		Current_Average_X4_Filter(&m_motor_rt_para);												//对原始电流数据进行滑动窗口滤波，以及突变点剔除
 		
-		m_motor_rt_para.f_adc_UVW_I[0]		=	((float)(m_motor_rt_para.u16_uvw_current[0] - m_motor_rt_para.u16_uvw_curr_bias[0]))*0.0100708f;
-		m_motor_rt_para.f_adc_UVW_I[1]		=	((float)(m_motor_rt_para.u16_uvw_current[1] - m_motor_rt_para.u16_uvw_curr_bias[1]))*0.0100708f;
-		m_motor_rt_para.f_adc_UVW_I[2]		=	((float)(m_motor_rt_para.u16_uvw_current[2] - m_motor_rt_para.u16_uvw_curr_bias[2]))*0.0100708f;
+		m_motor_rt_para.f_adc_UVW_I			=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
 
+		m_motor_rt_para.u8_data_refreshed	=	1;
 		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }

@@ -51,7 +51,7 @@
 //      
 
 
-#define		CURRENT_BUFFER_LENGTH						10
+#define		CURRENT_BUFFER_LENGTH						16
 
 /* Exported types ------------------------------------------------------------*/
 /*系统状态参数-------------------------------------------------------------------------*/
@@ -93,24 +93,25 @@ typedef	struct
 typedef	struct
 {
 	/*电流采集原始值*/
-	uint16_t		ADC_DMA_buf[4];						//dma数据存放buf，原始数据，每个数据采集4次做平均
+	uint16_t		ADC_DMA_buf[3];						//dma数据存放buf，原始数据，每个数据采集4次做平均
 
-	uint16_t		u16_uvw_current[3];					//UVW相电流
+	uint16_t		u16_uvw_current;					//UVW相电流
 	
+	uint8_t			u8_data_refreshed;					//电流更新标志
 	/*电流传感器偏置*/
-	uint16_t		u16_uvw_curr_bias[3];				//UVW相电流测量偏置
+	uint16_t		u16_uvw_curr_bias;					//UVW相电流测量偏置
 
 	/*电流滑动均值滤波器*/
-	uint16_t		history_data[3][CURRENT_BUFFER_LENGTH];	//存放电流值历史
+	uint16_t		history_data[CURRENT_BUFFER_LENGTH];	//存放电流值历史
 
-	uint16_t		u16_uvw_sum[3];						//窗口求和值存放
+	uint16_t		u16_uvw_sum;						//窗口求和值存放
 
-	uint8_t			filter_index_uvw[3];				//用于指向电流值buf的位置
+	uint8_t			filter_index_uvw;					//用于指向电流值buf的位置
 
-	uint8_t			uvw_buffer_used[3];					//buffer中存放的数据量
+	uint8_t			uvw_buffer_used;					//buffer中存放的数据量
 
 	/*实际使用的电流值，转化为浮点型数据*/
-	float			f_adc_UVW_I[3];
+	float			f_adc_UVW_I;
 	
 	/*母线电压采集*/
 	float			f_adc_bus_voltage;
@@ -132,6 +133,7 @@ typedef	struct
 typedef	struct
 {
 	uint8_t		u8_dir;									//转动方向
+	uint8_t		u8_is_currloop_open;					//开启电流环标志位
 	float		f_set_current;							//设置电流值，浮点型		正负确定dir和int_set_current
 	uint32_t	u32_set_current;						//设置电流值，无符号整形
 	float		f_set_speed;							//设置速度值，浮点型

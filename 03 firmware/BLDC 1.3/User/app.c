@@ -34,7 +34,6 @@ void	StateMachine_Task(void * parg)
 {
 	(void) parg;
 
-	uint8_t		i;
 	while(1)
 	{
 		if(m_sys_state.u8_cur_state == Idle_state)

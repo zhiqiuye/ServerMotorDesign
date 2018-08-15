@@ -221,7 +221,8 @@ void	PWM_TIM_Halt(void)
 	----------------------------------------------------------------------------*/
 void	CurrentLoopRefresh_TIM_Start(void)
 {
-	TIM_Cmd(TIM2,ENABLE);
+	m_motor_ctrl.u8_is_currloop_open	=	1;
+	//TIM_Cmd(TIM2,ENABLE);
 }
 
 
@@ -232,7 +233,11 @@ void	CurrentLoopRefresh_TIM_Start(void)
 	----------------------------------------------------------------------------*/
 void	CurrentLoopRefresh_TIM_Halt(void)
 {
-	TIM_Cmd(TIM2,DISABLE);
+	m_motor_ctrl.u8_is_currloop_open	=	0;
+	TIM1->CCR1	=	10;
+	TIM1->CCR2	=	10;
+	TIM1->CCR3	=	10;
+//	TIM_Cmd(TIM2,DISABLE);
 }
 
 	/*---------------------------------------------------------------------------
@@ -310,15 +315,9 @@ void	Read_Current_Bias(void)
 //	m_motor_rt_para.u16_uvw_curr_bias[1]		=	m_motor_rt_para.u16_uvw_curr_bias[1]>>3;
 //	m_motor_rt_para.u16_uvw_curr_bias[2]		=	m_motor_rt_para.u16_uvw_curr_bias[2]>>3;
 	
-	m_motor_rt_para.u16_uvw_curr_bias[0]		=	0x641;				//1.29V作为偏置
-	m_motor_rt_para.u16_uvw_curr_bias[1]		=	0x641;
-	m_motor_rt_para.u16_uvw_curr_bias[2]		=	0x641;
-	
-	
-	
-	m_motor_rt_para.f_adc_UVW_I[0]				=	0.0f;				//将错误更新的电流值归零，否则影响第一次电流环的PID计算
-	m_motor_rt_para.f_adc_UVW_I[1]				=	0.0f;
-	m_motor_rt_para.f_adc_UVW_I[2]				=	0.0f;
+	m_motor_rt_para.u16_uvw_curr_bias		=	0x641;				//1.29V作为偏置
+
+	m_motor_rt_para.f_adc_UVW_I				=	0.0f;				//将错误更新的电流值归零，否则影响第一次电流环的PID计算
 }
 
 
@@ -337,7 +336,7 @@ void	Curr_PID_Cal(volatile PID_Struct * pid)
 	float			curr_in = 0.0f;
 	
 	/*判断输入电流值是否在额定电流内*/
-	curr_in					=	m_motor_rt_para.f_adc_UVW_I[current_senser_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]];
+	curr_in					=	m_motor_rt_para.f_adc_UVW_I;
 	
 	if(curr_in > m_motor.f_max_current)
 		curr_in	 			=	m_motor.f_max_current;

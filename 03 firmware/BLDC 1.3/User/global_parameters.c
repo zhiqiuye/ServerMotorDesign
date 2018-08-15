@@ -73,8 +73,8 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Out_Pre			=	0.0f;
 	m_current_pid.curr_pid.Out_Actual		=	0.0f;
 	
-	m_current_pid.curr_pid.Kp				=	0.1f;
-	m_current_pid.curr_pid.Ki				=	0.001f;
+	m_current_pid.curr_pid.Kp				=	1.0f;
+	m_current_pid.curr_pid.Ki				=	0.0f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
 	
 	//速度环pid参数初始化
@@ -92,7 +92,7 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Out_Actual			=	0.0f;
 	
 	m_speed_pid.spd_pid.Kp					=	2.8f;
-	m_speed_pid.spd_pid.Ki					=	0.0001f;
+	m_speed_pid.spd_pid.Ki					=	0.1f;
 	m_speed_pid.spd_pid.Kd					=	0.0f;
 	
 	
@@ -115,19 +115,17 @@ void	CurrentFilterDataInit(void)
 	//停止电流环更新
 	CurrentLoopRefresh_TIM_Halt();
 	//滤波器数据清除
-	for(i=0;i<3;i++)
+
+	m_motor_rt_para.u16_uvw_sum				=	0;
+	m_motor_rt_para.filter_index_uvw		=	0;
+	m_motor_rt_para.uvw_buffer_used			=	0;
+	for(j=0;j<CURRENT_BUFFER_LENGTH;j++)
 	{
-		m_motor_rt_para.u16_uvw_sum[i]			=	0;
-		m_motor_rt_para.filter_index_uvw[i]		=	0;
-		m_motor_rt_para.uvw_buffer_used[i]		=	0;
-		for(j=0;j<CURRENT_BUFFER_LENGTH;j++)
-		{
-			m_motor_rt_para.history_data[i][j]	=	0;
-		}
-		m_motor_rt_para.u16_uvw_current[i]		=	0;
-		m_motor_rt_para.u16_uvw_curr_bias[i]	=	0;
-		m_motor_rt_para.f_adc_UVW_I[i]			=	0.0f;		
+		m_motor_rt_para.history_data[j]		=	0;
 	}
+	m_motor_rt_para.u16_uvw_current			=	0;
+	m_motor_rt_para.u16_uvw_curr_bias		=	0;
+	m_motor_rt_para.f_adc_UVW_I				=	0.0f;		
 
 	//计算偏置，内部有打开电流环更新
 	Read_Current_Bias();
