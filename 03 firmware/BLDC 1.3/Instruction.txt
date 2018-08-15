@@ -1,0 +1,232 @@
+
+/*********************/
+
+系统时钟设定是在stm32f4xx.h文件中，
+line138		#if !defined  (HSE_VALUE) 
+line139		#define HSE_VALUE    ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
+
+在system_stm32f4xx.c文件中，设置
+
+#define		PLL_M	8
+#define		PLL_N	336
+#define		PLL_P	2
+#define		PLL_Q	7
+
+
+/*********************/
+
+MDK5.14安装使用目录不能有汉字，工程目录也不能使用中文目录
+
+/*********************/
+
+stm32f4xx.h
+	line 70		定义宏STM32F40_41xxx
+	line 126 	定义宏USE_STDPERIPH_DRIVER
+将上述两处注释去掉，就可以不用在工程选项C/C++中定义以上两个宏了；
+
+/*********************/
+
+工程选项C/C++的引用路径中不能包含空格；
+
+/*********************/
+
+MDK5.14中，所有引用的文件夹都在工程的根目录中，即.project文件与User，Liberaries，CMSIS文件夹在同一目录下，否则编译时报错，
+找不到.h文件；
+
+/*********************/
+
+若要使用F4的FPU，需要使用以下六个宏
+__FPU_PRESENT,
+__FPU_USED,
+__CC_ARM,
+ARM_MATH_CM4,
+ARM_MATH_MATRIX_CHECK,
+ARM_MATH_ROUNDING
+
+使用浮点运算可以包含库文件	arm_cortexM4lf_math.lib
+需要引用	math.h	arm_math.h
+
+/*********************/
+
+关于uCOS II的裁剪主要依靠修改 os_cfg.h 中的宏，开启或关闭相应标志位
+
+/*********************/
+
+调试时出现
+.\Objects\stm32f4 ucosii.axf: Error: L6218E: Undefined symbol Mem_Copy (referred from lib_mem.o).
+这种信息，应该是相应文件中定义了预编译语句报的错误
+
+/*********************/
+
+调试总发现提示
+.\Objects\stm32f4 ucosii.axf: Error: L6218E: Undefined symbol CPU_TS_TmrInit (referred from cpu_core.o).
+
+.\Objects\stm32f4 ucosii.axf: Error: L6218E: Undefined symbol CPU_TS_TmrRd (referred from cpu_core.o).
+
+这两个函数是测量关中断时间用的，需要在用户自己的文件中定义，在cpu_cfg.h文件的line 131	将
+#if 1
+改为
+#if 0
+将时间测量关闭即可
+
+/*********************/
+
+stm32f4 前后台程序时可以使用FPU，一旦移植uCOS II后就会进入HardFault
+
+解决方案：
+在startup_stm32f40xx.s的Reset_Handler中，添加如下代码
+;;添加FPU部分
+                ;IF {FPU} != "SoftVFP"
+                                                ; Enable Floating Point Support at reset for FPU
+                LDR.W   R0, =0xE000ED88         ; Load address of CPACR register
+                LDR     R1, [R0]                ; Read value at CPACR
+                ORR     R1,  R1, #(0xF <<20)    ; Set bits 20-23 to enable CP10 and CP11 coprocessors
+                                                ; Write back the modified CPACR value
+                STR     R1, [R0]                ; Wait for store to complete
+                DSB
+                
+                                                ; Disable automatic FP register content
+                                                ; Disable lazy context switch
+                LDR.W   R0, =0xE000EF34         ; Load address to FPCCR register
+                LDR     R1, [R0]
+                AND     R1,  R1, #(0x3FFFFFFF)  ; Clear the LSPEN and ASPEN bits
+                STR     R1, [R0]
+                ISB                             ; Reset pipeline now the FPU is enabled
+                ;ENDIF
+;;20161014		
+-------------------------------------------------------------------------------------------------------------------
+
+在os_cpu_a.asm中，改动OS_CPU_PendSVHandler如下
+OS_CPU_PendSVHandler
+    CPSID   I                                                   ; Prevent interruption during context switch
+    MRS     R0, PSP                                             ; PSP is process stack pointer
+    CBZ     R0, OS_CPU_PendSVHandler_nosave                     ; Skip register save the first time
+
+;if enable the FPU
+	SUBS	R0,R0,#0X40							;20161014
+	VSTM	R0,{S16-S31}							;20161014
+;
+
+    SUBS    R0, R0, #0x20                                       ; Save remaining regs r4-11 on process stack
+    STM     R0, {R4-R11}
+
+    LDR     R1, =OSTCBCur                                       ; OSTCBCur->OSTCBStkPtr = SP;
+    LDR     R1, [R1]
+    STR     R0, [R1]                                            ; R0 is SP of process being switched out
+
+                                                                ; At this point, entire context of process has been saved
+OS_CPU_PendSVHandler_nosave
+    PUSH    {R14}                                               ; Save LR exc_return value
+    LDR     R0, =OSTaskSwHook                                   ; OSTaskSwHook();
+    BLX     R0
+    POP     {R14}
+
+    LDR     R0, =OSPrioCur                                      ; OSPrioCur = OSPrioHighRdy;
+    LDR     R1, =OSPrioHighRdy
+    LDRB    R2, [R1]
+    STRB    R2, [R0]
+
+    LDR     R0, =OSTCBCur                                       ; OSTCBCur  = OSTCBHighRdy;
+    LDR     R1, =OSTCBHighRdy
+    LDR     R2, [R1]
+    STR     R2, [R0]
+
+    LDR     R0, [R2]                                            ; R0 is new process SP; SP = OSTCBHighRdy->OSTCBStkPtr;
+    LDM     R0, {R4-R11}                                        ; Restore r4-11 from new process stack
+    ADDS    R0, R0, #0x20
+
+;if enable the FPU
+	VLDM	R0,{S16-S31}							;20161014
+	ADDS	R0,R0,#0X40							;20161014
+;
+    MSR     PSP, R0                                             ; Load PSP with new process SP
+    ORR     LR, LR, #0xF4                                       ; Ensure exception return uses process stack
+    CPSIE   I
+    BX      LR                                                  ; Exception return will restore remaining context
+
+    END
+-------------------------------------------------------------------------------------------------------------------
+
+改动os_cpu_c.c文件的OSTaskStkInit（）部分
+OS_STK *OSTaskStkInit (void (*task)(void *p_arg), void *p_arg, OS_STK *ptos, INT16U opt)
+{
+    OS_STK *p_stk;
+
+
+    (void)opt;                                                  /* 'opt' is not used, prevent warning                   */
+    p_stk      = ptos + 1u;                                     /* Load stack pointer                                   */
+                                                                /* Align the stack to 8-bytes.                          */
+    p_stk      = (OS_STK *)((OS_STK)(p_stk) & 0xFFFFFFF8u);
+                                                                /* Registers stacked as if auto-saved on exception      */
+#if((__FPU_PRESENT==1)&&(__FPU_USED==1))
+	*--p_stk = (CPU_STK)0x00000000u;
+	*--p_stk = (CPU_STK)0x15151515u;
+	*--p_stk = (CPU_STK)0x14141414u;
+	*--p_stk = (CPU_STK)0x13131313u;
+	*--p_stk = (CPU_STK)0x12121212u;
+	*--p_stk = (CPU_STK)0x11111111u;
+	*--p_stk = (CPU_STK)0x10101010u;
+	*--p_stk = (CPU_STK)0x09090909u;
+	*--p_stk = (CPU_STK)0x08080808u;
+	*--p_stk = (CPU_STK)0x07070707u;
+	*--p_stk = (CPU_STK)0x06060606u;
+	*--p_stk = (CPU_STK)0x05050505u;
+	*--p_stk = (CPU_STK)0x04040404u;
+	*--p_stk = (CPU_STK)0x03030303u;
+	*--p_stk = (CPU_STK)0x02020202u;
+	*--p_stk = (CPU_STK)0x01010101u;
+	*--p_stk = (CPU_STK)0x00000000u;
+#endif
+
+	*(--p_stk) = (OS_STK)0x01000000uL;                          /* xPSR                                                 */
+    *(--p_stk) = (OS_STK)task;                                  /* Entry Point                                          */
+    *(--p_stk) = (OS_STK)OS_TaskReturn;                         /* R14 (LR)                                             */
+    *(--p_stk) = (OS_STK)0x12121212uL;                          /* R12                                                  */
+    *(--p_stk) = (OS_STK)0x03030303uL;                          /* R3                                                   */
+    *(--p_stk) = (OS_STK)0x02020202uL;                          /* R2                                                   */
+    *(--p_stk) = (OS_STK)0x01010101uL;                          /* R1                                                   */
+    *(--p_stk) = (OS_STK)p_arg;                                 /* R0 : argument                                        */
+
+#if((__FPU_PRESENT==1)&&(__FPU_USED==1))
+	*--p_stk = (CPU_STK)0x31313131u;
+	*--p_stk = (CPU_STK)0x30303030u;
+	*--p_stk = (CPU_STK)0x29292929u;
+	*--p_stk = (CPU_STK)0x28282828u;
+	*--p_stk = (CPU_STK)0x27272727u;
+	*--p_stk = (CPU_STK)0x26262626u;
+	*--p_stk = (CPU_STK)0x25252525u;
+	*--p_stk = (CPU_STK)0x24242424u;
+	*--p_stk = (CPU_STK)0x23232323u;
+	*--p_stk = (CPU_STK)0x22222222u;
+	*--p_stk = (CPU_STK)0x21212121u;
+	*--p_stk = (CPU_STK)0x20202020u;
+	*--p_stk = (CPU_STK)0x19191919u;
+	*--p_stk = (CPU_STK)0x18181818u;
+	*--p_stk = (CPU_STK)0x17171717u;
+	*--p_stk = (CPU_STK)0x16161616u;
+#endif
+                                                                /* Remaining registers saved on process stack           */
+    *(--p_stk) = (OS_STK)0x11111111uL;                          /* R11                                                  */
+    *(--p_stk) = (OS_STK)0x10101010uL;                          /* R10                                                  */
+    *(--p_stk) = (OS_STK)0x09090909uL;                          /* R9                                                   */
+    *(--p_stk) = (OS_STK)0x08080808uL;                          /* R8                                                   */
+    *(--p_stk) = (OS_STK)0x07070707uL;                          /* R7                                                   */
+    *(--p_stk) = (OS_STK)0x06060606uL;                          /* R6                                                   */
+    *(--p_stk) = (OS_STK)0x05050505uL;                          /* R5                                                   */
+    *(--p_stk) = (OS_STK)0x04040404uL;                          /* R4                                                   */
+
+    return (p_stk);
+}
+
+-------------------------------------------------------------------------------------------------------------------
+
+/*********************/
+
+/*********************/
+
+/*********************/
+
+/*********************/
+
+/*********************/
+

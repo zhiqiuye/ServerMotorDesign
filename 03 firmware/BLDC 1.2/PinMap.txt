@@ -1,0 +1,49 @@
+B4
+
+
+
+/********************************************************/
+
+
+
+GPIO				PC0				Blink
+
+TIM3_CH1			PC06			Encoder A
+TIM3_CH2			PC07			Encoder B
+TIM3_CH3			PC08			Encoder C
+
+TIM4_CH1			PB06			Hall-U
+TIM4_CH2			PB07			Hall-V
+TIM4_CH3			PB08			Hall-W
+
+ADC IN 14			PC4				Current Check
+ADC IN 15			PC5				PowerCheck
+ADC12 IN9			PB01
+
+TIM1_CH1			PA08			MC_UH
+TIM1_CH2			PA09			MC_VH
+TIM1_CH3			PA10			MC_WH
+TIM1_CH1N			PB13			MC_UL
+TIM1_CH2N			PB14			MC_VL
+TIM1_CH3N			PB15			MC_WL
+
+CAN_RX				PA11			CAN	
+CAN_TX				PA12			CAN
+
+USART2_TX			PA02			RS485
+USART2_RX			PA03			RS485
+GPIO				PB12			RS485 sig
+
+USART3_TX			PC10			USB
+USART3_RX			PC11			USB
+
+GPIO				PB03			W5500 Mode
+GPIO				PB04			W5500 Mode
+GPIO				PB05			W5500 Mode
+SPI_CS				PA04			W5500 CS
+SPI_SCK				PA05			W5500 SCK
+SPI_SO				PA06			W5500 SI
+SPI_SI				PA07			W5500 SO
+
+
+
