@@ -46,7 +46,7 @@ void	NVIC_Config(void)
 {
 	NVIC_InitTypeDef 	NVIC_InitStructure;
 	
-	/*PWM产生以及定时触发ADC采样，TIM1 计数溢出中断*/
+	/*PWM产生，电流环更新以及定时触发ADC采样，TIM1 计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM1_UP_TIM10_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
@@ -54,10 +54,10 @@ void	NVIC_Config(void)
 	
 	NVIC_Init(&NVIC_InitStructure);
 
-	/*电流环更新中断，TIM2 计数溢出中断*/
+	/*速度环、位置环更新中断，TIM2 计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -72,19 +72,19 @@ void	NVIC_Config(void)
 	
 	/*Hall 传感器输入捕获中断，TIM4输入捕获中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
 
-	/*速度环、位置环更新中断，TIM9 计数溢出中断*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	TIM1_BRK_TIM9_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	
-	NVIC_Init(&NVIC_InitStructure);	
+	/*中断，TIM9 计数溢出中断*/
+//	NVIC_InitStructure.NVIC_IRQChannel						=	TIM1_BRK_TIM9_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+//	
+//	NVIC_Init(&NVIC_InitStructure);	
 
 	/*ADC-DMA 传输完成中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream0_IRQn;
@@ -515,9 +515,9 @@ void	TIM1_CH3_PWM_CH3N_OFF(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：Timer2_Config(void)
 	参数含义			：null
-	函数功能			：产生20KHz频率中断，进行电流环的PI调节
+	函数功能			：产生1KHz频率中断，进行速度位置环的PI调节
 							timer2 APB1上42MHz
-							要更新电流环，需要打开TIM2
+							要更新位置环速度环，需要打开TIM2
 	----------------------------------------------------------------------------*/
 void	Timer2_Config(void)
 {
@@ -531,8 +531,8 @@ void	Timer2_Config(void)
 	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
 	TIM_TimeBaseInitStructure.TIM_ClockDivision				=	TIM_CKD_DIV1;
 	TIM_TimeBaseInitStructure.TIM_CounterMode				=	TIM_CounterMode_Up;
-	TIM_TimeBaseInitStructure.TIM_Period					=	420-1;
-	TIM_TimeBaseInitStructure.TIM_Prescaler					=	10-1;			
+	TIM_TimeBaseInitStructure.TIM_Period					=	4200-1;
+	TIM_TimeBaseInitStructure.TIM_Prescaler					=	20-1;			
 	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseInitStructure);
 	TIM_Cmd(TIM2,DISABLE);
 
@@ -571,11 +571,11 @@ void	Timer3_Config(void)
 	
 	TIM_ICStructInit(&TIM_ICInitStructure);
 	TIM_ICInitStructure.TIM_Channel						=	TIM_Channel_1;
-	TIM_ICInitStructure.TIM_ICFilter					=	2;									//输入滤波器，超过2个时钟计数周期算有效
+	TIM_ICInitStructure.TIM_ICFilter					=	1;									//输入滤波器，超过1个时钟计数周期算有效
 	TIM_ICInit(TIM3,&TIM_ICInitStructure);
 
 	TIM_ICInitStructure.TIM_Channel						=	TIM_Channel_2;
-	TIM_ICInitStructure.TIM_ICFilter					=	2;									//输入滤波器，超过2个时钟计数周期算有效
+	TIM_ICInitStructure.TIM_ICFilter					=	1;									//输入滤波器，超过1个时钟计数周期算有效
 	TIM_ICInit(TIM3,&TIM_ICInitStructure);
 	
 /*输入通道设置*/
@@ -661,26 +661,26 @@ void	Timer5_Config(void)
 							16bit定时器
 							更新频率为1KHz
 	----------------------------------------------------------------------------*/
-void	Timer9_Config(void)
-{
-	TIM_TimeBaseInitTypeDef 		TIM_TimeBaseInitStructure;
+//void	Timer9_Config(void)
+//{
+//	TIM_TimeBaseInitTypeDef 		TIM_TimeBaseInitStructure;
 
-/*时钟配置*/
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9,ENABLE);
-	
-/*Timer9配置*/
-	TIM_DeInit(TIM9);																			//Timer 9 在APB2上，84MHz
-	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
-	TIM_TimeBaseInitStructure.TIM_ClockDivision				=	TIM_CKD_DIV2;
-	TIM_TimeBaseInitStructure.TIM_CounterMode				=	TIM_CounterMode_Up;
-	TIM_TimeBaseInitStructure.TIM_Period					=	8400-1;
-	TIM_TimeBaseInitStructure.TIM_Prescaler					=	20-1;			
-	TIM_TimeBaseInit(TIM9,&TIM_TimeBaseInitStructure);
-	TIM_Cmd(TIM9,DISABLE);
+///*时钟配置*/
+//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9,ENABLE);
+//	
+///*Timer9配置*/
+//	TIM_DeInit(TIM9);																			//Timer 9 在APB2上，84MHz
+//	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
+//	TIM_TimeBaseInitStructure.TIM_ClockDivision				=	TIM_CKD_DIV2;
+//	TIM_TimeBaseInitStructure.TIM_CounterMode				=	TIM_CounterMode_Up;
+//	TIM_TimeBaseInitStructure.TIM_Period					=	8400-1;
+//	TIM_TimeBaseInitStructure.TIM_Prescaler					=	20-1;			
+//	TIM_TimeBaseInit(TIM9,&TIM_TimeBaseInitStructure);
+//	TIM_Cmd(TIM9,DISABLE);
 
-	TIM_ClearFlag(TIM9,TIM_IT_Update);
-	TIM_ITConfig(TIM9,TIM_IT_Update,ENABLE);	
-}
+//	TIM_ClearFlag(TIM9,TIM_IT_Update);
+//	TIM_ITConfig(TIM9,TIM_IT_Update,ENABLE);	
+//}
 
 
 	/*---------------------------------------------------------------------------

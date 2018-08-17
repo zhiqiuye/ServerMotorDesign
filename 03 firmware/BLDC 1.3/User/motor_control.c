@@ -34,8 +34,8 @@ const void		H3_L1(void);
 
 /* Private variables ---------------------------------------------------------*/
 //霍尔换向表
-const	void( *switch_table[2][7])() ={	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2},
-										{NULL_Switch,	H3_L2,		H2_L1,		H3_L1,		H1_L3,		H1_L2,		H2_L3}}; 
+const	void( *switch_table[2][8])() ={	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2,	NULL_Switch},
+										{NULL_Switch,	H3_L2,		H2_L1,		H3_L1,		H1_L3,		H1_L2,		H2_L3,	NULL_Switch}}; 
 
 //电流相序表
 const	uint8_t		current_senser_table[2][7]	=	{{0, 2, 1, 2, 0, 0, 1},{0, 1, 0, 0, 2, 1, 2}};										
@@ -73,6 +73,31 @@ float	Increment_PID_Cal(PID_Struct* pid,float new_feedback)
 	return	pid->Out_Actual;
 }
 
+
+float	Increment_PID_Cal_Spd(PID_Struct* pid,float new_feedback)
+{
+	pid->Feed_Back			=	new_feedback;													//更新反馈值
+	pid->Err_T_2			=	pid->Err_T_1;													//更新T-2时刻误差
+	pid->Err_T_1			=	pid->Err_T_0;													//更新T-1时刻误差
+	pid->Err_T_0			=	pid->Ref_In - pid->Feed_Back;									//计算新的误差
+	
+	pid->P_Out				=	pid->Kp * (pid->Err_T_0 - pid->Err_T_1);						//比例部分
+	pid->I_Out				=	pid->Ki * pid->Err_T_0;											//积分部分
+	pid->D_Out				=	pid->Kd * (pid->Err_T_0 - 2.0f * pid->Err_T_1 + pid->Err_T_2);	//微分部分
+	
+	pid->pid_increment		=	pid->P_Out + pid->I_Out + pid->D_Out;							//计算PID增量
+	
+	pid->Out_Actual			=	pid->Out_Pre + pid->pid_increment;
+	
+	if(pid->Out_Actual > 10.0f)
+		pid->Out_Actual		=	10.0f;
+	if(pid->Out_Actual < -10.0f)
+		pid->Out_Actual		=	-10.0f;
+	
+	pid->Out_Pre			=	pid->Out_Actual;
+	
+	return	pid->Out_Actual;
+}
 	/*---------------------------------------------------------------------------
 	函数名称			：Hall_Convert(void)
 	参数含义			：null
@@ -93,12 +118,9 @@ uint16_t	Hall_State_Read(void)
 	----------------------------------------------------------------------------*/
 void	Hall_Convert(void)
 {
-	uint16_t			Hall_Value;
-	Hall_Value		=	Hall_State_Read();
+	m_motor_rt_para.u8_hall_state		=	Hall_State_Read();								//记录hall状态
 	
-	m_motor_rt_para.u8_hall_state		=	Hall_Value;						//记录hall状态
-	
-	switch_table[m_motor_ctrl.u8_dir][Hall_Value]();						//根据方向以及hall相位进行换向，采用函数指针方式
+	switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();						//根据方向以及hall相位进行换向，采用函数指针方式
 }
 
 
@@ -222,14 +244,14 @@ void	PWM_TIM_Halt(void)
 void	CurrentLoopRefresh_TIM_Start(void)
 {
 	m_motor_ctrl.u8_is_currloop_open	=	1;
-	//TIM_Cmd(TIM2,ENABLE);
+	TIM_Cmd(TIM1,ENABLE);
 }
 
 
 	/*---------------------------------------------------------------------------
 	函数名称			：CoilCurrentRefresh_TIM_Halt(void)
 	参数含义			：null
-	函数功能			：开启电流环的更新定时器中断
+	函数功能			：关闭电流环的更新定时器中断
 	----------------------------------------------------------------------------*/
 void	CurrentLoopRefresh_TIM_Halt(void)
 {
@@ -237,18 +259,18 @@ void	CurrentLoopRefresh_TIM_Halt(void)
 	TIM1->CCR1	=	10;
 	TIM1->CCR2	=	10;
 	TIM1->CCR3	=	10;
-//	TIM_Cmd(TIM2,DISABLE);
 }
 
 	/*---------------------------------------------------------------------------
 	函数名称			：SpeedPosLoopRefresh_TIM_Start(void)
 	参数含义			：null
-	函数功能			：开启速度位置环的更新定时器中断
+	函数功能			：开启速度环的更新定时器中断
 	----------------------------------------------------------------------------*/
-void	SpeedPosLoopRefresh_TIM_Start(void)
+void	SpeedLoopRefresh_TIM_Start(void)
 {
-	TIM_ClearFlag(TIM9,TIM_IT_Update);
-	TIM_Cmd(TIM9,ENABLE);
+	m_motor_ctrl.u8_is_speedloop_open	=	1;
+	TIM_ClearFlag(TIM2,TIM_IT_Update);
+	TIM_Cmd(TIM2,ENABLE);
 }
 
 
@@ -256,15 +278,38 @@ void	SpeedPosLoopRefresh_TIM_Start(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：SpeedPosLoopRefresh_TIM_Halt(void)
 	参数含义			：null
-	函数功能			：开启速度位置环的更新定时器中断
+	函数功能			：开启速度环的更新定时器中断
 	----------------------------------------------------------------------------*/
-void	SpeedPosLoopRefresh_TIM_Halt(void)
+void	SpeedLoopRefresh_TIM_Halt(void)
 {
-	TIM_Cmd(TIM9,DISABLE);
+	m_motor_ctrl.u8_is_speedloop_open	=	0;
 }
 
 
 
+	/*---------------------------------------------------------------------------
+	函数名称			：PositionLoopRefresh_TIM_Start(void)
+	参数含义			：null
+	函数功能			：开启位置环的更新定时器中断
+	----------------------------------------------------------------------------*/
+void	PositionLoopRefresh_TIM_Start(void)
+{
+	m_motor_ctrl.u8_is_posloop_open		=	1;
+	TIM_ClearFlag(TIM2,TIM_IT_Update);
+	TIM_Cmd(TIM2,ENABLE);
+}
+
+
+
+	/*---------------------------------------------------------------------------
+	函数名称			：PositionLoopRefresh_TIM_Start(void)
+	参数含义			：null
+	函数功能			：关闭位置环的更新
+	----------------------------------------------------------------------------*/
+void	PositionLoopRefresh_TIM_Halt(void)
+{
+	m_motor_ctrl.u8_is_posloop_open		=	0;
+}
 
 
 	/*---------------------------------------------------------------------------
@@ -303,18 +348,6 @@ void	Read_Current_Bias(void)
 	
 	Current_Filter_Init();												//初始化电流滤波器
 	
-/*以刚开始上电的偏置电压作为偏置值会产生较大误差*/	
-//	for(i = 0 ; i < 8 ; i++)											//在实际电流为0的时候，每10ms取一次电流值压入buf
-//	{
-//		m_motor_rt_para.u16_uvw_curr_bias[0]	+=	m_motor_rt_para.u16_uvw_current[0];
-//		m_motor_rt_para.u16_uvw_curr_bias[1]	+=	m_motor_rt_para.u16_uvw_current[1];
-//		m_motor_rt_para.u16_uvw_curr_bias[2]	+=	m_motor_rt_para.u16_uvw_current[2];
-//		OSTimeDlyHMSM(0,0,0,20);
-//	}
-//	m_motor_rt_para.u16_uvw_curr_bias[0]		=	m_motor_rt_para.u16_uvw_curr_bias[0]>>3;
-//	m_motor_rt_para.u16_uvw_curr_bias[1]		=	m_motor_rt_para.u16_uvw_curr_bias[1]>>3;
-//	m_motor_rt_para.u16_uvw_curr_bias[2]		=	m_motor_rt_para.u16_uvw_curr_bias[2]>>3;
-	
 	m_motor_rt_para.u16_uvw_curr_bias		=	0x641;				//1.29V作为偏置
 
 	m_motor_rt_para.f_adc_UVW_I				=	0.0f;				//将错误更新的电流值归零，否则影响第一次电流环的PID计算
@@ -346,13 +379,13 @@ void	Curr_PID_Cal(volatile PID_Struct * pid)
 	
 	//------------test 20180808	
 	//------------20180813  将E输出
-	f_temp					=	m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
-	
-	if(u32_temp>4095) u32_temp = 4095;
-	
-	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
-	
+//	f_temp					=	m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
+//	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
+//	
+//	if(u32_temp>4095) u32_temp = 4095;
+//	
+//	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
+//	
 	//------------test 20180808
 	
 	/*将pid输出值转化到10-4190之间*/
@@ -385,25 +418,39 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 {
 	float	spd_in	=	0.0f;						//获取的速度值
 	float	pid_inc	=	0.0f;
+	uint32_t	u32_temp;
+	float		f_temp;
 	
 	/*计算增量pid输出*/
 	spd_in		=	m_motor_rt_para.f_motor_cal_speed;
-	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
+	pid_inc		=	Increment_PID_Cal_Spd((PID_Struct*)pid,spd_in);
+
+//--------------------20180817test	
+	f_temp					=	spd_in;//pid_inc + 10.0f;						//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 1241.0f);//204.0f);
+	
+	if(u32_temp>4095) u32_temp = 4095;
+//	u32_temp				=	((TIM3->CNT)>>4)&0x0fff;
+	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
+//--------------------20180817test
 	
 	/*将pid输出值累加到电流设置值*/
-	m_motor_ctrl.f_set_current		+=	pid_inc * 0.1f;		
+	m_motor_ctrl.f_set_current		=	pid_inc;		
 	
 	/*限定电流值为正，并且根据电流值正负来换向*/
-	if(m_motor_ctrl.f_set_current > 0.0f)
+	if(m_motor_ctrl.f_set_current > 0.1f)
+	{
+		m_motor_ctrl.u8_dir			=	1;
+		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+	}
+	else if(m_motor_ctrl.f_set_current < -0.1f)
 	{
 		m_motor_ctrl.u8_dir			=	0;
 		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
 	}
 	else
 	{
-		m_motor_ctrl.u8_dir			=	1;
-		m_motor_ctrl.f_set_current	=	-m_motor_ctrl.f_set_current;
-		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+		m_motor_ctrl.f_set_current	=	0.0f;
 	}
 }
 

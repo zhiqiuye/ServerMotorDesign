@@ -60,7 +60,7 @@ uint8_t	ParametersInit(void)
 	m_motor.u8_number_of_pole_pairs			=	P;
 	
 	//电流环pid参数初始化
-	m_current_pid.curr_pid.Ref_In			=	0.1f;
+	m_current_pid.curr_pid.Ref_In			=	0.5f;
 	m_current_pid.curr_pid.Feed_Back		=	0.0f;
 	m_current_pid.curr_pid.Err_T_0			=	0.0f;
 	m_current_pid.curr_pid.Err_T_1			=	0.0f;
@@ -73,12 +73,12 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Out_Pre			=	0.0f;
 	m_current_pid.curr_pid.Out_Actual		=	0.0f;
 	
-	m_current_pid.curr_pid.Kp				=	1.0f;
-	m_current_pid.curr_pid.Ki				=	0.0f;
+	m_current_pid.curr_pid.Kp				=	20.0f;
+	m_current_pid.curr_pid.Ki				=	1.0f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
 	
 	//速度环pid参数初始化
-	m_speed_pid.spd_pid.Ref_In				=	0.1f;
+	m_speed_pid.spd_pid.Ref_In				=	0.2f;
 	m_speed_pid.spd_pid.Feed_Back			=	0.0f;
 	m_speed_pid.spd_pid.Err_T_0				=	0.0f;
 	m_speed_pid.spd_pid.Err_T_1				=	0.0f;
@@ -91,8 +91,8 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Out_Pre				=	0.0f;
 	m_speed_pid.spd_pid.Out_Actual			=	0.0f;
 	
-	m_speed_pid.spd_pid.Kp					=	2.8f;
-	m_speed_pid.spd_pid.Ki					=	0.1f;
+	m_speed_pid.spd_pid.Kp					=	0.1f;
+	m_speed_pid.spd_pid.Ki					=	0.001f;
 	m_speed_pid.spd_pid.Kd					=	0.0f;
 	
 	
@@ -141,8 +141,8 @@ void	CurrentFilterDataInit(void)
 	----------------------------------------------------------------------------*/
 void	EncoderDataInit(void)
 {
-	m_motor_rt_para.i32_encoder_last_read	=	0;
-	m_motor_rt_para.i32_encoder_curr_read	=	0;
+	m_motor_rt_para.u16_encoder_last_read	=	0;
+	m_motor_rt_para.u16_encoder_curr_read	=	0;
 	m_motor_rt_para.i64_pulse_cnt			=	0;
 	m_motor_rt_para.u32_pulse_width			=	0;
 	m_motor_rt_para.f_motor_cal_speed		=	0.0f;

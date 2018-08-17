@@ -82,10 +82,10 @@ void	Current_Average_X4_Filter(motor_runtime_para * m_parg)
 	
 	m_parg->u16_uvw_current		=	Single_Current_Average_X4_Filter(&real_i);
 	
-	if(m_sys_state.u8_cur_state == Run_state)													//电机正常运行时，电流是没有负值的
+	if(m_sys_state.u8_cur_state == Run_state)	
 	{
 		if(m_parg->u16_uvw_current > 2000)
-			m_parg->u16_uvw_current = 2000;								//电流没有负值，所以采样电流值应大于偏置值
+			m_parg->u16_uvw_current = 2000;												//设置电流值上限
 	}
 }
 
@@ -166,48 +166,38 @@ void	Current_Average_X8_Filter(motor_runtime_para * m_parg)
 
 uint16_t	Single_Current_Average_X8_Filter(uint16_t * new_data)
 {
-	int16_t		delta_value;											//新数据与上一次采样数据的差值
+	int16_t		delta_value;															//新数据与上一次采样数据的差值
 	int16_t		pre_value;
 	uint16_t	abandoned_value;
 	
 	if(*new_data > 4095)
-		*new_data = 4095;																			//传入的原始采样值不能超过4095
+		*new_data = 4095;																//传入的原始采样值不能超过4095
 	
-	if(m_motor_rt_para.uvw_buffer_used < 8)																//buffer未填满
+	if(m_motor_rt_para.uvw_buffer_used < 8)																			//buffer未填满
 	{
-		m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw]	=	*new_data;							//将新数据加入buffer
+		m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw]	=	*new_data;								//将新数据加入buffer
 		m_motor_rt_para.uvw_buffer_used++;
 		m_motor_rt_para.filter_index_uvw 								=	m_motor_rt_para.uvw_buffer_used;			
-		m_motor_rt_para.u16_uvw_sum										+=	*new_data;							//窗口已有数据求和
-		return		m_motor_rt_para.u16_uvw_sum>>3;																//返回平局值
+		m_motor_rt_para.u16_uvw_sum										+=	*new_data;								//窗口已有数据求和
+		return		m_motor_rt_para.u16_uvw_sum>>2;																	//返回平局值
 	}
-	else																										//buffer已装满
+	else																											//buffer已装满
 	{
-		m_motor_rt_para.filter_index_uvw ++;																	//窗口迁移
+		m_motor_rt_para.filter_index_uvw++;																			//窗口迁移
 		if(m_motor_rt_para.filter_index_uvw >= 8)
 			m_motor_rt_para.filter_index_uvw =0;
 		
-		if(m_motor_rt_para.filter_index_uvw == 7)																//从窗口滑出的值
+		if(m_motor_rt_para.filter_index_uvw == 7)																	//从窗口滑出的值
 			abandoned_value			=	m_motor_rt_para.history_data[0];
 		else
-			abandoned_value			=	m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw+1];
+			abandoned_value			=	m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw + 1];
 		
-		if(m_motor_rt_para.filter_index_uvw == 0)																//上一次数据
-			pre_value				=	(int16_t)m_motor_rt_para.history_data[7];
-		else
-			pre_value				=	(int16_t)m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw - 1];
-		
-		delta_value					=	(int16_t)*new_data - pre_value;											//计算最新数据与上次数据的差值
-		
-		if((delta_value > NOISE_PULSATION_THRESHOLD) ||(delta_value < -NOISE_PULSATION_THRESHOLD))
-			m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw]	=	pre_value;						//新值与前次测量值之差大于阈值，舍弃
-		else
-			m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw]	=	*new_data;
+		m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw]	=	*new_data;
 		
 		m_motor_rt_para.u16_uvw_sum		+=	m_motor_rt_para.history_data[m_motor_rt_para.filter_index_uvw];
 		m_motor_rt_para.u16_uvw_sum		-=	abandoned_value;
 		
-		return	m_motor_rt_para.u16_uvw_sum>>3;
+		return	m_motor_rt_para.u16_uvw_sum>>2;
 	}
 }
 

@@ -49,7 +49,7 @@ void	Timer2_Config(void);
 void	Timer3_Config(void);
 void	Timer4_Config(void);
 void	Timer5_Config(void);
-void	Timer9_Config(void);
+//void	Timer9_Config(void);
 void	ADC_DMA_Config(void);
 void	CAN_Config(void);
 void	BrakeControl(uint8_t	mode);

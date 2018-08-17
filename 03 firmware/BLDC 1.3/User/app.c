@@ -42,16 +42,18 @@ void	StateMachine_Task(void * parg)
 		}
 		else if(m_sys_state.u8_cur_state == Run_state)
 		{
-//			SpeedPosLoopRefresh_TIM_Start();
+		
 		}
 		else if(m_sys_state.u8_cur_state == Prepare_state)
 		{
 			Read_Current_Bias();															//电流采集电路电压偏置计算
-			OSTimeDlyHMSM(0,0,0,500);
+			OSTimeDlyHMSM(0,0,0,20);
 			
 			BrakeControl(1);																//开启抱闸
 			
 			Hall_Convert();																	//开始初次相位识别					
+			
+			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
 			
 			CurrentLoopRefresh_TIM_Start();													//开启电流环更新
 			

@@ -33,23 +33,18 @@ void	Read_IncEncoder(void)
 {
 	int32_t		temp_delta;
 	
-	m_motor_rt_para.i32_encoder_last_read	=	m_motor_rt_para.i32_encoder_curr_read;		//获取最新编码器读数
-	m_motor_rt_para.i32_encoder_curr_read	=	TIM3->CNT;
+	m_motor_rt_para.u16_encoder_last_read	=	m_motor_rt_para.u16_encoder_curr_read;		//获取最新编码器读数
+	m_motor_rt_para.u16_encoder_curr_read	=	TIM3->CNT;
 	
-	temp_delta	=	m_motor_rt_para.i32_encoder_curr_read - m_motor_rt_para.i32_encoder_last_read;
+	temp_delta	=	(int16_t)(m_motor_rt_para.u16_encoder_curr_read - m_motor_rt_para.u16_encoder_last_read);
 	
-	if(temp_delta < -40000)						//计数器向上溢出，重新计数
-	{
-		m_motor_rt_para.f_motor_cal_speed	=	((float)(temp_delta + 65535))/40.0f;		///40000*1000 获得rps单位的速度
-	}
-	else if(temp_delta > 40000)					//计数器反向计数，减过0
-	{
-		m_motor_rt_para.f_motor_cal_speed	=	((float)(65535 - temp_delta))/40.0f;		///40000*1000 获得rps单位的速度
-	}
-	else									//计数器在0-65535之间正常计数
-	{
-		m_motor_rt_para.f_motor_cal_speed	=	((float)temp_delta)/40.0f;					///40000*1000 获得rps单位的速度
-	}
+	m_motor_rt_para.f_motor_cal_speed		=	((float)temp_delta)/40.0f;
+	
+	
+//	if(temp_delta == 0)
+//		temp_delta	=	1;
+//	if(temp_delta >=100)
+//		;
 }
 
 

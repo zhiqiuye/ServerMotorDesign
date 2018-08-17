@@ -97,7 +97,7 @@ typedef	struct
 
 	uint16_t		u16_uvw_current;					//UVW相电流
 	
-	uint8_t			u8_data_refreshed;					//电流更新标志
+	uint8_t			u8_current_data_refreshed;					//电流更新标志
 	/*电流传感器偏置*/
 	uint16_t		u16_uvw_curr_bias;					//UVW相电流测量偏置
 
@@ -121,8 +121,9 @@ typedef	struct
 	uint8_t			u8_hall_state;						//霍尔值
 	
 	/*编码器数据*/
-	int32_t			i32_encoder_last_read;				//前一次从定时器直接读取的数据，高速时		TIM->cnt是16位寄存器
-	int32_t			i32_encoder_curr_read;				//当前从定时器直接读取的数据，高速时
+	uint8_t			u8_speed_data_refreshed;			//速度环更新产生新的目标电流值
+	uint16_t		u16_encoder_last_read;				//前一次从定时器直接读取的数据，高速时		TIM->cnt是16位寄存器
+	uint16_t		u16_encoder_curr_read;				//当前从定时器直接读取的数据，高速时
 	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
 	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
 	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps
@@ -133,11 +134,16 @@ typedef	struct
 typedef	struct
 {
 	uint8_t		u8_dir;									//转动方向
+	
 	uint8_t		u8_is_currloop_open;					//开启电流环标志位
 	float		f_set_current;							//设置电流值，浮点型		正负确定dir和int_set_current
 	uint32_t	u32_set_current;						//设置电流值，无符号整形
+	
+	uint8_t		u8_is_speedloop_open;
 	float		f_set_speed;							//设置速度值，浮点型
 	uint32_t	u32_set_speed;							//设置速度值，无符号整形	
+	
+	uint8_t		u8_is_posloop_open;
 	float		f_set_position;							//设置位置值，浮点型
 	uint32_t	u32_set_position;						//设置位置值，无符号整形
 }motor_control_para;

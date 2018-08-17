@@ -46,7 +46,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define			RADIANS				1.047197533333f			//定义1弧度
-#define			USE_CURRENT_TRACE							//使用电流模拟跟随
+//#define			USE_CURRENT_TRACE							//使用电流模拟跟随
 
 #ifdef			USE_CURRENT_TRACE
 	#define		_PI					3.1415926535897932384626433832795f
@@ -75,38 +75,54 @@ extern	const	uint8_t		current_senser_table[2][7];
 	/*---------------------------------------------------------------------------
 	函数名称			：TIM1_UP_TIM10_IRQHandler(void)
 	参数含义			：null
-	函数功能			：PWM计数器溢出中断，产生频率是40KHz，是PWM频率的2倍
+	函数功能			：	PWM计数器溢出中断，产生频率是40KHz，是PWM频率的2倍
+							在PWM计数器上升溢出中断中打开ADC采样;
+							
+							并且更新电流环:
+							20Khz（50us周期）更新中，更新周期为占用时间2.3us(使用DAC)
+							CPU使用率1.8%，1.1us（中断中没有DAC部分）
 	----------------------------------------------------------------------------*/
 void	TIM1_UP_TIM10_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM1,TIM_IT_Update)!=RESET)
 	{
 		polarity ++;
-		if(polarity ==2)
+		if(polarity == 1)
 		{		
 //			GPIOC->ODR	|=	0x0001;															//置高C1
+			/*开启ADC DMA*/
 			ADC_SoftwareStartConv(ADC1);													//开启ADC采样
 			polarity	=	0;
-			
+			/*如果开启电流环更新*/
 			if(m_motor_ctrl.u8_is_currloop_open ==	1)
 			{
-				//产生目标正弦电流信号，计算时间4us
-#ifdef	USE_CURRENT_TRACE
-				f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 1000.0f );
+				
+#ifdef	USE_CURRENT_TRACE	/*产生目标正弦电流信号，计算时间4us*/
+				f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 40.0f );
 				step_cnt++;
-				if(step_cnt >= 2000)
+				if(step_cnt >= 80)
 					step_cnt = 0;
 				m_motor_ctrl.f_set_current		=	f_sin;
+				if(step_cnt == 0)
+					GPIOC->ODR	|=	0x0001;
+				if(step_cnt == 40)
+					GPIOC->ODR	&=	0xFFFE;
 #endif
-				m_current_pid.curr_pid.Ref_In	=	m_motor_ctrl.f_set_current;
-				if(m_motor_rt_para.u8_data_refreshed	==	1)
+				/*速度环数据更新后，更新目标电流*/
+				if(m_motor_rt_para.u8_speed_data_refreshed	== 1)
 				{
-					Curr_PID_Cal(&(m_current_pid.curr_pid));									//有刷新电流值，电流环更新程序部分
-					m_motor_rt_para.u8_data_refreshed	=	0;
+					m_current_pid.curr_pid.Ref_In	=	(float)fabs((double)m_motor_ctrl.f_set_current);	//电流值取绝对值
+					m_motor_rt_para.u8_speed_data_refreshed = 0;
+				}
+				/*电流值更新后，进入电流环的DMA中断*/
+				if(m_motor_rt_para.u8_current_data_refreshed	==	1)
+				{
+					Curr_PID_Cal(&(m_current_pid.curr_pid));												//有刷新电流值，电流环更新程序部分
+					m_motor_rt_para.u8_current_data_refreshed	=	0;
 				}
 			}
 		}
-		TIM_ClearITPendingBit(TIM1,TIM_IT_Update);											//清除TIM1中断标志
+		TIM_ClearITPendingBit(TIM1,TIM_IT_Update);															//清除TIM1中断标志
 //		GPIOC->ODR	&=	0xFFFE;
 	}
 }
@@ -115,26 +131,26 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：	TIM2_IRQHandler(void)
 	参数含义			：	null
-	函数功能			：	定时更新电流环，
-							20Khz（50us周期）更新中，更新周期为占用时间2.3us(使用DAC)
-							CPU使用率1.8%，1.1us（中断中没有DAC部分）
+	函数功能			：	定时更新速度位置环，20Khz（50us周期）更新中，
+							
 							
 	----------------------------------------------------------------------------*/
 void	TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
-//		//产生目标正弦电流信号，计算时间4us
-//#ifdef	USE_CURRENT_TRACE
-//		f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 1000.0f );
-//		step_cnt++;
-//		if(step_cnt >= 2000)
-//			step_cnt = 0;
-//		m_current_pid.curr_pid.Ref_In	=	0.5f;//f_sin;
-//#endif
-////		m_current_pid.curr_pid.Ref_In	=	m_motor_ctrl.f_set_current;
-//		
-//		Curr_PID_Cal(&(m_current_pid.curr_pid));											//电流环更新程序部分
+		if(m_motor_ctrl.u8_is_speedloop_open	==	1)
+		{		
+			Read_IncEncoder();																//读取编码器数据
+			
+			Speed_PID_Cal(&(m_speed_pid.spd_pid));
+			
+			m_motor_rt_para.u8_speed_data_refreshed		=	1;								//速度环更新标志位
+		}
+		if(m_motor_ctrl.u8_is_speedloop_open	==	1)
+		{
+			
+		}
 		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);											//清除中断标志位
 	}
 }
@@ -151,7 +167,7 @@ void	TIM3_IRQHandler(void)
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)										//AB相计数溢出中断
 	{
 		if(TIM3->CR1 &0x0010)																//根据方向标志位
-			m_motor_rt_para.i64_pulse_cnt -= 65535;
+			m_motor_rt_para.i64_pulse_cnt -= 65535;											//反转，脉冲计数减一个
 		else
 			m_motor_rt_para.i64_pulse_cnt += 65535;
 	}
@@ -188,17 +204,14 @@ void	TIM4_IRQHandler(void)
 	函数功能			：	速度环以及位置环更新			
 							更新频率为1KHz
 	----------------------------------------------------------------------------*/
-void	TIM1_BRK_TIM9_IRQHandler(void)
-{
-	if(TIM_GetITStatus(TIM9,TIM_IT_Update) != RESET)	
-	{
-		GPIOC->ODR	|=	0x0001;
-		Read_IncEncoder();
-//		Speed_PID_Cal(&(m_speed_pid.spd_pid));
-		GPIOC->ODR	&=	0xFFFE;
-	}
-	TIM_ClearITPendingBit(TIM9,TIM_IT_Update);	
-}
+//void	TIM1_BRK_TIM9_IRQHandler(void)
+//{
+//	if(TIM_GetITStatus(TIM9,TIM_IT_Update) != RESET)	
+//	{
+
+//	}
+//	TIM_ClearITPendingBit(TIM9,TIM_IT_Update);	
+//}
 
 
 
@@ -219,9 +232,9 @@ void	DMA2_Stream0_IRQHandler(void)
 	{
 		Current_Average_X4_Filter(&m_motor_rt_para);												//对原始电流数据进行滑动窗口滤波，以及突变点剔除
 		
-		m_motor_rt_para.f_adc_UVW_I			=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
+		m_motor_rt_para.f_adc_UVW_I					=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
 
-		m_motor_rt_para.u8_data_refreshed	=	1;
+		m_motor_rt_para.u8_current_data_refreshed	=	1;
 		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }
