@@ -174,7 +174,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -206,9 +205,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>166</LineNumber>
+          <LineNumber>123</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230090</Address>
+          <Address>134230062</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -217,7 +216,39 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\User\stm32f4xx_it.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\BLDC_Driver\User/stm32f4xx_it.c\166</Expression>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>109</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229968</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\User\stm32f4xx_it.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\BLDC_Driver\User/stm32f4xx_it.c\109</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>49</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134228932</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\User\app.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\BLDC_Driver\User/app.c\49</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -225,6 +256,21 @@
           <count>0</count>
           <WinNumber>1</WinNumber>
           <ItemText>m_motor_rt_para</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>m_speed_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>m_current_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>m_motor_ctrl</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

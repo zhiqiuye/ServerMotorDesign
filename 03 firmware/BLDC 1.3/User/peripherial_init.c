@@ -53,11 +53,19 @@ void	NVIC_Config(void)
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
-
+	
+	/*ADC-DMA 传输完成中断*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream0_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);
+	
 	/*速度环、位置环更新中断，TIM2 计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -65,7 +73,7 @@ void	NVIC_Config(void)
 	/*编码器输入模式，TIM3 编码器计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -73,23 +81,7 @@ void	NVIC_Config(void)
 	/*Hall 传感器输入捕获中断，TIM4输入捕获中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM4_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	
-	NVIC_Init(&NVIC_InitStructure);
-
-	/*中断，TIM9 计数溢出中断*/
-//	NVIC_InitStructure.NVIC_IRQChannel						=	TIM1_BRK_TIM9_IRQn;
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
-//	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-//	
-//	NVIC_Init(&NVIC_InitStructure);	
-
-	/*ADC-DMA 传输完成中断*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream0_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -653,34 +645,6 @@ void	Timer5_Config(void)
 	
 }
 
-
-	/*---------------------------------------------------------------------------
-	函数名称			：Timer9_Config(void)
-	参数含义			：null
-	函数功能			：	速度环与位置环定时更新			timer9 APB2上84MHz
-							16bit定时器
-							更新频率为1KHz
-	----------------------------------------------------------------------------*/
-//void	Timer9_Config(void)
-//{
-//	TIM_TimeBaseInitTypeDef 		TIM_TimeBaseInitStructure;
-
-///*时钟配置*/
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9,ENABLE);
-//	
-///*Timer9配置*/
-//	TIM_DeInit(TIM9);																			//Timer 9 在APB2上，84MHz
-//	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
-//	TIM_TimeBaseInitStructure.TIM_ClockDivision				=	TIM_CKD_DIV2;
-//	TIM_TimeBaseInitStructure.TIM_CounterMode				=	TIM_CounterMode_Up;
-//	TIM_TimeBaseInitStructure.TIM_Period					=	8400-1;
-//	TIM_TimeBaseInitStructure.TIM_Prescaler					=	20-1;			
-//	TIM_TimeBaseInit(TIM9,&TIM_TimeBaseInitStructure);
-//	TIM_Cmd(TIM9,DISABLE);
-
-//	TIM_ClearFlag(TIM9,TIM_IT_Update);
-//	TIM_ITConfig(TIM9,TIM_IT_Update,ENABLE);	
-//}
 
 
 	/*---------------------------------------------------------------------------

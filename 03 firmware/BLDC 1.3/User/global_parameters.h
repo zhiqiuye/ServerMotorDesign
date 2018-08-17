@@ -94,20 +94,15 @@ typedef	struct
 {
 	/*电流采集原始值*/
 	uint16_t		ADC_DMA_buf[3];						//dma数据存放buf，原始数据，每个数据采集4次做平均
-
 	uint16_t		u16_uvw_current;					//UVW相电流
 	
-	uint8_t			u8_current_data_refreshed;					//电流更新标志
 	/*电流传感器偏置*/
 	uint16_t		u16_uvw_curr_bias;					//UVW相电流测量偏置
 
 	/*电流滑动均值滤波器*/
 	uint16_t		history_data[CURRENT_BUFFER_LENGTH];	//存放电流值历史
-
 	uint16_t		u16_uvw_sum;						//窗口求和值存放
-
 	uint8_t			filter_index_uvw;					//用于指向电流值buf的位置
-
 	uint8_t			uvw_buffer_used;					//buffer中存放的数据量
 
 	/*实际使用的电流值，转化为浮点型数据*/
@@ -135,17 +130,25 @@ typedef	struct
 {
 	uint8_t		u8_dir;									//转动方向
 	
+	/*状态更新标志位*/
+	uint8_t			u8_current_read_data_refreshed;		//读取反馈电流更新标志
+	uint8_t			u8_current_set_data_refreshed;		//设置电流值更新
+	uint8_t			u8_speed_read_data_refreshed;		//读取速度值更新标志
+	uint8_t			u8_speed_set_data_refreshed;		//设置速度值更新
+	uint8_t			u8_position_read_data_refreshed;	//读取位置值更新
+	uint8_t			u8_position_set_data_refreshed;		//设置位置值更新
+	
 	uint8_t		u8_is_currloop_open;					//开启电流环标志位
 	float		f_set_current;							//设置电流值，浮点型		正负确定dir和int_set_current
-	uint32_t	u32_set_current;						//设置电流值，无符号整形
+	int32_t		i32_set_current;						//设置电流值，无符号整形
 	
 	uint8_t		u8_is_speedloop_open;
 	float		f_set_speed;							//设置速度值，浮点型
-	uint32_t	u32_set_speed;							//设置速度值，无符号整形	
+	int32_t		i32_set_speed;							//设置速度值，无符号整形	
 	
 	uint8_t		u8_is_posloop_open;
 	float		f_set_position;							//设置位置值，浮点型
-	uint32_t	u32_set_position;						//设置位置值，无符号整形
+	int32_t		i32_set_position;						//设置位置值，无符号整形
 }motor_control_para;
 
 
@@ -233,6 +236,12 @@ enum VOLTAGE_ERR
 
 /* Exported functions ------------------------------------------------------- */
 uint8_t	ParametersInit(void);
+
+void	CurrentFilterDataInit(void);
+
+void	EncoderDataInit(void);
+
+void	MotorCtrlDataInit(void);
 
 uint8_t	ParametersSave(void);
 

@@ -47,6 +47,7 @@ void	StateMachine_Task(void * parg)
 		else if(m_sys_state.u8_cur_state == Prepare_state)
 		{
 			Read_Current_Bias();															//电流采集电路电压偏置计算
+			
 			OSTimeDlyHMSM(0,0,0,20);
 			
 			BrakeControl(1);																//开启抱闸

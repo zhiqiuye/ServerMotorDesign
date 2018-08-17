@@ -68,18 +68,18 @@ void	Current_Average_X4_Filter(motor_runtime_para * m_parg)
 {
 	int16_t		u_i,v_i,w_i;
 	uint16_t	real_i;
-	
+	/*计算u相电流绝对值，整型变量*/
 	u_i							=	m_parg->ADC_DMA_buf[0] - m_parg->u16_uvw_curr_bias;
 	u_i							=	((u_i) > 0 ? (u_i) : -(u_i) );
-
+	/*计算u相电流绝对值，整型变量*/
 	v_i							=	m_parg->ADC_DMA_buf[1] - m_parg->u16_uvw_curr_bias;
 	v_i							=	((v_i) > 0 ? (v_i) : -(v_i) );
-
+	/*计算u相电流绝对值，整型变量*/
 	w_i							=	m_parg->ADC_DMA_buf[2] - m_parg->u16_uvw_curr_bias;
 	w_i							=	((w_i) > 0 ? (w_i) : -(w_i) );	
-	
+	/*计算三相平均*/
 	real_i						=	(u_i + v_i + w_i)>>1;
-	
+	/*压入滤波器*/
 	m_parg->u16_uvw_current		=	Single_Current_Average_X4_Filter(&real_i);
 	
 	if(m_sys_state.u8_cur_state == Run_state)	
@@ -87,6 +87,8 @@ void	Current_Average_X4_Filter(motor_runtime_para * m_parg)
 		if(m_parg->u16_uvw_current > 2000)
 			m_parg->u16_uvw_current = 2000;												//设置电流值上限
 	}
+	
+	m_motor_ctrl.u8_current_read_data_refreshed		=	1;								//读取电流反馈数据更新
 }
 
 	/*---------------------------------------------------------------------------
@@ -99,8 +101,8 @@ void	Current_Average_X4_Filter(motor_runtime_para * m_parg)
 
 uint16_t	Single_Current_Average_X4_Filter(uint16_t * new_data)
 {
-	int16_t		delta_value;															//新数据与上一次采样数据的差值
-	int16_t		pre_value;
+//	int16_t		delta_value;															//新数据与上一次采样数据的差值
+//	int16_t		pre_value;
 	uint16_t	abandoned_value;
 	
 	if(*new_data > 4095)
@@ -153,21 +155,34 @@ uint16_t	Single_Current_Average_X4_Filter(uint16_t * new_data)
 	----------------------------------------------------------------------------*/
 void	Current_Average_X8_Filter(motor_runtime_para * m_parg)
 {
-	uint8_t		index			=	current_senser_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state];
-	m_parg->u16_uvw_current		=	Single_Current_Average_X8_Filter(&(m_parg->ADC_DMA_buf[index]));
+	int16_t		u_i,v_i,w_i;
+	uint16_t	real_i;
+	/*计算u相电流绝对值，整型变量*/
+	u_i							=	m_parg->ADC_DMA_buf[0] - m_parg->u16_uvw_curr_bias;	
+	u_i							=	((u_i) > 0 ? (u_i) : -(u_i) );
+	/*计算v相电流绝对值，整型变量*/
+	v_i							=	m_parg->ADC_DMA_buf[1] - m_parg->u16_uvw_curr_bias;
+	v_i							=	((v_i) > 0 ? (v_i) : -(v_i) );
+	/*计算w相电流绝对值，整型变量*/
+	w_i							=	m_parg->ADC_DMA_buf[2] - m_parg->u16_uvw_curr_bias;
+	w_i							=	((w_i) > 0 ? (w_i) : -(w_i) );	
+	/*计算三相平均*/
+	real_i						=	(u_i + v_i + w_i)>>1;
+	/*压入滤波器*/
+	m_parg->u16_uvw_current		=	Single_Current_Average_X8_Filter(&real_i);
 	
-	if(m_sys_state.u8_cur_state == Run_state)													//电机正常运行时，电流是没有负值的
+	if(m_sys_state.u8_cur_state == Run_state)	
 	{
-		if(m_parg->u16_uvw_current < m_parg->u16_uvw_curr_bias)
-			m_parg->u16_uvw_current = m_parg->u16_uvw_curr_bias;								//电流没有负值，所以采样电流值应大于偏置值
+		if(m_parg->u16_uvw_current > 2000)
+			m_parg->u16_uvw_current = 2000;												//设置电流值上限
 	}
+	
+	m_motor_ctrl.u8_current_read_data_refreshed		=	1;								//读取电流反馈数据更新
 }
 
 
 uint16_t	Single_Current_Average_X8_Filter(uint16_t * new_data)
 {
-	int16_t		delta_value;															//新数据与上一次采样数据的差值
-	int16_t		pre_value;
 	uint16_t	abandoned_value;
 	
 	if(*new_data > 4095)

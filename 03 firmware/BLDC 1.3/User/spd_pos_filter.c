@@ -33,18 +33,14 @@ void	Read_IncEncoder(void)
 {
 	int32_t		temp_delta;
 	
-	m_motor_rt_para.u16_encoder_last_read	=	m_motor_rt_para.u16_encoder_curr_read;		//获取最新编码器读数
-	m_motor_rt_para.u16_encoder_curr_read	=	TIM3->CNT;
+	m_motor_rt_para.u16_encoder_last_read		=	m_motor_rt_para.u16_encoder_curr_read;		//获取最新编码器读数
+	m_motor_rt_para.u16_encoder_curr_read		=	TIM3->CNT;
 	
 	temp_delta	=	(int16_t)(m_motor_rt_para.u16_encoder_curr_read - m_motor_rt_para.u16_encoder_last_read);
 	
-	m_motor_rt_para.f_motor_cal_speed		=	((float)temp_delta)/40.0f;
+	m_motor_rt_para.f_motor_cal_speed			=	((float)temp_delta)/40.0f;
 	
-	
-//	if(temp_delta == 0)
-//		temp_delta	=	1;
-//	if(temp_delta >=100)
-//		;
+	m_motor_ctrl.u8_speed_read_data_refreshed	=	1;
 }
 
 

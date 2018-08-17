@@ -101,10 +101,10 @@ static void APP_TaskStart(void *p_arg)
 /*设置系统时基*/
 	OS_CPU_SysTickInit(168000000/OS_TICKS_PER_SEC);								//时基10ms,在启动多任务后开启系统时钟,OS_TICKS_PER_SEC
 	delay_us(500);
-	//OSTimeDlyHMSM(0,0,0,100);
 	
 /*系统状态监测初始化*/
 	OSStatInit();
+	
 /*建立各任务*/
 	
 	//状态机管理
@@ -160,12 +160,11 @@ static void	Board_Init(void)
 	NVIC_Config();									//中断优先级配置
 	GPIO_Config();									//端口配置
 	
-	Timer1_Config();								//PWM生成定时器配置						配置时已打开
-	Timer2_Config();								//产生20KHz的中断，进行电流环调节		配置时关闭
+	Timer1_Config();								//PWM生成/电流环定时器配置				配置时已打开
+	Timer2_Config();								//产生1KHz的中断，进行速度位置环调节	配置时关闭
 	Timer3_Config();								//正交编码器定时器配置，M法测量			配置时已打开
 	Timer4_Config();								//Hall传感器输入捕获中断				配置时已打开
 	Timer5_Config();								//高速端光电编码器低速测量 T法测量		0813尚未配置
-//	Timer9_Config();								//速度位置环更新定时器	
 	ADC_DMA_Config();								//ADC采集DMA使能
 	DAC_Config();
 	

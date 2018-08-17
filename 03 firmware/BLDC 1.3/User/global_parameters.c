@@ -40,8 +40,6 @@ uint8_t	ParametersInit(void)
 	m_sys_state.u8_cur_state				=	Idle_state;								//初始时电机状态为idle
 	m_sys_state.u8_pre_state				=	Idle_state;
 	
-	m_motor_ctrl.u8_dir						=	1;										//设置电机转向
-	
 	//电机参数初始化
 	m_motor.m_encoder.u32_line_per_loop		=	LINES_PER_LOOP;
 	m_motor.m_encoder.u8_multiplication		=	MULTIPLICATION;
@@ -60,7 +58,7 @@ uint8_t	ParametersInit(void)
 	m_motor.u8_number_of_pole_pairs			=	P;
 	
 	//电流环pid参数初始化
-	m_current_pid.curr_pid.Ref_In			=	0.5f;
+	m_current_pid.curr_pid.Ref_In			=	0.0f;
 	m_current_pid.curr_pid.Feed_Back		=	0.0f;
 	m_current_pid.curr_pid.Err_T_0			=	0.0f;
 	m_current_pid.curr_pid.Err_T_1			=	0.0f;
@@ -78,7 +76,7 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Kd				=	0.0f;
 	
 	//速度环pid参数初始化
-	m_speed_pid.spd_pid.Ref_In				=	0.2f;
+	m_speed_pid.spd_pid.Ref_In				=	1.0f;
 	m_speed_pid.spd_pid.Feed_Back			=	0.0f;
 	m_speed_pid.spd_pid.Err_T_0				=	0.0f;
 	m_speed_pid.spd_pid.Err_T_1				=	0.0f;
@@ -95,6 +93,9 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Ki					=	0.001f;
 	m_speed_pid.spd_pid.Kd					=	0.0f;
 	
+	CurrentFilterDataInit();
+	EncoderDataInit();
+	MotorCtrlDataInit();
 	
 	return	1;
 }
@@ -148,6 +149,35 @@ void	EncoderDataInit(void)
 	m_motor_rt_para.f_motor_cal_speed		=	0.0f;
 	m_motor_rt_para.f_shaft_cal_speed		=	0.0f;
 	
+}
+
+
+	/*---------------------------------------------------------------------------
+	函数名称			：MotorCtrlDataInit(void)
+	参数含义			：null
+	函数功能			：驱动器内三环的标志位与设置值数据初始化
+	----------------------------------------------------------------------------*/
+void	MotorCtrlDataInit(void)
+{
+	m_motor_ctrl.u8_dir								=	0;
+	m_motor_ctrl.u8_current_read_data_refreshed		=	0;
+	m_motor_ctrl.u8_current_set_data_refreshed		=	0;
+	m_motor_ctrl.u8_speed_read_data_refreshed		=	0;
+	m_motor_ctrl.u8_speed_set_data_refreshed		=	1;
+	m_motor_ctrl.u8_position_read_data_refreshed	=	0;
+	m_motor_ctrl.u8_position_set_data_refreshed		=	0;
+	
+	m_motor_ctrl.f_set_current						=	0.0f;
+	m_motor_ctrl.f_set_speed						=	3.0f;
+	m_motor_ctrl.f_set_position						=	0.0f;
+	
+	m_motor_ctrl.i32_set_current					=	0;
+	m_motor_ctrl.i32_set_speed						=	0;
+	m_motor_ctrl.i32_set_position					=	0;
+	
+	m_motor_ctrl.u8_is_currloop_open				=	0;
+	m_motor_ctrl.u8_is_speedloop_open				=	0;
+	m_motor_ctrl.u8_is_posloop_open					=	0;
 }
 
 

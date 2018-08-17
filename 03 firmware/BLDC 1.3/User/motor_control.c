@@ -264,11 +264,14 @@ void	CurrentLoopRefresh_TIM_Halt(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：SpeedPosLoopRefresh_TIM_Start(void)
 	参数含义			：null
-	函数功能			：开启速度环的更新定时器中断
+	函数功能			：	开启速度环的更新定时器中断
+							开启速度环必须开启电流环
 	----------------------------------------------------------------------------*/
 void	SpeedLoopRefresh_TIM_Start(void)
 {
 	m_motor_ctrl.u8_is_speedloop_open	=	1;
+	m_motor_ctrl.u8_is_currloop_open	=	1;
+	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
 }
@@ -294,7 +297,10 @@ void	SpeedLoopRefresh_TIM_Halt(void)
 	----------------------------------------------------------------------------*/
 void	PositionLoopRefresh_TIM_Start(void)
 {
+	m_motor_ctrl.u8_is_currloop_open	=	1;
+	m_motor_ctrl.u8_is_speedloop_open	=	1;
 	m_motor_ctrl.u8_is_posloop_open		=	1;
+	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
 }
@@ -363,8 +369,8 @@ void	Read_Current_Bias(void)
 void	Curr_PID_Cal(volatile PID_Struct * pid)
 {
 	uint32_t		ccr;
-	float			f_temp;
-	uint32_t		u32_temp;
+//	float			f_temp;
+//	uint32_t		u32_temp;
 	float			pid_inc = 0.0f;
 	float			curr_in = 0.0f;
 	
@@ -423,11 +429,11 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	
 	/*计算增量pid输出*/
 	spd_in		=	m_motor_rt_para.f_motor_cal_speed;
-	pid_inc		=	Increment_PID_Cal_Spd((PID_Struct*)pid,spd_in);
+	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
 
 //--------------------20180817test	
 	f_temp					=	spd_in;//pid_inc + 10.0f;						//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 1241.0f);//204.0f);
+	u32_temp				=	(uint32_t)(f_temp * 819.0f);	//5rps对应3.3V
 	
 	if(u32_temp>4095) u32_temp = 4095;
 //	u32_temp				=	((TIM3->CNT)>>4)&0x0fff;
@@ -452,6 +458,8 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	{
 		m_motor_ctrl.f_set_current	=	0.0f;
 	}
+	
+	m_motor_ctrl.u8_current_set_data_refreshed	=	1;				//电流设置数据更新
 }
 
 
