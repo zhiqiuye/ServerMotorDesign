@@ -35,15 +35,17 @@ void		SpeedLoopRefresh_TIM_Start(void);
 
 void		SpeedLoopRefresh_TIM_Halt(void);
 
-void		PosLoopRefresh_TIM_Start(void);
+void		PositionLoopRefresh_TIM_Start(void);
 
-void		PosLoopRefresh_TIM_Halt(void);
+void		PositionLoopRefresh_TIM_Halt(void);
 
 void		IR2130S_force_reset(void);
 
-void		Curr_PID_Cal(volatile PID_Struct * pid);
+void		Current_PID_Cal(volatile PID_Struct * pid);
 
 void		Speed_PID_Cal(volatile PID_Struct * pid);
+
+void		Position_PID_Cal(volatile PID_Struct * pid);
 
 void		Read_Current_Bias(void);
 

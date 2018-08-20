@@ -47,7 +47,8 @@
 /* Private define ------------------------------------------------------------*/
 #define			RADIANS				1.047197533333f			//定义1弧度
 //#define			USE_CURRENT_TRACE							//使用电流模拟跟随
-#define			USE_SPEED_TRACE
+//#define			USE_SPEED_TRACE								//使用速度环模拟跟随
+#define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
 #define			_PI					3.1415926535897932384626433832795f
@@ -65,6 +66,11 @@ uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
 #endif
 
+#ifdef	USE_POSITION_TRACE
+uint32_t		step_cnt			=	0;					//产生正弦输入
+uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
+float32_t		f_sin				=	0.0f;				//正弦
+#endif
 extern	const	uint8_t		current_senser_table[2][7];
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,7 +98,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 		{
 //			GPIOC->ODR	|=	0x0001;															//置高C1
 			/*如果开启电流环更新，不做电流跟随的情况下，下面代码运行时间1.3us*/
-			if(m_motor_ctrl.u8_is_currloop_open ==	1)
+			if(m_motor_ctrl.u8_is_currloop_used ==	1)
 			{
 #ifdef	USE_CURRENT_TRACE	/*产生目标正弦电流信号，计算时间4us*/
 				f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 40.0f );
@@ -108,7 +114,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				/*电流值更新后，进入电流环的DMA中断*/
 				if(m_motor_ctrl.u8_current_read_data_refreshed	==	1)
 				{
-					Curr_PID_Cal(&(m_current_pid.curr_pid));											//有刷新反馈电流值，电流环更新程序部分
+					Current_PID_Cal(&(m_current_pid.curr_pid));											//有刷新反馈电流值，电流环更新程序部分
 					m_motor_ctrl.u8_current_read_data_refreshed	=	0;									
 				}
 			}
@@ -123,7 +129,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 			{
 				m_current_pid.curr_pid.Ref_In	=	(float)fabs((double)m_motor_ctrl.f_set_current);	//电流值取绝对值
 				m_motor_ctrl.u8_current_set_data_refreshed	=	0;
-			}				
+			}
 		}
 		TIM_ClearITPendingBit(TIM1,TIM_IT_Update);														//清除TIM1中断标志
 	}
@@ -141,11 +147,38 @@ void	TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
+		Read_IncEncoder();																//读取编码器数据
+		/*更新位置环*/
+		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
+		{
+#ifdef	USE_POSITION_TRACE	/*产生目标正弦位置信号，*/
+			f_sin	=	1000.0f * arm_sin_f32((float32_t)step_cnt * _PI / 250.0f );
+			step_cnt++;
+			if(step_cnt >= 500)
+				step_cnt = 0;
+			m_motor_ctrl.f_set_position		=	f_sin;
+			m_motor_ctrl.u8_position_set_data_refreshed		=	1;
+			if(step_cnt == 0)
+				GPIOC->ODR	|=	0x0001;
+			if(step_cnt == 250)
+				GPIOC->ODR	&=	0xFFFE;
+#endif
+			if(m_motor_ctrl.u8_position_set_data_refreshed	==	1)
+			{
+				m_position_pid.pos_pid.Ref_In	=	m_motor_ctrl.f_set_position;
+				
+				Position_PID_Cal(&(m_position_pid.pos_pid));
+				m_motor_ctrl.u8_position_set_data_refreshed	=	0;
+			}
+		}
 //		GPIOC->ODR	|=	0x0001;	
-		if(m_motor_ctrl.u8_is_speedloop_open	==	1)
-		{		
-			Read_IncEncoder();															//读取编码器数据
-			
+		
+//		m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
+//		m_motor_ctrl.f_set_speed					=	-1.0f;
+		
+		/*更新速度环*/
+		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
+		{
 			if(m_motor_ctrl.u8_speed_read_data_refreshed	==	1)						//更新速度环pid参数
 			{
 #ifdef	USE_SPEED_TRACE	/*产生目标正弦速度信号，计算时间4us*/
@@ -166,13 +199,11 @@ void	TIM2_IRQHandler(void)
 			if(m_motor_ctrl.u8_speed_set_data_refreshed		==	1)						//更新参考速度值
 			{
 				m_speed_pid.spd_pid.Ref_In					=	m_motor_ctrl.f_set_speed;	//将设置速度值值写入PID参数
+				m_motor_ctrl.u8_speed_set_data_refreshed	=	0;
 				m_motor_ctrl.u8_current_set_data_refreshed	=	1;						//速度环更新标志位
 			}
 		}
-		if(m_motor_ctrl.u8_is_speedloop_open	==	1)
-		{
-			
-		}
+
 //		GPIOC->ODR	&=	0xFFFE;
 		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);										//清除中断标志位
 	}
@@ -189,10 +220,10 @@ void	TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)										//AB相计数溢出中断
 	{
-		if(TIM3->CR1 & 0x0010)																//根据方向标志位
-			m_motor_rt_para.i64_pulse_cnt -= 65535;											//反转，脉冲计数减一个
-		else
-			m_motor_rt_para.i64_pulse_cnt += 65535;
+//		if(TIM3->CR1 & 0x0010)																//根据方向标志位
+//			m_motor_rt_para.i32_pulse_cnt -= 65535;											//反转，脉冲计数减一个
+//		else
+//			m_motor_rt_para.i32_pulse_cnt += 65535;
 	}
 	
 	if(TIM_GetITStatus(TIM3,TIM_IT_CC3) != RESET)											//I相输入捕获中断

@@ -122,7 +122,7 @@ typedef	struct
 	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
 	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
 	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps
-	int64_t			i64_pulse_cnt;						//累加的码盘位置数据s
+	int32_t			i32_pulse_cnt;						//累加的码盘位置数据s
 }motor_runtime_para;
 
 /*控制参数------------------------------------------------------------------------------*/
@@ -138,15 +138,15 @@ typedef	struct
 	uint8_t			u8_position_read_data_refreshed;	//读取位置值更新
 	uint8_t			u8_position_set_data_refreshed;		//设置位置值更新
 	
-	uint8_t		u8_is_currloop_open;					//开启电流环标志位
+	uint8_t		u8_is_currloop_used;					//开启电流环标志位
 	float		f_set_current;							//设置电流值，浮点型		正负确定dir和int_set_current
 	int32_t		i32_set_current;						//设置电流值，无符号整形
 	
-	uint8_t		u8_is_speedloop_open;
+	uint8_t		u8_is_speedloop_used;
 	float		f_set_speed;							//设置速度值，浮点型
 	int32_t		i32_set_speed;							//设置速度值，无符号整形	
 	
-	uint8_t		u8_is_posloop_open;
+	uint8_t		u8_is_posloop_used;
 	float		f_set_position;							//设置位置值，浮点型
 	int32_t		i32_set_position;						//设置位置值，无符号整形
 }motor_control_para;
@@ -174,7 +174,7 @@ typedef struct
 	float		pid_increment;									//PID计算后的数值为-10~10
 	float		Out_Pre;										//PID计算后的理论输出值，控制量的增量
 	float		Out_Actual;										//PID实际输出值，直接给定时器寄存器赋值
-}PID_Struct;
+}PID_Struct;	
 
 
 /*电流环参数------------------------------------------------------------------------------*/

@@ -74,12 +74,12 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Kp				=	40.0f;
 	m_current_pid.curr_pid.Ki				=	0.8f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
-	//pid: 20.0 1.0 0.0
-	//
-	//
-	//
+//pid: 20.0 1.0 0.0
+//
+//
+//
 	//速度环pid参数初始化
-	m_speed_pid.spd_pid.Ref_In				=	1.0f;
+	m_speed_pid.spd_pid.Ref_In				=	0.0f;
 	m_speed_pid.spd_pid.Feed_Back			=	0.0f;
 	m_speed_pid.spd_pid.Err_T_0				=	0.0f;
 	m_speed_pid.spd_pid.Err_T_1				=	0.0f;
@@ -95,11 +95,30 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Kp					=	8.0f;
 	m_speed_pid.spd_pid.Ki					=	1.0f;//0.4
 	m_speed_pid.spd_pid.Kd					=	0.0f;
-	//pid: 8.0 0.7 0.5 毛刺较大
-	//
-	//
-	//
-	//
+//pid: 8.0 0.7 0.5 毛刺较大
+//
+//
+//
+	//位置环pid参数初始化
+	m_position_pid.pos_pid.Ref_In			=	0.0f;
+	m_position_pid.pos_pid.Feed_Back		=	0.0f;
+	m_position_pid.pos_pid.Err_T_0			=	0.0f;
+	m_position_pid.pos_pid.Err_T_1			=	0.0f;
+	m_position_pid.pos_pid.Err_T_2			=	0.0f;
+	m_position_pid.pos_pid.Err_Dif			=	0.0f;
+	
+	m_position_pid.pos_pid.P_Out			=	0.0f;
+	m_position_pid.pos_pid.I_Out			=	0.0f;
+	m_position_pid.pos_pid.D_Out			=	0.0f;
+	m_position_pid.pos_pid.Out_Pre			=	0.0f;
+	m_position_pid.pos_pid.Out_Actual		=	0.0f;
+	
+	m_position_pid.pos_pid.Kp				=	0.004f;
+	m_position_pid.pos_pid.Ki				=	0.00005f;
+	m_position_pid.pos_pid.Kd				=	0.002f;
+//
+//
+//
 	CurrentFilterDataInit();
 	EncoderDataInit();
 	MotorCtrlDataInit();
@@ -151,7 +170,7 @@ void	EncoderDataInit(void)
 {
 	m_motor_rt_para.u16_encoder_last_read	=	0;
 	m_motor_rt_para.u16_encoder_curr_read	=	0;
-	m_motor_rt_para.i64_pulse_cnt			=	0;
+	m_motor_rt_para.i32_pulse_cnt			=	0;
 	m_motor_rt_para.u32_pulse_width			=	0;
 	m_motor_rt_para.f_motor_cal_speed		=	0.0f;
 	m_motor_rt_para.f_shaft_cal_speed		=	0.0f;
@@ -170,21 +189,21 @@ void	MotorCtrlDataInit(void)
 	m_motor_ctrl.u8_current_read_data_refreshed		=	0;
 	m_motor_ctrl.u8_current_set_data_refreshed		=	0;
 	m_motor_ctrl.u8_speed_read_data_refreshed		=	0;
-	m_motor_ctrl.u8_speed_set_data_refreshed		=	1;
+	m_motor_ctrl.u8_speed_set_data_refreshed		=	0;
 	m_motor_ctrl.u8_position_read_data_refreshed	=	0;
-	m_motor_ctrl.u8_position_set_data_refreshed		=	0;
+	m_motor_ctrl.u8_position_set_data_refreshed		=	1;
 	
 	m_motor_ctrl.f_set_current						=	0.0f;
-	m_motor_ctrl.f_set_speed						=	3.0f;
+	m_motor_ctrl.f_set_speed						=	0.0f;	//3.0f
 	m_motor_ctrl.f_set_position						=	0.0f;
 	
 	m_motor_ctrl.i32_set_current					=	0;
 	m_motor_ctrl.i32_set_speed						=	0;
 	m_motor_ctrl.i32_set_position					=	0;
 	
-	m_motor_ctrl.u8_is_currloop_open				=	0;
-	m_motor_ctrl.u8_is_speedloop_open				=	0;
-	m_motor_ctrl.u8_is_posloop_open					=	0;
+	m_motor_ctrl.u8_is_currloop_used				=	0;
+	m_motor_ctrl.u8_is_speedloop_used				=	0;
+	m_motor_ctrl.u8_is_posloop_used					=	0;
 }
 
 

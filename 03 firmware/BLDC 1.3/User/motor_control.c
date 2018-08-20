@@ -22,6 +22,9 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
+//#define		MEASURE_CURRENT_REFIN
+//#define		MEASURE_SPEED_REFIN
+#define		MEASURE_POSITION_REFIN
 
 /* Private function prototypes -----------------------------------------------*/
 const void		NULL_Switch(void);
@@ -73,10 +76,10 @@ float	Increment_PID_Cal(PID_Struct* pid,float new_feedback)
 	return	pid->Out_Actual;
 }
 
-
-float	Increment_PID_Cal_Spd(PID_Struct* pid,float new_feedback)
+/*反馈值使用int型的计算pid*/
+float	Increment_PID_Cal_int(PID_Struct* pid, int32_t new_feedback)
 {
-	pid->Feed_Back			=	new_feedback;													//更新反馈值
+	pid->Feed_Back			=	(float)new_feedback;													//更新反馈值
 	pid->Err_T_2			=	pid->Err_T_1;													//更新T-2时刻误差
 	pid->Err_T_1			=	pid->Err_T_0;													//更新T-1时刻误差
 	pid->Err_T_0			=	pid->Ref_In - pid->Feed_Back;									//计算新的误差
@@ -98,6 +101,7 @@ float	Increment_PID_Cal_Spd(PID_Struct* pid,float new_feedback)
 	
 	return	pid->Out_Actual;
 }
+
 	/*---------------------------------------------------------------------------
 	函数名称			：Hall_Convert(void)
 	参数含义			：null
@@ -243,7 +247,7 @@ void	PWM_TIM_Halt(void)
 	----------------------------------------------------------------------------*/
 void	CurrentLoopRefresh_TIM_Start(void)
 {
-	m_motor_ctrl.u8_is_currloop_open	=	1;
+	m_motor_ctrl.u8_is_currloop_used	=	1;
 	TIM_Cmd(TIM1,ENABLE);
 }
 
@@ -255,7 +259,7 @@ void	CurrentLoopRefresh_TIM_Start(void)
 	----------------------------------------------------------------------------*/
 void	CurrentLoopRefresh_TIM_Halt(void)
 {
-	m_motor_ctrl.u8_is_currloop_open	=	0;
+	m_motor_ctrl.u8_is_currloop_used	=	0;
 	TIM1->CCR1	=	10;
 	TIM1->CCR2	=	10;
 	TIM1->CCR3	=	10;
@@ -269,8 +273,8 @@ void	CurrentLoopRefresh_TIM_Halt(void)
 	----------------------------------------------------------------------------*/
 void	SpeedLoopRefresh_TIM_Start(void)
 {
-	m_motor_ctrl.u8_is_speedloop_open	=	1;
-	m_motor_ctrl.u8_is_currloop_open	=	1;
+	m_motor_ctrl.u8_is_speedloop_used	=	1;
+	m_motor_ctrl.u8_is_currloop_used	=	1;
 	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
@@ -285,7 +289,7 @@ void	SpeedLoopRefresh_TIM_Start(void)
 	----------------------------------------------------------------------------*/
 void	SpeedLoopRefresh_TIM_Halt(void)
 {
-	m_motor_ctrl.u8_is_speedloop_open	=	0;
+	m_motor_ctrl.u8_is_speedloop_used	=	0;
 }
 
 
@@ -297,9 +301,9 @@ void	SpeedLoopRefresh_TIM_Halt(void)
 	----------------------------------------------------------------------------*/
 void	PositionLoopRefresh_TIM_Start(void)
 {
-	m_motor_ctrl.u8_is_currloop_open	=	1;
-	m_motor_ctrl.u8_is_speedloop_open	=	1;
-	m_motor_ctrl.u8_is_posloop_open		=	1;
+	m_motor_ctrl.u8_is_currloop_used	=	1;
+	m_motor_ctrl.u8_is_speedloop_used	=	1;
+	m_motor_ctrl.u8_is_posloop_used		=	1;
 	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
@@ -314,7 +318,7 @@ void	PositionLoopRefresh_TIM_Start(void)
 	----------------------------------------------------------------------------*/
 void	PositionLoopRefresh_TIM_Halt(void)
 {
-	m_motor_ctrl.u8_is_posloop_open		=	0;
+	m_motor_ctrl.u8_is_posloop_used		=	0;
 }
 
 
@@ -366,13 +370,16 @@ void	Read_Current_Bias(void)
 	函数功能			：电流环PID计算，电流环输入只有正值，仅进行PWM占空比的设置
 							增量式PID计算
 	----------------------------------------------------------------------------*/
-void	Curr_PID_Cal(volatile PID_Struct * pid)
+void	Current_PID_Cal(volatile PID_Struct * pid)
 {
 	uint32_t		ccr;
-//	float			f_temp;
-//	uint32_t		u32_temp;
 	float			pid_inc = 0.0f;
 	float			curr_in = 0.0f;
+	
+#ifdef	MEASURE_CURRENT_REFIN
+	float			f_temp;
+	uint32_t		u32_temp;	
+#endif
 	
 	/*判断输入电流值是否在额定电流内*/
 	curr_in					=	m_motor_rt_para.f_adc_UVW_I;
@@ -382,20 +389,17 @@ void	Curr_PID_Cal(volatile PID_Struct * pid)
 	
 	/*计算增量pid输出*/
 	pid_inc					=	Increment_PID_Cal((PID_Struct*)pid,curr_in);			//暂时使用PI
-	
+
+#ifdef	MEASURE_CURRENT_REFIN	
 	//------------test 20180808	
-	//------------20180813  将E输出
-//	f_temp					=	m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
-//	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
-//	
-//	if(u32_temp>4095) u32_temp = 4095;
-//	
-//	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
-//	
-	//------------test 20180808
+	f_temp					=	m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
+	if(u32_temp>4095) u32_temp = 4095;													//将数字量限定幅值
+	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);							//开启DA转换
+#endif
 	
 	/*将pid输出值转化到10-4190之间*/
-	m_current_pid.PW		+=	pid_inc;			//20180820 +=
+	m_current_pid.PW		+=	pid_inc;
 	
 	/*对PID输出做出赋值限制*/
 	if(m_current_pid.PW > MAX_DUTY_CYCLE)
@@ -424,21 +428,22 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 {
 	float	spd_in	=	0.0f;													//获取的速度值
 	float	pid_inc	=	0.0f;
+#ifdef	MEASURE_SPEED_REFIN
 	uint32_t	u32_temp;
 	float		f_temp;
+#endif
 	
 	/*计算增量pid输出*/
 	spd_in		=	m_motor_rt_para.f_motor_cal_speed;							//获取反馈速度值
 	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
 
+#ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
-	f_temp					=	spd_in + 1.5f;//pid_inc + 10.0f;						//跟踪目标电压
+	f_temp					=	spd_in + 1.5f;									//跟踪目标电压
 	u32_temp				=	(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
-	
 	if(u32_temp>4095) u32_temp = 4095;
-//	u32_temp				=	((TIM3->CNT)>>4)&0x0fff;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
-//--------------------20180817test
+#endif
 	
 	/*将pid输出值累加到电流设置值*/
 	m_motor_ctrl.f_set_current		=	pid_inc;		
@@ -462,7 +467,39 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	m_motor_ctrl.u8_current_set_data_refreshed	=	1;							//电流设置数据更新
 }
 
+	/*---------------------------------------------------------------------------
+	函数名称			：Position_PID_Cal(volatile PID_Struct * pid)
+	参数含义			：位置环pid结构体
+	函数功能			：位置环的PID计算
+	----------------------------------------------------------------------------*/
+void	Position_PID_Cal(volatile PID_Struct * pid)
+{
+	float		pos_in	=	0.0f;
+	float		pid_inc	=	0.0f;
 
+#ifdef	MEASURE_POSITION_REFIN
+	uint32_t	u32_temp;
+	float		f_temp;
+#endif
+/*计算增量pid输出*/
+	pos_in		=	(float)m_motor_rt_para.i32_pulse_cnt;							//获取反馈位置值
+	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,pos_in);
+
+#ifdef	MEASURE_POSITION_REFIN
+//--------------------20180820test	
+	f_temp					=	pos_in + 1000.0f;									//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp);						//将-1000cnts到1000cnts 投射到0-3.3V
+	if(u32_temp>4095) u32_temp = 4095;
+	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
+#endif
+	
+/*将pid计算值赋值到设置值中*/
+	m_motor_ctrl.f_set_speed					=	pid_inc;
+	
+/*设置速度低于电机最大速度*/
+	
+	m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
+}
 
 	/*---------------------------------------------------------------------------
 	函数名称			：(void)
