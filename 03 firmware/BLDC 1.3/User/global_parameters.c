@@ -71,10 +71,13 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Out_Pre			=	0.0f;
 	m_current_pid.curr_pid.Out_Actual		=	0.0f;
 	
-	m_current_pid.curr_pid.Kp				=	20.0f;
-	m_current_pid.curr_pid.Ki				=	1.0f;
+	m_current_pid.curr_pid.Kp				=	40.0f;
+	m_current_pid.curr_pid.Ki				=	0.8f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
-	
+	//pid: 20.0 1.0 0.0
+	//
+	//
+	//
 	//速度环pid参数初始化
 	m_speed_pid.spd_pid.Ref_In				=	1.0f;
 	m_speed_pid.spd_pid.Feed_Back			=	0.0f;
@@ -89,10 +92,14 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Out_Pre				=	0.0f;
 	m_speed_pid.spd_pid.Out_Actual			=	0.0f;
 	
-	m_speed_pid.spd_pid.Kp					=	0.1f;
-	m_speed_pid.spd_pid.Ki					=	0.001f;
+	m_speed_pid.spd_pid.Kp					=	8.0f;
+	m_speed_pid.spd_pid.Ki					=	1.0f;//0.4
 	m_speed_pid.spd_pid.Kd					=	0.0f;
-	
+	//pid: 8.0 0.7 0.5 毛刺较大
+	//
+	//
+	//
+	//
 	CurrentFilterDataInit();
 	EncoderDataInit();
 	MotorCtrlDataInit();

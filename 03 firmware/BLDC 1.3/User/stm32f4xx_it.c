@@ -47,17 +47,19 @@
 /* Private define ------------------------------------------------------------*/
 #define			RADIANS				1.047197533333f			//定义1弧度
 //#define			USE_CURRENT_TRACE							//使用电流模拟跟随
+#define			USE_SPEED_TRACE
 
-#ifdef			USE_CURRENT_TRACE
-	#define		_PI					3.1415926535897932384626433832795f
-#endif
 /* Private macro -------------------------------------------------------------*/
-
+#define			_PI					3.1415926535897932384626433832795f
 
 /* Private variables ---------------------------------------------------------*/
-uint8_t			polarity			=	0;					//用于判断下桥臂何时打开
-
 #ifdef	USE_CURRENT_TRACE
+uint32_t		step_cnt			=	0;					//产生正弦输入
+uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
+float32_t		f_sin				=	0.0f;				//正弦
+#endif
+
+#ifdef	USE_SPEED_TRACE
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
@@ -88,7 +90,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 		/*当计数器向上溢出中断时进行ADC采集*/
 		if(TIM1->CR1 & 0x0010)
 		{
-			GPIOC->ODR	|=	0x0001;															//置高C1
+//			GPIOC->ODR	|=	0x0001;															//置高C1
 			/*如果开启电流环更新，不做电流跟随的情况下，下面代码运行时间1.3us*/
 			if(m_motor_ctrl.u8_is_currloop_open ==	1)
 			{
@@ -110,7 +112,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 					m_motor_ctrl.u8_current_read_data_refreshed	=	0;									
 				}
 			}
-			GPIOC->ODR	&=	0xFFFE;		
+//			GPIOC->ODR	&=	0xFFFE;		
 		}
 		else
 		{
@@ -146,6 +148,17 @@ void	TIM2_IRQHandler(void)
 			
 			if(m_motor_ctrl.u8_speed_read_data_refreshed	==	1)						//更新速度环pid参数
 			{
+#ifdef	USE_SPEED_TRACE	/*产生目标正弦速度信号，计算时间4us*/
+				f_sin	=	1.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 100.0f );
+				step_cnt++;
+				if(step_cnt >= 200)
+					step_cnt = 0;
+				m_motor_ctrl.f_set_speed		=	f_sin;
+				if(step_cnt == 0)
+					GPIOC->ODR	|=	0x0001;
+				if(step_cnt == 100)
+					GPIOC->ODR	&=	0xFFFE;
+#endif
 				Speed_PID_Cal(&(m_speed_pid.spd_pid));
 				m_motor_ctrl.u8_speed_read_data_refreshed	=	0;						//使用完最新速度值后，将标志位置低
 				
@@ -229,7 +242,6 @@ void	DMA2_Stream0_IRQHandler(void)
 		Current_Average_X8_Filter(&m_motor_rt_para);												//对原始电流数据进行滑动窗口滤波，以及突变点剔除
 		
 		m_motor_rt_para.f_adc_UVW_I					=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
-
 		
 //		GPIOC->ODR	&=	0xFFFE;
 		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);

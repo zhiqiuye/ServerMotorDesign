@@ -354,9 +354,9 @@ void	Read_Current_Bias(void)
 	
 	Current_Filter_Init();												//初始化电流滤波器
 	
-	m_motor_rt_para.u16_uvw_curr_bias		=	0x641;				//1.29V作为偏置
+	m_motor_rt_para.u16_uvw_curr_bias		=	0x641;					//1.29V作为偏置
 
-	m_motor_rt_para.f_adc_UVW_I				=	0.0f;				//将错误更新的电流值归零，否则影响第一次电流环的PID计算
+	m_motor_rt_para.f_adc_UVW_I				=	0.0f;					//将错误更新的电流值归零，否则影响第一次电流环的PID计算
 }
 
 
@@ -395,7 +395,7 @@ void	Curr_PID_Cal(volatile PID_Struct * pid)
 	//------------test 20180808
 	
 	/*将pid输出值转化到10-4190之间*/
-	m_current_pid.PW		+=	pid_inc;
+	m_current_pid.PW		+=	pid_inc;			//20180820 +=
 	
 	/*对PID输出做出赋值限制*/
 	if(m_current_pid.PW > MAX_DUTY_CYCLE)
@@ -422,18 +422,18 @@ void	Curr_PID_Cal(volatile PID_Struct * pid)
 	----------------------------------------------------------------------------*/
 void	Speed_PID_Cal(volatile PID_Struct * pid)
 {
-	float	spd_in	=	0.0f;						//获取的速度值
+	float	spd_in	=	0.0f;													//获取的速度值
 	float	pid_inc	=	0.0f;
 	uint32_t	u32_temp;
 	float		f_temp;
 	
 	/*计算增量pid输出*/
-	spd_in		=	m_motor_rt_para.f_motor_cal_speed;
+	spd_in		=	m_motor_rt_para.f_motor_cal_speed;							//获取反馈速度值
 	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
 
 //--------------------20180817test	
-	f_temp					=	spd_in;//pid_inc + 10.0f;						//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 819.0f);	//5rps对应3.3V
+	f_temp					=	spd_in + 1.5f;//pid_inc + 10.0f;						//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
 	
 	if(u32_temp>4095) u32_temp = 4095;
 //	u32_temp				=	((TIM3->CNT)>>4)&0x0fff;
@@ -459,7 +459,7 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 		m_motor_ctrl.f_set_current	=	0.0f;
 	}
 	
-	m_motor_ctrl.u8_current_set_data_refreshed	=	1;				//电流设置数据更新
+	m_motor_ctrl.u8_current_set_data_refreshed	=	1;							//电流设置数据更新
 }
 
 

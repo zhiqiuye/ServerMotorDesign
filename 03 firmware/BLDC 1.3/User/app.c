@@ -42,7 +42,12 @@ void	StateMachine_Task(void * parg)
 		}
 		else if(m_sys_state.u8_cur_state == Run_state)
 		{
-		
+//			m_motor_ctrl.f_set_speed	=	0.0f;
+//			OSTimeDlyHMSM(0,0,0,500);
+//			
+//			m_speed_pid.spd_pid.Kp		+=	0.1f;
+//			m_motor_ctrl.f_set_speed	=	3.0f;
+//			OSTimeDlyHMSM(0,0,0,500);
 		}
 		else if(m_sys_state.u8_cur_state == Prepare_state)
 		{
@@ -116,8 +121,9 @@ void	RS485_Task(void * parg)
 		
 		DAC_SetChannel1Data(DAC_Align_12b_R,dac_value);*/
 		
-//		ADC_SoftwareStartConv(ADC1);														//¿ªÆôADC²ÉÑù
-		OSTimeDlyHMSM(0,0,0,100);
+
+		
+		OSTimeDlyHMSM(0,0,5,100);
 	}
 }
 
