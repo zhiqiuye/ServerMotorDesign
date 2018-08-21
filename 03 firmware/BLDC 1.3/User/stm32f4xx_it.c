@@ -62,7 +62,7 @@ uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
 #define			CURRENT_AMP			0.5f
 #define			CURRENT_FQC			4.0f
-#define			CURRENT_CYC			20000.0f/CURRENT_FQC
+#define			CURRENT_CYC			(20000.0f/CURRENT_FQC)
 #endif
 
 #ifdef	USE_SPEED_TRACE
@@ -71,14 +71,14 @@ uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
 #define			SPEED_AMP			1.5f
 #define			SPEED_FQC			1.0f
-#define			SPEED_CYC			1000.0f/SPEED_FQC
+#define			SPEED_CYC			(1000.0f/SPEED_FQC)
 #endif
 
 #ifdef	USE_POSITION_TRACE
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
-#define			POS_AMP				1000.0f
+#define			POS_AMP				2000.0f
 #define			POS_FQC				2.0f
 #define			POS_CYC				(1000.0f/POS_FQC)
 #endif

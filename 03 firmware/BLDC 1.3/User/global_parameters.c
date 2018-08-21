@@ -71,8 +71,8 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Out_Pre			=	0.0f;
 	m_current_pid.curr_pid.Out_Actual		=	0.0f;
 	
-	m_current_pid.curr_pid.Kp				=	40.0f;
-	m_current_pid.curr_pid.Ki				=	0.8f;
+	m_current_pid.curr_pid.Kp				=	0.8f;
+	m_current_pid.curr_pid.Ki				=	0.005f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
 //pid: 20.0 1.0 0.0
 //pid: 40.0 0.8 0.0

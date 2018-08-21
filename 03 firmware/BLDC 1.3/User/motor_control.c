@@ -399,7 +399,7 @@ void	Current_PID_Cal(volatile PID_Struct * pid)
 #endif
 	
 	/*将pid输出值转化到10-4190之间*/
-	m_current_pid.PW		+=	pid_inc;
+	m_current_pid.PW		=	pid_inc * 420.0f;
 	
 	/*对PID输出做出赋值限制*/
 	if(m_current_pid.PW > MAX_DUTY_CYCLE)
@@ -487,7 +487,7 @@ void	Position_PID_Cal(volatile PID_Struct * pid)
 
 #ifdef	MEASURE_POSITION_REFIN
 //--------------------20180820test	
-	f_temp							=	m_motor_ctrl.f_set_position	+ 1000.0f;//pos_in + 1000.0f;//					//跟踪目标电压
+	f_temp							=	pos_in + 2000.0f;//m_motor_ctrl.f_set_position	+ 1000.0f;//					//跟踪目标电压
 	u32_temp						=	(uint32_t)(f_temp);						//将-1000cnts到1000cnts 投射到0-3.3V
 	if(u32_temp>4095) u32_temp 		=	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
