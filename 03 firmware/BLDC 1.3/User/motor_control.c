@@ -373,7 +373,7 @@ void	Read_Current_Bias(void)
 void	Current_PID_Cal(volatile PID_Struct * pid)
 {
 	uint32_t		ccr;
-	float			pid_inc = 0.0f;
+	float			pid_inc	= 0.0f;
 	float			curr_in = 0.0f;
 	
 #ifdef	MEASURE_CURRENT_REFIN
@@ -403,9 +403,9 @@ void	Current_PID_Cal(volatile PID_Struct * pid)
 	
 	/*对PID输出做出赋值限制*/
 	if(m_current_pid.PW > MAX_DUTY_CYCLE)
-		m_current_pid.PW		=	MAX_DUTY_CYCLE;
+		m_current_pid.PW	=	MAX_DUTY_CYCLE;
 	else if(m_current_pid.PW < MIN_DUTY_CYCLE)
-		m_current_pid.PW		=	MIN_DUTY_CYCLE;
+		m_current_pid.PW	=	MIN_DUTY_CYCLE;
 	else
 		;
 	
@@ -426,22 +426,22 @@ void	Current_PID_Cal(volatile PID_Struct * pid)
 	----------------------------------------------------------------------------*/
 void	Speed_PID_Cal(volatile PID_Struct * pid)
 {
-	float	spd_in	=	0.0f;													//获取的速度值
-	float	pid_inc	=	0.0f;
+	float	spd_in			=	0.0f;											//获取的速度值
+	float	pid_inc			=	0.0f;
 #ifdef	MEASURE_SPEED_REFIN
 	uint32_t	u32_temp;
 	float		f_temp;
 #endif
 	
 	/*计算增量pid输出*/
-	spd_in		=	m_motor_rt_para.f_motor_cal_speed;							//获取反馈速度值
-	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
+	spd_in					=	m_motor_rt_para.f_motor_cal_speed;				//获取反馈速度值
+	pid_inc					=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
 
 #ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
 	f_temp					=	spd_in + 1.5f;									//跟踪目标电压
 	u32_temp				=	(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
-	if(u32_temp>4095) u32_temp = 4095;
+	if(u32_temp>4095) u32_temp 		= 	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
 #endif
 	
@@ -474,27 +474,27 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	----------------------------------------------------------------------------*/
 void	Position_PID_Cal(volatile PID_Struct * pid)
 {
-	float		pos_in	=	0.0f;
-	float		pid_inc	=	0.0f;
+	float		pos_in				=	0.0f;
+	float		pid_inc				=	0.0f;
 
 #ifdef	MEASURE_POSITION_REFIN
 	uint32_t	u32_temp;
 	float		f_temp;
 #endif
 /*计算增量pid输出*/
-	pos_in		=	(float)m_motor_rt_para.i32_pulse_cnt;							//获取反馈位置值
-	pid_inc		=	Increment_PID_Cal((PID_Struct*)pid,pos_in);
+	pos_in							=	(float)m_motor_rt_para.i32_pulse_cnt;	//获取反馈位置值
+	pid_inc							=	Increment_PID_Cal((PID_Struct*)pid,pos_in);
 
 #ifdef	MEASURE_POSITION_REFIN
 //--------------------20180820test	
-	f_temp					=	pos_in + 1000.0f;									//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp);						//将-1000cnts到1000cnts 投射到0-3.3V
-	if(u32_temp>4095) u32_temp = 4095;
+	f_temp							=	m_motor_ctrl.f_set_position	+ 1000.0f;//pos_in + 1000.0f;//					//跟踪目标电压
+	u32_temp						=	(uint32_t)(f_temp);						//将-1000cnts到1000cnts 投射到0-3.3V
+	if(u32_temp>4095) u32_temp 		=	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
 #endif
 	
 /*将pid计算值赋值到设置值中*/
-	m_motor_ctrl.f_set_speed					=	pid_inc;
+	m_motor_ctrl.f_set_speed		=	pid_inc;
 	
 /*设置速度低于电机最大速度*/
 	

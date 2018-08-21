@@ -57,7 +57,7 @@ void	NVIC_Config(void)
 	/*ADC-DMA 传输完成中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream0_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -65,23 +65,23 @@ void	NVIC_Config(void)
 	/*速度环、位置环更新中断，TIM2 计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
 	/*编码器输入模式，TIM3 编码器计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
 	/*Hall 传感器输入捕获中断，TIM4输入捕获中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);

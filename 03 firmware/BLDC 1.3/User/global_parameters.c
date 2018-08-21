@@ -75,7 +75,7 @@ uint8_t	ParametersInit(void)
 	m_current_pid.curr_pid.Ki				=	0.8f;
 	m_current_pid.curr_pid.Kd				=	0.0f;
 //pid: 20.0 1.0 0.0
-//
+//pid: 40.0 0.8 0.0
 //
 //
 	//速度环pid参数初始化
@@ -114,9 +114,9 @@ uint8_t	ParametersInit(void)
 	m_position_pid.pos_pid.Out_Actual		=	0.0f;
 	
 	m_position_pid.pos_pid.Kp				=	0.004f;
-	m_position_pid.pos_pid.Ki				=	0.00005f;
-	m_position_pid.pos_pid.Kd				=	0.002f;
-//
+	m_position_pid.pos_pid.Ki				=	0.00001f;
+	m_position_pid.pos_pid.Kd				=	0.001f;
+//pid 0.004 0.00005 0.002
 //
 //
 	CurrentFilterDataInit();

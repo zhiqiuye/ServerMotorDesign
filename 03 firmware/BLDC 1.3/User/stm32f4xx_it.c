@@ -45,31 +45,42 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define			RADIANS				1.047197533333f			//定义1弧度
 //#define			USE_CURRENT_TRACE							//使用电流模拟跟随
 //#define			USE_SPEED_TRACE								//使用速度环模拟跟随
 #define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
+#define			RADIANS				1.047197533333f			//定义1弧度
+#define			_2PI				6.283185307179586476925286766559f
 #define			_PI					3.1415926535897932384626433832795f
+#define			_0_5PI				1.5707963267948966192313216916398f
 
 /* Private variables ---------------------------------------------------------*/
 #ifdef	USE_CURRENT_TRACE
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
+#define			CURRENT_AMP			0.5f
+#define			CURRENT_FQC			4.0f
+#define			CURRENT_CYC			20000.0f/CURRENT_FQC
 #endif
 
 #ifdef	USE_SPEED_TRACE
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
+#define			SPEED_AMP			1.5f
+#define			SPEED_FQC			1.0f
+#define			SPEED_CYC			1000.0f/SPEED_FQC
 #endif
 
 #ifdef	USE_POSITION_TRACE
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
+#define			POS_AMP				1000.0f
+#define			POS_FQC				2.0f
+#define			POS_CYC				(1000.0f/POS_FQC)
 #endif
 extern	const	uint8_t		current_senser_table[2][7];
 
@@ -101,14 +112,15 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 			if(m_motor_ctrl.u8_is_currloop_used ==	1)
 			{
 #ifdef	USE_CURRENT_TRACE	/*产生目标正弦电流信号，计算时间4us*/
-				f_sin	=	1.0f + 0.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 40.0f );
+				f_sin	=	1.0f + CURRENT_AMP * arm_sin_f32( (float32_t)step_cnt * _2PI / CURRENT_CYC );
 				step_cnt++;
-				if(step_cnt >= 80)
+				if(step_cnt >= (uint32_t)CURRENT_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_current		=	f_sin;
+				m_motor_ctrl.f_set_current						=	f_sin;
+				m_motor_ctrl.u8_current_set_data_refreshed		=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
-				if(step_cnt == 40)
+				if(step_cnt == (uint32_t)(CURRENT_CYC/2.0f))
 					GPIOC->ODR	&=	0xFFFE;
 #endif
 				/*电流值更新后，进入电流环的DMA中断*/
@@ -149,23 +161,25 @@ void	TIM2_IRQHandler(void)
 	{
 		Read_IncEncoder();																//读取编码器数据
 		/*更新位置环*/
-		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
+		if(m_motor_ctrl.u8_is_posloop_used	==	1)
 		{
+			
 #ifdef	USE_POSITION_TRACE	/*产生目标正弦位置信号，*/
-			f_sin	=	1000.0f * arm_sin_f32((float32_t)step_cnt * _PI / 250.0f );
+			f_sin	=	POS_AMP * arm_sin_f32((float32_t)step_cnt * _2PI / POS_CYC );
 			step_cnt++;
-			if(step_cnt >= 500)
+			if(step_cnt >= (uint32_t)POS_CYC)
 				step_cnt = 0;
-			m_motor_ctrl.f_set_position		=	f_sin;
+			m_motor_ctrl.f_set_position						=	f_sin;
 			m_motor_ctrl.u8_position_set_data_refreshed		=	1;
 			if(step_cnt == 0)
 				GPIOC->ODR	|=	0x0001;
-			if(step_cnt == 250)
+			if(step_cnt == (uint32_t)(POS_CYC/2.0f))
 				GPIOC->ODR	&=	0xFFFE;
 #endif
+			
 			if(m_motor_ctrl.u8_position_set_data_refreshed	==	1)
 			{
-				m_position_pid.pos_pid.Ref_In	=	m_motor_ctrl.f_set_position;
+				m_position_pid.pos_pid.Ref_In				=	m_motor_ctrl.f_set_position;
 				
 				Position_PID_Cal(&(m_position_pid.pos_pid));
 				m_motor_ctrl.u8_position_set_data_refreshed	=	0;
@@ -173,23 +187,22 @@ void	TIM2_IRQHandler(void)
 		}
 //		GPIOC->ODR	|=	0x0001;	
 		
-//		m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
-//		m_motor_ctrl.f_set_speed					=	-1.0f;
-		
 		/*更新速度环*/
 		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
 		{
 			if(m_motor_ctrl.u8_speed_read_data_refreshed	==	1)						//更新速度环pid参数
 			{
+				
 #ifdef	USE_SPEED_TRACE	/*产生目标正弦速度信号，计算时间4us*/
-				f_sin	=	1.5f * arm_sin_f32( (float32_t)step_cnt * _PI / 100.0f );
+				f_sin	=	SPEED_AMP * arm_sin_f32( (float32_t)step_cnt * _2PI / SPEED_CYC );
 				step_cnt++;
-				if(step_cnt >= 200)
+				if(step_cnt >= (uint32_t)SPEED_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_speed		=	f_sin;
+				m_motor_ctrl.f_set_speed					=	f_sin;
+				m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
-				if(step_cnt == 100)
+				if(step_cnt == (uint32_t)(SPEED_CYC/2.0f))
 					GPIOC->ODR	&=	0xFFFE;
 #endif
 				Speed_PID_Cal(&(m_speed_pid.spd_pid));

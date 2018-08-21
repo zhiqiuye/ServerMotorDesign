@@ -62,7 +62,7 @@ void	StateMachine_Task(void * parg)
 			
 			Hall_Convert();																	//开始初次相位识别					
 			
-//			PositionLoopRefresh_TIM_Start();
+			PositionLoopRefresh_TIM_Start();
 			
 			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
 			
