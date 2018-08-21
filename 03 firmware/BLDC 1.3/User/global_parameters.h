@@ -52,6 +52,7 @@
 
 
 #define		CURRENT_BUFFER_LENGTH						16
+#define		SPEED_BUFFER_LENGTH							16
 
 /* Exported types ------------------------------------------------------------*/
 /*系统状态参数-------------------------------------------------------------------------*/
@@ -117,8 +118,12 @@ typedef	struct
 	
 	/*编码器数据*/
 	uint8_t			u8_speed_data_refreshed;			//速度环更新产生新的目标电流值
+	uint8_t			u8_speed_filter_index;				//指向速度buf的位置值
+	uint8_t			u8_speed_filter_used;
 	uint16_t		u16_encoder_last_read;				//前一次从定时器直接读取的数据，高速时		TIM->cnt是16位寄存器
 	uint16_t		u16_encoder_curr_read;				//当前从定时器直接读取的数据，高速时
+	int32_t			i32_spd_hisdata[SPEED_BUFFER_LENGTH];//存放速度差值的数组
+	int32_t			i32_spd_his_sum;
 	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
 	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
 	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps

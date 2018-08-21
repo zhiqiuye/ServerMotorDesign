@@ -42,15 +42,7 @@ void	StateMachine_Task(void * parg)
 		}
 		else if(m_sys_state.u8_cur_state == Run_state)
 		{
-//			m_motor_ctrl.f_set_position	=	400000.0f;
-			
-			
-//			m_motor_ctrl.f_set_speed	=	0.0f;
-//			OSTimeDlyHMSM(0,0,0,500);
-//			
-//			m_speed_pid.spd_pid.Kp		+=	0.1f;
-//			m_motor_ctrl.f_set_speed	=	3.0f;
-//			OSTimeDlyHMSM(0,0,0,500);
+
 		}
 		else if(m_sys_state.u8_cur_state == Prepare_state)
 		{
@@ -62,7 +54,7 @@ void	StateMachine_Task(void * parg)
 			
 			Hall_Convert();																	//开始初次相位识别					
 			
-			PositionLoopRefresh_TIM_Start();
+//			PositionLoopRefresh_TIM_Start();
 			
 			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
 			

@@ -23,8 +23,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 //#define		MEASURE_CURRENT_REFIN
-#define		MEASURE_SPEED_REFIN
-//#define		MEASURE_POSITION_REFIN
+//#define		MEASURE_SPEED_REFIN
+#define		MEASURE_POSITION_REFIN
 
 /* Private function prototypes -----------------------------------------------*/
 const void		NULL_Switch(void);
@@ -42,7 +42,7 @@ const	void( *switch_table[2][8])() ={	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L
 
 //const	void	(*switch_table[2][8])()			=	{	{NULL_Switch,	CW_H2_L3,		CW_H1_L2,		CW_H1_L3,		CW_H3_L1,		CW_H2_L1,		CW_H3_L2,	NULL_Switch},
 //														{NULL_Switch,	CCW_H3_L2,		CCW_H2_L1,		CCW_H3_L1,		CCW_H1_L3,		CCW_H1_L2,		CCW_H2_L3,	NULL_Switch}}; 
-	
+//	
 //电流相序表
 const	uint8_t		current_senser_table[2][7]	=	{{0, 2, 1, 2, 0, 0, 1},{0, 1, 0, 0, 2, 1, 2}};										
 
@@ -138,16 +138,6 @@ void	Hall_Convert(void)
 	----------------------------------------------------------------------------*/
 const void	NULL_Switch(void)
 {}
-
-//void	CW_H1_L2(void)
-//{
-//	
-//}
-
-//void	CCW_H1_L2(void)
-//{
-
-//}
 
 	/*---------------------------------------------------------------------------
 	函数名称			：H1_L2(void)
@@ -405,7 +395,7 @@ void	Current_PID_Cal(volatile PID_Struct * pid)
 
 #ifdef	MEASURE_CURRENT_REFIN	
 	//------------test 20180808	
-	f_temp					=	m_current_pid.curr_pid.Ref_In;//m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
+	f_temp					=	m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
 	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
 	if(u32_temp>4095) u32_temp = 4095;													//将数字量限定幅值
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);							//开启DA转换
@@ -452,8 +442,8 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 
 #ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
-	f_temp					=	m_motor_rt_para.f_motor_cal_speed + 1.5; //spd_in + 1.5f;									//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 1365.0f);//(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
+	f_temp					=	spd_in + 1.5f;									//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
 	if(u32_temp>4095) u32_temp 		= 	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
 #endif
@@ -462,12 +452,12 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	m_motor_ctrl.f_set_current		=	pid_inc;		
 	
 	/*限定电流值为正，并且根据电流值正负来换向*/
-	if(m_motor_ctrl.f_set_current > 0.0f)
+	if(m_motor_ctrl.f_set_current > 0.1f)
 	{
 		m_motor_ctrl.u8_dir			=	1;
 		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
 	}
-	else if(m_motor_ctrl.f_set_current < -0.0f)
+	else if(m_motor_ctrl.f_set_current < -0.1f)
 	{
 		m_motor_ctrl.u8_dir			=	0;
 		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();

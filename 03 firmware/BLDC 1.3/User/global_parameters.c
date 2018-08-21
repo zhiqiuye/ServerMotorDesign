@@ -138,7 +138,7 @@ uint8_t	ParametersInit(void)
 	----------------------------------------------------------------------------*/
 void	CurrentFilterDataInit(void)
 {
-	uint8_t	i,j;
+	uint8_t	j;
 	//停止电流环更新
 	CurrentLoopRefresh_TIM_Halt();
 	//滤波器数据清除
@@ -168,12 +168,18 @@ void	CurrentFilterDataInit(void)
 	----------------------------------------------------------------------------*/
 void	EncoderDataInit(void)
 {
+	uint8_t	i;
+	m_motor_rt_para.u8_speed_filter_used	=	0;
+	m_motor_rt_para.u8_speed_filter_index	=	0;
+	m_motor_rt_para.i32_spd_his_sum			=	0;
 	m_motor_rt_para.u16_encoder_last_read	=	0;
 	m_motor_rt_para.u16_encoder_curr_read	=	0;
 	m_motor_rt_para.i32_pulse_cnt			=	0;
 	m_motor_rt_para.u32_pulse_width			=	0;
 	m_motor_rt_para.f_motor_cal_speed		=	0.0f;
 	m_motor_rt_para.f_shaft_cal_speed		=	0.0f;
+	for(i=0;i<SPEED_BUFFER_LENGTH;i++)
+		m_motor_rt_para.i32_spd_hisdata[i]	=	0;
 	
 }
 

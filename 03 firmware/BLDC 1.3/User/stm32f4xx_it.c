@@ -46,8 +46,8 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 //#define			USE_CURRENT_TRACE							//使用电流模拟跟随
-//#define			USE_SPEED_TRACE								//使用速度环模拟跟随
-#define			USE_POSITION_TRACE							//使用位置环模拟跟随
+#define			USE_SPEED_TRACE								//使用速度环模拟跟随
+//#define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
 #define			RADIANS				1.047197533333f			//定义1弧度
@@ -78,8 +78,8 @@ float32_t		f_sin				=	0.0f;				//正弦
 uint32_t		step_cnt			=	0;					//产生正弦输入
 uint32_t		sim_trace_current	=	0;					//计算获得的目标电流值
 float32_t		f_sin				=	0.0f;				//正弦
-#define			POS_AMP				2000.0f
-#define			POS_FQC				2.0f
+#define			POS_AMP				10000.0f
+#define			POS_FQC				0.5f
 #define			POS_CYC				(1000.0f/POS_FQC)
 #endif
 extern	const	uint8_t		current_senser_table[2][7];
@@ -198,7 +198,7 @@ void	TIM2_IRQHandler(void)
 				step_cnt++;
 				if(step_cnt >= (uint32_t)SPEED_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_speed					=	f_sin;
+				m_motor_ctrl.f_set_speed					=	0.2f;//f_sin;
 				m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
