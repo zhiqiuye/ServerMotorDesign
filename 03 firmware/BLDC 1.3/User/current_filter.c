@@ -30,8 +30,6 @@
 
 
 /* Private variables ---------------------------------------------------------*/
-//电流相序表
-extern const	uint8_t		current_senser_table[2][7] ;										
 
 
 

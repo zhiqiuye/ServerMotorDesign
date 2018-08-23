@@ -53,7 +53,10 @@
 
 #define		CURRENT_BUFFER_LENGTH						16
 #define		SPEED_BUFFER_LENGTH							16
+#define		PW_BUFFER_LENGTH							6
 
+#define		M_METHORD									0
+#define		T_METHORD									1
 /* Exported types ------------------------------------------------------------*/
 /*系统状态参数-------------------------------------------------------------------------*/
 typedef	struct
@@ -90,6 +93,34 @@ typedef	struct
 	
 }const_motor_para;
 
+
+/*编码器运行参数------------------------------------------------------------------------*/
+typedef struct
+{		
+	/*M/T法测速的标志位 */
+	uint8_t			u8_M_or_T;
+	/*测速符号位标志*/
+	uint8_t			u8_velocity_sign;					//速度测量方向标志，0表示负数，1表示正数
+	/*均值滤波器部分*/
+	uint8_t			u8_speed_filter_used;				//速度buf中存储数据量
+	int32_t			i32_spd_hisdata[SPEED_BUFFER_LENGTH];//存放速度差值的数组	
+	int32_t			i32_spd_his_sum;	
+	
+	/*速度脉冲数增量部分*/
+	uint16_t		u16_encoder_last_read;				//前一次从定时器直接读取的数据，高速时		TIM->cnt是16位寄存器
+	uint16_t		u16_encoder_curr_read;				//当前从定时器直接读取的数据，高速时
+
+	/*脉宽部分*/
+	uint32_t		u32_pulse_width_buf[PW_BUFFER_LENGTH];
+	
+	/*码盘数据结果*/
+	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
+	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
+	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps
+	int32_t			i32_pulse_cnt;						//累加的码盘位置数据s
+}encoder_rt_para;
+
+
 /*电机运转参数--------------------------------------------------------------------------*/
 typedef	struct
 {
@@ -117,17 +148,7 @@ typedef	struct
 	uint8_t			u8_hall_state;						//霍尔值
 	
 	/*编码器数据*/
-	uint8_t			u8_speed_data_refreshed;			//速度环更新产生新的目标电流值
-	uint8_t			u8_speed_filter_index;				//指向速度buf的位置值
-	uint8_t			u8_speed_filter_used;
-	uint16_t		u16_encoder_last_read;				//前一次从定时器直接读取的数据，高速时		TIM->cnt是16位寄存器
-	uint16_t		u16_encoder_curr_read;				//当前从定时器直接读取的数据，高速时
-	int32_t			i32_spd_hisdata[SPEED_BUFFER_LENGTH];//存放速度差值的数组
-	int32_t			i32_spd_his_sum;
-	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
-	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
-	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps
-	int32_t			i32_pulse_cnt;						//累加的码盘位置数据s
+	encoder_rt_para	m_encoder;
 }motor_runtime_para;
 
 /*控制参数------------------------------------------------------------------------------*/

@@ -419,19 +419,14 @@
               <FilePath>.\User\app.c</FilePath>
             </File>
             <File>
-              <FileName>motor_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\motor_control.c</FilePath>
-            </File>
-            <File>
               <FileName>peripherial_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\peripherial_init.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_it.c</FileName>
+              <FileName>motor_control.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\User\stm32f4xx_it.c</FilePath>
+              <FilePath>.\User\motor_control.c</FilePath>
             </File>
             <File>
               <FileName>spd_pos_filter.c</FileName>
@@ -452,6 +447,16 @@
               <FileName>global_parameters.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\global_parameters.c</FilePath>
+            </File>
+            <File>
+              <FileName>hall_reversal_6steps.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\hall_reversal_6steps.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\stm32f4xx_it.c</FilePath>
             </File>
             <File>
               <FileName>system_stm32f4xx.c</FileName>

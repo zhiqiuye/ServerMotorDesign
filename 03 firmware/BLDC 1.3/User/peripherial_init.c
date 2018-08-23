@@ -73,7 +73,7 @@ void	NVIC_Config(void)
 	/*编码器输入模式，TIM3 编码器计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
@@ -87,6 +87,7 @@ void	NVIC_Config(void)
 	NVIC_Init(&NVIC_InitStructure);
 	
 	/**/
+
 }
 	
 	/*---------------------------------------------------------------------------
@@ -148,7 +149,16 @@ void	GPIO_Config(void)
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource6,GPIO_AF_TIM3);
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource7,GPIO_AF_TIM3);
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource8,GPIO_AF_TIM3);
-	
+
+/*增量式编码器T法测速端口*/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Pin			=	GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_PuPd		=	GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed		=	GPIO_Speed_100MHz;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);	
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource0,GPIO_AF_TIM5);
+
 /*霍尔传感器接口*/
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_AF;
@@ -184,6 +194,7 @@ void	GPIO_Config(void)
 	GPIO_InitStructure.GPIO_Speed		=	GPIO_Speed_2MHz;
 	GPIO_Init(GPIOC,&GPIO_InitStructure);
 	GPIO_ResetBits(GPIOC,GPIO_Pin_14|GPIO_Pin_15);
+	
 	
 /*test 20180739 pc 0*/
 	GPIO_StructInit(&GPIO_InitStructure);
@@ -302,213 +313,12 @@ void	Timer1_Config(void)
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);															//使能timer1输出PWM
 }
 
-//CH1	无效电平为高--------------------------------------------------------------------------------------------------
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH1_OFF_CH1N_ON(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂开
-	----------------------------------------------------------------------------*/
-void	TIM1_CH1_OFF_CH1N_ON(void)
-{
-	TIM1->CCER &=0xFFFE;			//CCER->CC1E	= 0
-	TIM1->CCER |=0x0004;			//CCER->CC1NE	= 1
-	TIM1->CCMR1 &= 0xFF8F;
-	TIM1->CCMR1 |= 0x0040;			//强制OC1输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH1_OFF_CH1N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH1_OFF_CH1N_OFF(void)
-{
-	TIM1->CCER &=0xFFFE;			//CCER->CC1E	= 0
-	TIM1->CCER &=0xFFFB;			//CCER->CC1NE	= 0
-	TIM1->CCMR1 &= 0xFF8F;
-	TIM1->CCMR1 |= 0x0040;			//强制OC1输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH1_ON_CH1N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂开		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH1_ON_CH1N_OFF(void)
-{
-	TIM1->CCER |=0x0001;			//CCER->CC1E	= 1
-	TIM1->CCER &=0xFFFB;			//CCER->CC1NE	= 0
-	TIM1->CCMR1 &= 0xFF8F;
-	TIM1->CCMR1 |= 0x0040;			//强制OC1输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH1_OFF_CH1N_PWM(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂pwm
-	----------------------------------------------------------------------------*/
-void	TIM1_CH1_OFF_CH1N_PWM(void)
-{
-	TIM1->CCMR1 &= 0xFF8F;
-	TIM1->CCMR1 |= 0x0070;			//OC1为PWM2模式
-	TIM1->CCER &=0xFFFE;			//CCER->CC1E	=	0
-	TIM1->CCER |=0x0004;			//CCER->CC1NE	=	1
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH1_PWM_CH1N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂pwm		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH1_PWM_CH1N_OFF(void)
-{
-	TIM1->CCMR1 &= 0xFF8F;
-	TIM1->CCMR1 |= 0x0070;			//OC1为PWM2模式
-	TIM1->CCER |=0x0001;			//CCER->CC1E	=	1
-	TIM1->CCER &=0xFFFB;			//CCER->CC1NE	=	0
-}
-
-//CH2------------------------------------------------------------------------------------------------------------------
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH2_OFF_CH2N_ON(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂开
-	----------------------------------------------------------------------------*/
-void	TIM1_CH2_OFF_CH2N_ON(void)
-{
-	TIM1->CCER &=0xFFEF;			//CCER->CC2E	= 0
-	TIM1->CCER |=0x0040;			//CCER->CC2NE	= 1
-	TIM1->CCMR1 &= 0x8FFF;
-	TIM1->CCMR1 |= 0x4000;			//强制OC1输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH2_OFF_CH2N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH2_OFF_CH2N_OFF(void)
-{
-	TIM1->CCER &=0xFFEF;			//CCER->CC2E	= 0
-	TIM1->CCER &=0xFFBF;			//CCER->CC2NE	= 0
-	TIM1->CCMR1 &= 0x8FFF;
-	TIM1->CCMR1 |= 0x4000;			//强制OC1输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH2_ON_CH2N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂开		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH2_ON_CH2N_OFF(void)
-{
-	TIM1->CCER |=0x0010;			//CCER->CC2E	= 1
-	TIM1->CCER &=0xFFBF;			//CCER->CC2NE	= 0
-	TIM1->CCMR1 &= 0x8FFF;
-	TIM1->CCMR1 |= 0x4000;			//强制OC2输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH2_OFF_CH2N_PWM(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂pwm
-	----------------------------------------------------------------------------*/
-void	TIM1_CH2_OFF_CH2N_PWM(void)
-{
-	TIM1->CCMR1 &= 0x8FFF;
-	TIM1->CCMR1 |= 0x7000;			//OC2为PWM2模式
-	TIM1->CCER &=0xFFEF;			//CCER->CC2E	=	0
-	TIM1->CCER |=0x0040;			//CCER->CC2NE	=	1
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH2_PWM_CH2N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂pwm		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH2_PWM_CH2N_OFF(void)
-{
-	TIM1->CCMR1 &= 0x8FFF;
-	TIM1->CCMR1 |= 0x7000;			//OC2为PWM2模式
-	TIM1->CCER |=0x0010;			//CCER->CC2E	=	1
-	TIM1->CCER &=0xFFBF;			//CCER->CC2NE	=	0
-}
-//CH3-------------------------------------------------------------------------------------------------------------------------
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH3_OFF_CH3N_ON(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂开
-	----------------------------------------------------------------------------*/
-void	TIM1_CH3_OFF_CH3N_ON(void)
-{
-	TIM1->CCER &=0xFEFF;			//CCER->CC3E	= 0
-	TIM1->CCER |=0x0400;			//CCER->CC3NE	= 1
-	TIM1->CCMR2 &= 0xFF8F;
-	TIM1->CCMR2 |= 0x0040;			//强制OC3输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH3_OFF_CH3N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH3_OFF_CH3N_OFF(void)
-{
-	TIM1->CCER &=0xFEFF;			//CCER->CC3E	= 0
-	TIM1->CCER &=0xFBFF;			//CCER->CC3NE	= 0
-	TIM1->CCMR2 &= 0xFF8F;
-	TIM1->CCMR2 |= 0x0040;			//强制OC3输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH3_ON_CH3N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂开		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH3_ON_CH3N_OFF(void)
-{
-	TIM1->CCER |=0x0100;			//CCER->CC3E	= 1
-	TIM1->CCER &=0xFBFF;			//CCER->CC3NE	= 0
-	TIM1->CCMR2 &= 0xFF8F;
-	TIM1->CCMR2 |= 0x0040;			//强制OC3输出无效电平
-}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH3_OFF_CH3N_PWM(void)
-	参数含义			：null
-	函数功能			：上桥臂关		下桥臂pwm
-	----------------------------------------------------------------------------*/
-void	TIM1_CH3_OFF_CH3N_PWM(void)
-{
-	TIM1->CCMR2 &= 0xFF8F;
-	TIM1->CCMR2 |= 0x0070;			//OC3为PWM2模式
-	TIM1->CCER &=0xFEFF;			//CCER->CC3E	=	0
-	TIM1->CCER |=0x0400;			//CCER->CC3NE	=	1
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM1_CH3_PWM_CH3N_OFF(void)
-	参数含义			：null
-	函数功能			：上桥臂pwm		下桥臂关
-	----------------------------------------------------------------------------*/
-void	TIM1_CH3_PWM_CH3N_OFF(void)
-{
-	TIM1->CCMR2 &= 0xFF8F;
-	TIM1->CCMR2 |= 0x0070;			//OC3为PWM2模式
-	TIM1->CCER |=0x0100;			//CCER->CC3E	=	1
-	TIM1->CCER &=0xFBFF;			//CCER->CC3NE	=	0
-}
-
-
 
 	/*---------------------------------------------------------------------------
 	函数名称			：Timer2_Config(void)
 	参数含义			：null
 	函数功能			：产生1KHz频率中断，进行速度位置环的PI调节
-							timer2 APB1上42MHz
+							timer2时钟频率为84MHz APB1上42MHz，
 							要更新位置环速度环，需要打开TIM2
 	----------------------------------------------------------------------------*/
 void	Timer2_Config(void)
@@ -639,10 +449,73 @@ void	Timer4_Config(void)
 	函数名称			：	Timer5_Config(void)
 	参数含义			：	null
 	函数功能			：	用于高速端光电编码器低速值测量，即测量脉宽
+							TIM5 CH1输入编码器PWM输入模式
+							TIM5 挂在APB1上，是其时钟频率42MHz的两倍，
+
+							记录的脉冲周期值通过DMA传送给响应内存地址，
+							使用DMA通道：DMA1 stream 1 channel 6
+
+
+
+							低速测量最低周期  1.56ms
 	----------------------------------------------------------------------------*/
 void	Timer5_Config(void)
 {
+	TIM_TimeBaseInitTypeDef 		TIM_TimeBaseInitStructure;
+	TIM_ICInitTypeDef				TIM_ICInitStructure;	
+	DMA_InitTypeDef					DMA_InitStructure;
 	
+/*时钟使能*/
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE );
+
+/*dma配置*/
+	DMA_DeInit(DMA1_Stream2);
+	DMA_InitStructure.DMA_Channel					=	DMA_Channel_6;
+	DMA_InitStructure.DMA_PeripheralBaseAddr		=	(uint32_t)(&TIM5->CCR1);				//使用TIM5 CCR1的数据寄存器作为DMA的外设地址
+	DMA_InitStructure.DMA_Memory0BaseAddr			=	(uint32_t)(&(m_motor_rt_para.m_encoder.u32_pulse_width_buf));//将数组首地址作为内存地址
+	DMA_InitStructure.DMA_DIR						=	DMA_DIR_PeripheralToMemory;
+	DMA_InitStructure.DMA_BufferSize				=	PW_BUFFER_LENGTH;						//
+	DMA_InitStructure.DMA_PeripheralInc				=	DMA_PeripheralInc_Disable;				//DMA传输过程中外设地址不增长
+	DMA_InitStructure.DMA_MemoryInc					=	DMA_MemoryInc_Enable;					//DMA传输过程中内存地址增长
+	DMA_InitStructure.DMA_PeripheralDataSize		=	DMA_PeripheralDataSize_Word;			//使用16位数据作为传输单位，尽管TIM5->CCR1为32位寄存器，但是ARR为16位，
+	DMA_InitStructure.DMA_MemoryDataSize			=	DMA_MemoryDataSize_Word;				//
+	DMA_InitStructure.DMA_Mode						=	DMA_Mode_Circular;						//设置DMA传输模式为循环传输
+	DMA_InitStructure.DMA_Priority					=	DMA_Priority_High;
+	DMA_InitStructure.DMA_FIFOMode					=	DMA_FIFOMode_Disable;
+	DMA_InitStructure.DMA_FIFOThreshold				=	DMA_FIFOThreshold_HalfFull;
+	DMA_InitStructure.DMA_MemoryBurst				=	DMA_MemoryBurst_Single;
+	DMA_InitStructure.DMA_PeripheralBurst			=	DMA_PeripheralBurst_Single;
+	DMA_Init(DMA1_Stream2,&DMA_InitStructure);
+	DMA_Cmd(DMA1_Stream2,ENABLE);																//使能ADC的DMA
+	
+	
+/*Timer5 配置*/
+	TIM_DeInit(TIM5);
+	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
+	TIM_TimeBaseInitStructure.TIM_CounterMode			=	TIM_CounterMode_Up;					//向上计数模式
+	TIM_TimeBaseInitStructure.TIM_ClockDivision			=	TIM_CKD_DIV1;						//TIM5时钟分割，
+	TIM_TimeBaseInitStructure.TIM_Period				=	0xFFFFFFFF;							//当脉冲到达此值时，重新装载，并产生一次中断，意味着获取的脉冲周期在65535个时钟周期以内
+	TIM_TimeBaseInitStructure.TIM_Prescaler				=	1;									//2倍预分频，使用42MHz频率
+	TIM_TimeBaseInit(TIM5,&TIM_TimeBaseInitStructure);
+	
+/*设置定时器输入捕获通道*/	
+	TIM_ICStructInit(&TIM_ICInitStructure);
+	TIM_ICInitStructure.TIM_Channel						=	TIM_Channel_1;
+	TIM_ICInitStructure.TIM_ICPolarity					=	TIM_ICPolarity_Rising;				//触发捕获的电平，下降沿捕获
+	TIM_ICInitStructure.TIM_ICSelection					=	TIM_ICSelection_DirectTI;			//映射到TI1上
+	TIM_ICInitStructure.TIM_ICPrescaler					=	TIM_ICPSC_DIV1;						//输入捕获分频，此处是每个脉冲都捕捉
+	TIM_ICInitStructure.TIM_ICFilter					=	0;									//输入滤波器，每个脉冲都有效
+	TIM_PWMIConfig(TIM5,&TIM_ICInitStructure);
+	
+	TIM_SelectInputTrigger(TIM5,TIM_TS_TI1FP1);													//输入跳变选择，使用IN1信号作为输入
+	TIM_SelectSlaveMode(TIM5,TIM_SlaveMode_Reset);												//TIM从机模式：触发信号的上升沿重新初始化计数器和触发寄存器的更新事件
+	TIM_SelectMasterSlaveMode(TIM5,TIM_MasterSlaveMode_Enable);									//启动定时器被动触发功能
+	TIM_DMAConfig(TIM5,TIM_DMABase_CCR1,TIM_DMABurstLength_2Bytes);								//配置定时器的DMA，每次读寄存器是2bytes
+	TIM_DMACmd(TIM5,TIM_DMA_CC1,ENABLE);														//使能CCR1 dma请求
+	
+	TIM5->CNT = 0;
+	TIM_Cmd(TIM5,ENABLE);	
 }
 
 

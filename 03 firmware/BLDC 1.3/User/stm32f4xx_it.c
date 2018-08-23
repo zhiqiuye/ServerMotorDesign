@@ -1,29 +1,12 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F4xx_StdPeriph_Templates/stm32f4xx_it.c 
-  * @author  MCD Application Team
+  * @file    Project/user/stm32f4xx_it.c 
+  * @author  Kuangjing
   * @version V1.7.1
-  * @date    20-May-2016
+  * @date    20180801
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
   ******************************************************************************
   */
 
@@ -42,11 +25,12 @@
 #include	"math.h"										//浮点计算使用头文件
 #include	"arm_math.h"
 #include	"spd_pos_filter.h"
+#include	"hall_reversal_6steps.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-//#define			USE_CURRENT_TRACE							//使用电流模拟跟随
-#define			USE_SPEED_TRACE								//使用速度环模拟跟随
+#define			USE_CURRENT_TRACE							//使用电流模拟跟随
+//#define			USE_SPEED_TRACE								//使用速度环模拟跟随
 //#define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
@@ -82,8 +66,8 @@ float32_t		f_sin				=	0.0f;				//正弦
 #define			POS_FQC				0.5f
 #define			POS_CYC				(1000.0f/POS_FQC)
 #endif
-extern	const	uint8_t		current_senser_table[2][7];
 
+float		ft;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -116,7 +100,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				step_cnt++;
 				if(step_cnt >= (uint32_t)CURRENT_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_current						=	f_sin;
+				m_motor_ctrl.f_set_current						=	0.6;//f_sin;
 				m_motor_ctrl.u8_current_set_data_refreshed		=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
@@ -159,7 +143,10 @@ void	TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
-		Read_IncEncoder();																//读取编码器数据
+//		GPIOC->ODR	|=	0x0001;			
+		Read_IncEncoder();																//读取编码器数据，耗时1us
+//		GPIOC->ODR	&=	0xFFFE;	
+		
 		/*更新位置环*/
 		if(m_motor_ctrl.u8_is_posloop_used	==	1)
 		{
@@ -185,7 +172,7 @@ void	TIM2_IRQHandler(void)
 				m_motor_ctrl.u8_position_set_data_refreshed	=	0;
 			}
 		}
-//		GPIOC->ODR	|=	0x0001;	
+
 		
 		/*更新速度环*/
 		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
@@ -198,7 +185,7 @@ void	TIM2_IRQHandler(void)
 				step_cnt++;
 				if(step_cnt >= (uint32_t)SPEED_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_speed					=	0.2f;//f_sin;
+				m_motor_ctrl.f_set_speed					=	0.4f;//f_sin;
 				m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
@@ -216,8 +203,6 @@ void	TIM2_IRQHandler(void)
 				m_motor_ctrl.u8_current_set_data_refreshed	=	1;						//速度环更新标志位
 			}
 		}
-
-//		GPIOC->ODR	&=	0xFFFE;
 		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);										//清除中断标志位
 	}
 }
@@ -233,10 +218,6 @@ void	TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)										//AB相计数溢出中断
 	{
-//		if(TIM3->CR1 & 0x0010)																//根据方向标志位
-//			m_motor_rt_para.i32_pulse_cnt -= 65535;											//反转，脉冲计数减一个
-//		else
-//			m_motor_rt_para.i32_pulse_cnt += 65535;
 	}
 	
 	if(TIM_GetITStatus(TIM3,TIM_IT_CC3) != RESET)											//I相输入捕获中断
@@ -259,10 +240,29 @@ void	TIM4_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM4,TIM_IT_CC1)!=RESET)
 	{
-		Hall_Convert();																		//霍尔换向
+		Hall_Start_Convert();																//霍尔换向
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
 	}
 }
+
+
+
+	/*---------------------------------------------------------------------------
+	函数名称			：TIM5_IRQHandler(void)
+	参数含义			：null
+	函数功能			：
+	----------------------------------------------------------------------------*/
+void	TIM5_IRQHandler(void)
+{
+	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)!=RESET)
+	{
+
+		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
+	}
+}
+
+
+
 
 
 

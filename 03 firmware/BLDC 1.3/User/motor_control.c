@@ -18,6 +18,7 @@
 #include	"stm32f4xx_dac.h"
 #include	"ucos_ii.h"
 #include	"current_filter.h"
+#include	"hall_reversal_6steps.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -27,24 +28,8 @@
 //#define		MEASURE_POSITION_REFIN
 
 /* Private function prototypes -----------------------------------------------*/
-const void		NULL_Switch(void);
-const void		H1_L2(void);
-const void		H1_L3(void);
-const void		H2_L1(void);
-const void		H2_L3(void);
-const void		H3_L2(void);
-const void		H3_L1(void);
 
 /* Private variables ---------------------------------------------------------*/
-//霍尔换向表
-const	void( *switch_table[2][8])() ={	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2,	NULL_Switch},
-										{NULL_Switch,	H3_L2,		H2_L1,		H3_L1,		H1_L3,		H1_L2,		H2_L3,	NULL_Switch}}; 
-
-//const	void	(*switch_table[2][8])()			=	{	{NULL_Switch,	CW_H2_L3,		CW_H1_L2,		CW_H1_L3,		CW_H3_L1,		CW_H2_L1,		CW_H3_L2,	NULL_Switch},
-//														{NULL_Switch,	CCW_H3_L2,		CCW_H2_L1,		CCW_H3_L1,		CCW_H1_L3,		CCW_H1_L2,		CCW_H2_L3,	NULL_Switch}}; 
-	
-//电流相序表
-const	uint8_t		current_senser_table[2][7]	=	{{0, 2, 1, 2, 0, 0, 1},{0, 1, 0, 0, 2, 1, 2}};										
 
 
 /* Private functions ---------------------------------------------------------*/
@@ -108,124 +93,27 @@ float	Increment_PID_Cal_int(PID_Struct* pid, int32_t new_feedback)
 	/*---------------------------------------------------------------------------
 	函数名称			：Hall_Convert(void)
 	参数含义			：null
-	函数功能			：读取Hall接口状态,PB6/7/8
+	函数功能			：初始启动时Hall换向函数
 	----------------------------------------------------------------------------*/
-uint16_t	Hall_State_Read(void)
-{
-	uint16_t	Hall_Value;
-	Hall_Value	=	(GPIOB->IDR >> 6)&0x07;
-	return	Hall_Value;
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：Hall_Convert(void)
-	参数含义			：null
-	函数功能			：Hall换向函数
-	----------------------------------------------------------------------------*/
-void	Hall_Convert(void)
+void	Hall_Start_Convert(void)
 {
 	m_motor_rt_para.u8_hall_state		=	Hall_State_Read();								//记录hall状态
 	
-	switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();						//根据方向以及hall相位进行换向，采用函数指针方式
+	startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();						//根据方向以及hall相位进行换向，采用函数指针方式
 }
 
 
 	/*---------------------------------------------------------------------------
-	函数名称			：NULL_Switch(void)
+	函数名称			：Hall_Runtime_Convert(void)
 	参数含义			：null
-	函数功能			：空
+	函数功能			：运行时Hall换向函数
 	----------------------------------------------------------------------------*/
-const void	NULL_Switch(void)
-{}
-
-//void	CW_H1_L2(void)
-//{
-//	
-//}
-
-//void	CCW_H1_L2(void)
-//{
-
-//}
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H1_L2(void)
-	参数含义			：null
-	函数功能			：H1和L2导通
-	----------------------------------------------------------------------------*/
-const void	H1_L2(void)
+void	Hall_Runtime_Convert(void)
 {
-	TIM1_CH1_PWM_CH1N_OFF();
-	TIM1_CH2_OFF_CH2N_PWM();
-	TIM1_CH3_OFF_CH3N_OFF();
+	m_motor_rt_para.u8_hall_state		=	Hall_State_Read();								//记录hall状态
+	
+	runtime_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();						//根据方向以及hall相位进行换向，采用函数指针方式
 }
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H1_L3(void)
-	参数含义			：null
-	函数功能			：H1和L3导通
-	----------------------------------------------------------------------------*/
-const void	H1_L3(void)
-{
-	TIM1_CH1_PWM_CH1N_OFF();
-	TIM1_CH2_OFF_CH2N_OFF();
-	TIM1_CH3_OFF_CH3N_PWM();
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H2_L1(void)
-	参数含义			：null
-	函数功能			：H2和L1导通
-	----------------------------------------------------------------------------*/
-const void	H2_L1(void)
-{
-	TIM1_CH1_OFF_CH1N_PWM();
-	TIM1_CH2_PWM_CH2N_OFF();
-	TIM1_CH3_OFF_CH3N_OFF();
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H2_L3(void)
-	参数含义			：null
-	函数功能			：H2和L3导通
-	----------------------------------------------------------------------------*/
-const void	H2_L3(void)
-{
-	TIM1_CH1_OFF_CH1N_OFF();
-	TIM1_CH2_PWM_CH2N_OFF();
-	TIM1_CH3_OFF_CH3N_PWM();
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H3_L1(void)
-	参数含义			：null
-	函数功能			：H3和L1导通
-	----------------------------------------------------------------------------*/
-const void	H3_L1(void)
-{
-	TIM1_CH1_OFF_CH1N_PWM();
-	TIM1_CH2_OFF_CH2N_OFF();
-	TIM1_CH3_PWM_CH3N_OFF();
-}
-
-
-	/*---------------------------------------------------------------------------
-	函数名称			：H3_L2(void)
-	参数含义			：null
-	函数功能			：H3和L2导通
-	----------------------------------------------------------------------------*/
-const void	H3_L2(void)
-{
-	TIM1_CH1_OFF_CH1N_OFF();
-	TIM1_CH2_OFF_CH2N_PWM();
-	TIM1_CH3_PWM_CH3N_OFF();
-}
-
 
 
 	/*---------------------------------------------------------------------------
@@ -405,7 +293,7 @@ void	Current_PID_Cal(volatile PID_Struct * pid)
 
 #ifdef	MEASURE_CURRENT_REFIN	
 	//------------test 20180808	
-	f_temp					=	m_current_pid.curr_pid.Ref_In;//m_current_pid.curr_pid.Feed_Back;						//跟踪目标电压
+	f_temp					=	m_current_pid.curr_pid.Feed_Back;//m_current_pid.curr_pid.Ref_In;//						//跟踪目标电压
 	u32_temp				=	(uint32_t)(f_temp * 1240.9f);
 	if(u32_temp>4095) u32_temp = 4095;													//将数字量限定幅值
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);							//开启DA转换
@@ -447,12 +335,12 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 #endif
 	
 	/*计算增量pid输出*/
-	spd_in					=	m_motor_rt_para.f_motor_cal_speed;				//获取反馈速度值
+	spd_in					=	m_motor_rt_para.m_encoder.f_motor_cal_speed;	//获取反馈速度值
 	pid_inc					=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
 
 #ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
-	f_temp					=	m_motor_rt_para.f_motor_cal_speed + 1.5; //spd_in + 1.5f;									//跟踪目标电压
+	f_temp					=	m_motor_rt_para.m_encoder.f_motor_cal_speed + 1.5; //spd_in + 1.5f;//									//跟踪目标电压
 	u32_temp				=	(uint32_t)(f_temp * 1365.0f);//(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
 	if(u32_temp>4095) u32_temp 		= 	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
@@ -465,12 +353,12 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	if(m_motor_ctrl.f_set_current > 0.0f)
 	{
 		m_motor_ctrl.u8_dir			=	1;
-		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
 	}
 	else if(m_motor_ctrl.f_set_current < -0.0f)
 	{
 		m_motor_ctrl.u8_dir			=	0;
-		switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
 	}
 	else
 	{
@@ -495,7 +383,7 @@ void	Position_PID_Cal(volatile PID_Struct * pid)
 	float		f_temp;
 #endif
 /*计算增量pid输出*/
-	pos_in							=	(float)m_motor_rt_para.i32_pulse_cnt;	//获取反馈位置值
+	pos_in							=	(float)m_motor_rt_para.m_encoder.i32_pulse_cnt;	//获取反馈位置值
 	pid_inc							=	Increment_PID_Cal((PID_Struct*)pid,pos_in);
 
 #ifdef	MEASURE_POSITION_REFIN

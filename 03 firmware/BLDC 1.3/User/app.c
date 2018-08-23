@@ -52,11 +52,11 @@ void	StateMachine_Task(void * parg)
 			
 			BrakeControl(1);																//开启抱闸
 			
-			Hall_Convert();																	//开始初次相位识别					
+			Hall_Start_Convert();															//开始初次相位识别					
 			
 //			PositionLoopRefresh_TIM_Start();
 			
-			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
+//			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
 			
 			CurrentLoopRefresh_TIM_Start();													//开启电流环更新
 			
@@ -87,12 +87,6 @@ void	LED_Task(void * parg)
 		OSTimeDlyHMSM(0,0,0,800);
 		LED_ON();
 		OSTimeDlyHMSM(0,0,0,50);
-		
-//test 20180815  正反转		
-//		if(m_motor_ctrl.u8_dir == 0)
-//			m_motor_ctrl.u8_dir = 1;
-//		else
-//			m_motor_ctrl.u8_dir =0;
 	}
 }
 

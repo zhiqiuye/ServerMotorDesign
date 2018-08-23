@@ -11,6 +11,7 @@
 
 #include	"stm32f4xx.h"
 #include	"stm32f4xx_tim.h"
+#include	"stm32f4xx_dma.h"
 #include	"global_parameters.h"
 
 
@@ -24,32 +25,27 @@
 
 /* Private functions ---------------------------------------------------------*/
 
-float	Speed_Average_X4_Filter(int32_t  new_data)
+float	Speed_Average_X4_Filter(int32_t * new_data, int32_t * buffer, uint8_t * buf_used, int32_t * sum)
 {
-	int32_t		abandoned_data;
-	if(m_motor_rt_para.u8_speed_filter_used < 4)					//滑动均值滤波器未填满
+	float result = 0;
+	
+	if(*buf_used < 4)										//均值滤波器未填满
 	{
-		m_motor_rt_para.i32_spd_hisdata[m_motor_rt_para.u8_speed_filter_used]	=	new_data;
-		m_motor_rt_para.u8_speed_filter_used++;
-		m_motor_rt_para.u8_speed_filter_index									=	m_motor_rt_para.u8_speed_filter_used;
-		m_motor_rt_para.i32_spd_his_sum											+=	new_data;
-		return	new_data;
+		(*buf_used) ++;
+		*sum 			+= *new_data;
+		result			=	(float)(*sum) / (float)(*buf_used);
 	}
 	else
 	{
-		m_motor_rt_para.u8_speed_filter_index++;
-		if(m_motor_rt_para.u8_speed_filter_index >= 4)
-			m_motor_rt_para.u8_speed_filter_index	=	0;
-		
-		if(m_motor_rt_para.u8_speed_filter_index ==	3)
-			abandoned_data	=	m_motor_rt_para.i32_spd_hisdata[0];
-		else
-			abandoned_data	=	m_motor_rt_para.i32_spd_hisdata[m_motor_rt_para.u8_speed_filter_index + 1];
-		m_motor_rt_para.i32_spd_hisdata[m_motor_rt_para.u8_speed_filter_index]	=	new_data;
-		m_motor_rt_para.i32_spd_his_sum	+=	m_motor_rt_para.i32_spd_hisdata[m_motor_rt_para.u8_speed_filter_index];
-		m_motor_rt_para.i32_spd_his_sum	-=	abandoned_data;
-		return	(float)m_motor_rt_para.i32_spd_his_sum / 4.0f;
+		*sum			-=	*buffer;
+		*(buffer)		=	*(buffer+1);
+		*(buffer+1)		=	*(buffer+2);
+		*(buffer+2)		=	*(buffer+3);
+		*(buffer+3)		=	*new_data;
+		*sum			+=	*new_data;
+		result			=	(float)(*sum)/4.0f;
 	}
+	return	result;
 }
 
 
@@ -60,21 +56,80 @@ float	Speed_Average_X4_Filter(int32_t  new_data)
 	----------------------------------------------------------------------------*/
 void	Read_IncEncoder(void)
 {
-	int16_t		temp_delta;
+	int32_t		temp_delta;
 	float		f_temp	=	0.0f;
+	uint32_t	f_width	=	0;
 	
-	m_motor_rt_para.u16_encoder_last_read		=	m_motor_rt_para.u16_encoder_curr_read;						//获取最新编码器读数
-	m_motor_rt_para.u16_encoder_curr_read		=	TIM3->CNT;
+	m_motor_rt_para.m_encoder.u16_encoder_last_read		=	m_motor_rt_para.m_encoder.u16_encoder_curr_read;						//获取最新编码器读数
+	m_motor_rt_para.m_encoder.u16_encoder_curr_read		=	TIM3->CNT;
 	
-	temp_delta	=	(int16_t)(m_motor_rt_para.u16_encoder_curr_read - m_motor_rt_para.u16_encoder_last_read);
+	temp_delta	=	(int32_t)(m_motor_rt_para.m_encoder.u16_encoder_curr_read - m_motor_rt_para.m_encoder.u16_encoder_last_read);
 	
-	m_motor_rt_para.i32_pulse_cnt				+=	(int32_t)temp_delta;										//获取当前位置信息
+	m_motor_rt_para.m_encoder.i32_pulse_cnt				+=	temp_delta;																//获取当前位置信息
 	
-	f_temp		=	(float)temp_delta;//Speed_Average_X4_Filter((int32_t)temp_delta);//														//速度均值滤波	
+	/*根据temp_dalta判断转速方向*/
+	if(temp_delta < 0)
+		m_motor_rt_para.m_encoder.u8_velocity_sign		=	0;
+	else
+		m_motor_rt_para.m_encoder.u8_velocity_sign		=	1;
 	
-	m_motor_rt_para.f_motor_cal_speed			=	f_temp / 40.0f;
+	/*暂时关闭dma*/
+	TIM_DMACmd(TIM5,TIM_DMA_CC1,DISABLE);
 	
-	m_motor_ctrl.u8_speed_read_data_refreshed	=	1;
+	/*对脉宽均值*/
+	
+	
+	/*M/T法自动转换 f_shaft_cal_speed*/
+	if(m_motor_rt_para.m_encoder.u8_M_or_T == M_METHORD)
+	{
+		/*使用M法时，如果电机速度测量低于12.5rps时，改用T法*/
+		if(((m_motor_rt_para.m_encoder.f_motor_cal_speed < 12.5f) && (m_motor_rt_para.m_encoder.f_motor_cal_speed > -12.5f)) && (m_motor_rt_para.m_encoder.u32_pulse_width_buf[1] != 0))
+		{
+			/*T法测速，定角计时*/
+			// 编码器4096线，四倍频后为16384 Hz，T法测速时检测两个上升沿，
+			// 获取脉冲周期 N，则一个脉冲周期时间	t = N / 42000000 秒
+			// 码盘转一圈的时间为： t2 = t*16384 / 2 
+			// 码盘转速为：1/t2 =	5126.953125 / N
+			if(m_motor_rt_para.m_encoder.u8_velocity_sign == 1)
+				m_motor_rt_para.m_encoder.f_motor_cal_speed		=	5126.953125f/((float)m_motor_rt_para.m_encoder.u32_pulse_width_buf[1]);
+			else
+				m_motor_rt_para.m_encoder.f_motor_cal_speed		=	-5126.953125f/((float)m_motor_rt_para.m_encoder.u32_pulse_width_buf[1]);
+			m_motor_rt_para.m_encoder.u8_M_or_T					=	T_METHORD;
+		}
+		else
+		{
+//			f_temp		=	Speed_Average_X4_Filter(&temp_delta, 
+//													&m_motor_rt_para.m_encoder.i32_spd_hisdata[0],
+//													&m_motor_rt_para.m_encoder.u8_speed_filter_used,
+//													&m_motor_rt_para.m_encoder.i32_spd_his_sum);														//速度均值滤波	
+			f_temp		=	(float)temp_delta;		
+			/*M法测速，定时测角*/
+			m_motor_rt_para.m_encoder.f_motor_cal_speed			=	f_temp / 16.384f;				
+		}
+	}
+	else
+	{
+		/*使用T法时，如果电机速度测量高于12.5rps时，改用M法*/
+		if(((m_motor_rt_para.m_encoder.f_motor_cal_speed > 12.5f) && (m_motor_rt_para.m_encoder.f_motor_cal_speed < -12.5f)) || (m_motor_rt_para.m_encoder.u32_pulse_width_buf[1] == 0) )
+		{
+			f_temp		=	(float)temp_delta;		
+			/*M法测速，定时测角*/
+			m_motor_rt_para.m_encoder.f_motor_cal_speed			=	f_temp / 16.384f;
+			m_motor_rt_para.m_encoder.u8_M_or_T					=	M_METHORD;
+		}
+		/*T法测速，定角计时*/
+		else
+		{			
+			if(m_motor_rt_para.m_encoder.u8_velocity_sign == 1)
+				m_motor_rt_para.m_encoder.f_motor_cal_speed		=	5126.953125f/((float)m_motor_rt_para.m_encoder.u32_pulse_width_buf[1]);
+			else
+				m_motor_rt_para.m_encoder.f_motor_cal_speed		=	-5126.953125f/((float)m_motor_rt_para.m_encoder.u32_pulse_width_buf[1]);
+		}
+	}
+	/*开启DMA通道*/
+	TIM_DMACmd(TIM5,TIM_DMA_CC1,ENABLE);
+	
+	m_motor_ctrl.u8_speed_read_data_refreshed					=	1;
 }
 
 

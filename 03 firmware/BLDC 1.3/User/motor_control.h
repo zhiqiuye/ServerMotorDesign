@@ -21,7 +21,9 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void		Hall_Convert(void);
+void		Hall_Start_Convert(void);
+
+void		Hall_Runtime_Convert(void);
 
 void		PWM_TIM_Start(void);
 
