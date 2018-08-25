@@ -56,7 +56,7 @@ void	StateMachine_Task(void * parg)
 			
 //			PositionLoopRefresh_TIM_Start();
 			
-//			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
+			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
 			
 			CurrentLoopRefresh_TIM_Start();													//开启电流环更新
 			
@@ -80,13 +80,23 @@ void	StateMachine_Task(void * parg)
 	----------------------------------------------------------------------------*/
 void	LED_Task(void * parg)
 {
+	uint8_t	data[2];
 	(void)	parg;
 	while(1)
 	{
 		LED_OFF();
-		OSTimeDlyHMSM(0,0,0,800);
+		OSTimeDlyHMSM(0,0,0,10);
 		LED_ON();
-		OSTimeDlyHMSM(0,0,0,50);
+		OSTimeDlyHMSM(0,0,0,10);
+			
+		/*NMT COB报文内容*/
+		data[0]							=	0x55;
+		data[1]							=	0xAA;
+		
+		while(!CAN1_TX_Data((CanTxMsg*)&(m_can.TxMessage),
+							0x0000,
+							(uint8_t*)&data,
+							2));
 	}
 }
 

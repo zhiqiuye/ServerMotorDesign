@@ -86,7 +86,18 @@ void	NVIC_Config(void)
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
-	/**/
+	/*CAN BUS 接收发送中断初始化*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_RX0_IRQn;			//FIFO0的接收中断
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;						//
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;						//
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
+	NVIC_Init(&NVIC_InitStructure);
+	
+	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_TX_IRQn;			//FIFO0的发送中断
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;						//
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;						//
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
+	NVIC_Init(&NVIC_InitStructure);	
 
 }
 	
@@ -195,6 +206,16 @@ void	GPIO_Config(void)
 	GPIO_Init(GPIOC,&GPIO_InitStructure);
 	GPIO_ResetBits(GPIOC,GPIO_Pin_14|GPIO_Pin_15);
 	
+/*CAN总线接口*/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_OType		=	GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Pin			=	GPIO_Pin_11|GPIO_Pin_12;
+	GPIO_InitStructure.GPIO_PuPd		=	GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed		=	GPIO_Speed_100MHz;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource11,GPIO_AF_CAN1);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource12,GPIO_AF_CAN1);
 	
 /*test 20180739 pc 0*/
 	GPIO_StructInit(&GPIO_InitStructure);
@@ -388,8 +409,8 @@ void	Timer3_Config(void)
 	TIM_ICInitStructure.TIM_ICPrescaler					=	0;
 	TIM_ICInit(TIM3,&TIM_ICInitStructure);
 	
-	TIM_ClearFlag(TIM3,TIM_FLAG_Update);
-	TIM_ITConfig(TIM3,TIM_IT_Update|TIM_IT_CC3,ENABLE);
+//	TIM_ClearFlag(TIM3,TIM_FLAG_Update);
+//	TIM_ITConfig(TIM3,TIM_IT_Update|TIM_IT_CC3,ENABLE);
 	TIM3->CNT = 0;
 	TIM_Cmd(TIM3,ENABLE);	
 }
@@ -634,8 +655,95 @@ void	DAC_Config(void)
 	----------------------------------------------------------------------------*/
 void	CAN_Config(void)
 {
+	CAN_InitTypeDef			CAN_InitStructure;
+	CAN_FilterInitTypeDef	CAN_FilterInitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1,ENABLE);
+	
+/*        CAN总线初始化,CAN总线在APB1总线，频率为42MHz        */
+/*			baudrate	=	1/(tq + tbs1 + tbs2)			*/
+/*			tq 			=	(BRP + 1) * tpclk				*/
+/*			tbs1		=	tq * (TS1 + 1)					*/
+/*			tbs2		=	tq * (TS2 + 1)					*/
 
+	CAN_DeInit(CAN1);
+	CAN_StructInit(&CAN_InitStructure);
+	
+	CAN_InitStructure.CAN_ABOM			=	DISABLE;								//DISABLE：软件自动离线管理，ENABLE：如果检测到总线上错误，本节点自动离线
+	CAN_InitStructure.CAN_AWUM			=	DISABLE;								//DISABLE：睡眠模式通过软件唤醒，ENABLE：自动唤醒
+	CAN_InitStructure.CAN_TTCM			=	DISABLE;								//关闭时间触发通讯模式
+	CAN_InitStructure.CAN_NART			=	ENABLE;								//ENABLE：禁止报文自动传送，DISABLE：如果报文发送不成功，自动重发
+	CAN_InitStructure.CAN_RFLM			=	DISABLE;								//报文不锁定，在接收报文的FIFO发生溢出，DISABLE：新报文覆盖旧报文，ENABLE：不覆盖旧报文
+	CAN_InitStructure.CAN_TXFP			=	DISABLE;								//DISABLE：优先级由报文标识符决定
+	CAN_InitStructure.CAN_Mode			=	CAN_Mode_Normal;						//使用普通模式
+	CAN_InitStructure.CAN_SJW			=	CAN_SJW_1tq;							//再同步补偿宽度
+	CAN_InitStructure.CAN_BS1			=	CAN_BS1_6tq;							//相位缓冲段1
+	CAN_InitStructure.CAN_BS2			=	CAN_BS2_7tq;							//相位缓冲段2
+	CAN_InitStructure.CAN_Prescaler		=	6;										//时钟预分频系数6
+	//baudrate = 1/[(6+7+1)*(6/42M)] = 500K
+	
+	CAN_Init(CAN1,&CAN_InitStructure);
+	
+/*CAN滤波器初始化*/
+	CAN_FilterInitStructure.CAN_FilterNumber			=	0;						//使用滤波器0，共28组，编号0-27
+	CAN_FilterInitStructure.CAN_FilterMode				=	CAN_FilterMode_IdMask;	//标识符屏蔽位模式
+	CAN_FilterInitStructure.CAN_FilterScale				=	CAN_FilterScale_32bit;	//使用32位标识符
+	CAN_FilterInitStructure.CAN_FilterIdHigh			=	0x0000;					//
+	CAN_FilterInitStructure.CAN_FilterIdLow				=	0x0000;					//
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh		=	0x0000;					//
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow			=	0x0000;					//
+	CAN_FilterInitStructure.CAN_FilterFIFOAssignment	=	CAN_Filter_FIFO0;			//过滤器与FIFO0相关联  CAN_FIFO0;	
+	CAN_FilterInitStructure.CAN_FilterActivation		=	ENABLE;					//开启过滤器
+	CAN_FilterInit(&CAN_FilterInitStructure);
+	
+	CAN_ITConfig(CAN1,CAN_IT_FMP0 | CAN_IT_FF0 | CAN_IT_TME,ENABLE);				//FIFO0接收中断；FIFO0满中断；发送邮箱空中断
 }
+
+
+
+/******************************************************************************
+*			函数说明：	CAN1_TX_Data(CanTxMsg * msg,uint8_t stdID,uint8_t * data,uint8_t dataLen)
+*			参数说明：	CanTxMsg * msg	:要发出的报文结构体
+						uint8_t stdID	:标准ID
+						uint8_t * data	:数据域数据
+						uint8_t dataLen	:数据域长度
+*			使用范围：	填写报文内容，使能发送完成中断
+*******************************************************************************/
+uint8_t CAN1_TX_Data(volatile CanTxMsg * msg,uint32_t stdID,uint8_t * data,uint8_t dataLen)
+{
+	uint8_t				i;
+	
+	/*构建CAN Msg报文*/
+	msg->StdId			=	stdID;													//标准帧ID
+	msg->RTR			=	CAN_RTR_DATA;											//CAN_RTR_DATA:数据帧；CAN_RTR_REMOTE：远程帧
+	msg->IDE			=	CAN_Id_Standard;										//CAN_Id_Standard：发送标准帧格式；CAN_Id_Extended：发送扩展帧格式
+	msg->ExtId			=	0x12;													//扩展帧ID
+	msg->DLC			=	dataLen;												//数据域长度，小于8
+	
+	/*数据域赋值时，进入临界区*/
+	OSIntEnter();
+	for(i=0;i<dataLen;i++)
+	{
+		msg->Data[i]	=	data[i];												//数据域赋值
+	}
+	OSIntExit();
+
+	/*发送报文*/
+
+	m_can.mbox		=	CAN_Transmit(CAN1,(CanTxMsg*)msg);							//CAN有三个发送邮箱，发送函数会返回邮箱序号，即mbox值
+	if(CAN_NO_MB == m_can.mbox)
+	{
+		return	0;																	//如果没有可用的发送邮箱，返回0
+	}
+	else
+	{
+		m_can.CAN_msg_num[m_can.mbox]	=	1;
+	}
+	
+	CAN_ITConfig(CAN1,CAN_IT_TME,ENABLE);
+	return	1;
+}
+
 
 
 	/*---------------------------------------------------------------------------

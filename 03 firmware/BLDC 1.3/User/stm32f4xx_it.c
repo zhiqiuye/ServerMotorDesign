@@ -24,13 +24,14 @@
 #include	"current_filter.h"
 #include	"math.h"										//浮点计算使用头文件
 #include	"arm_math.h"
+#include	"jingle_math.h"
 #include	"spd_pos_filter.h"
 #include	"hall_reversal_6steps.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define			USE_CURRENT_TRACE							//使用电流模拟跟随
-//#define			USE_SPEED_TRACE								//使用速度环模拟跟随
+//#define			USE_CURRENT_TRACE							//使用电流模拟跟随
+#define			USE_SPEED_TRACE								//使用速度环模拟跟随
 //#define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
@@ -185,7 +186,7 @@ void	TIM2_IRQHandler(void)
 				step_cnt++;
 				if(step_cnt >= (uint32_t)SPEED_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_speed					=	0.4f;//f_sin;
+				m_motor_ctrl.f_set_speed					=	f_sin;
 				m_motor_ctrl.u8_speed_set_data_refreshed	=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
@@ -194,7 +195,6 @@ void	TIM2_IRQHandler(void)
 #endif
 				Speed_PID_Cal(&(m_speed_pid.spd_pid));
 				m_motor_ctrl.u8_speed_read_data_refreshed	=	0;						//使用完最新速度值后，将标志位置低
-				
 			}				
 			if(m_motor_ctrl.u8_speed_set_data_refreshed		==	1)						//更新参考速度值
 			{
@@ -256,7 +256,6 @@ void	TIM5_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)!=RESET)
 	{
-
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
 	}
 }
@@ -292,6 +291,116 @@ void	DMA2_Stream0_IRQHandler(void)
 	}
 }
 
+
+
+
+/******************************************************************************
+*			函数说明：	CAN1_RX0_IRQHandler(void)
+*			参数说明：	无
+*			使用范围：	CAN1  FIFO0 的接收中断
+*******************************************************************************/
+void	CAN1_RX0_IRQHandler(void)
+{
+	OSIntEnter();
+	if(CAN_GetITStatus(CAN1,CAN_IT_FMP0) == SET)								//FIFO 0 message pending Interrupt,FIFO0接收中断
+	{
+		CAN_ClearITPendingBit(CAN1,CAN_IT_FMP0);
+		/*进行接收处理*/
+		
+		CAN_Receive(CAN1,CAN_FIFO0,(CanRxMsg *)&(m_can.RxMessage));			//接收函数
+		/*区分HeartBeat报文，对DriverCAN进行置位操作*/
+		if((m_can.RxMessage.StdId & 0xF80) == 0x580 )						//帧为数据返回帧
+		{
+			/*如果是读取速度值的回复报文	0x60FF*/
+			if((m_can.RxMessage.Data[0] == 0x43) && (m_can.RxMessage.Data[1] == 0xFF) && (m_can.RxMessage.Data[2] == 0x60))
+			{
+
+			}
+			/*如果是读取位置值的回复报文	0x2240*/
+			else if((m_can.RxMessage.Data[0] == 0x43) && (m_can.RxMessage.Data[1] == 0x40) && (m_can.RxMessage.Data[2] == 0x22))
+			{
+
+			}
+			else
+				m_can.CAN_msg_recv_flag		=	1;
+		}
+		else																	//接收到heartbeat后，对heartbeat_refreshed_flag置位
+		{
+			/*通过ID进行心跳报文的区分*/
+			if(m_can.RxMessage.StdId == (0x700 ))			//驱动器1的heartbeat
+			{
+
+			}
+			else if(m_can.RxMessage.StdId == (0x700 ))		//驱动器2的heartbeat
+			{
+
+			}
+			else if(m_can.RxMessage.StdId == (0x700 ))		//驱动器3的heartbeat
+			{
+
+			}
+			else if(m_can.RxMessage.StdId == (0x700 ))		//驱动器4的heartbeat
+			{
+
+			}
+			/*通过ID以及单字节数据，确定节点状态*/
+			/*0x04  停止状态；0x05  操作状态；0x7F  预操作状态*/
+			if(((m_can.RxMessage.StdId & 0xF00) == 0x700) && (m_can.RxMessage.Data[0] == 0x7F))
+			{
+				
+			}
+		}
+	}
+	if(CAN_GetITStatus(CAN1,CAN_IT_FF0) == SET)									//FIFO 0 full Interrupt,FIFO0接收满了
+	{
+		CAN_ClearITPendingBit(CAN1,CAN_IT_FF0);	
+		/*进行FIFO清理*/
+		//
+		//
+	}
+	OSIntExit();
+}
+
+
+
+
+/******************************************************************************
+*			函数说明：	CAN1_TX_IRQHandler(void)
+*			参数说明：	无
+*			使用范围：	CAN1  FIFO0 的接收中断
+*******************************************************************************/
+void	CAN1_TX_IRQHandler(void)
+{
+	OSIntEnter();
+	if(m_can.CAN_msg_num[0])
+	{
+		if(CAN1->TSR & CAN_TSR_RQCP0)									//发送邮箱0请求完成中断, RQCP0
+		{
+			CAN1->TSR 					=	CAN_TSR_RQCP0;				//写入1清零
+			CAN_ITConfig(CAN1,CAN_IT_TME,DISABLE);
+			m_can.CAN_msg_num[0]		=	0;			
+		}
+	}
+	else if(m_can.CAN_msg_num[1])
+	{
+		if(CAN1->TSR & CAN_TSR_RQCP1)									//发送邮箱1请求完成中断, RQCP1
+		{
+			CAN1->TSR 					=	CAN_TSR_RQCP1;				//写入1清零
+			CAN_ITConfig(CAN1,CAN_IT_TME,DISABLE);
+			m_can.CAN_msg_num[1]		=	0;
+		}
+	}
+	else if(m_can.CAN_msg_num[2])
+	{
+		if(CAN1->TSR & CAN_TSR_RQCP2)									//发送邮箱2请求完成中断, RQCP2
+		{
+			CAN1->TSR 					=	CAN_TSR_RQCP2;				//写入1清零
+			CAN_ITConfig(CAN1,CAN_IT_TME,DISABLE);
+			m_can.CAN_msg_num[2]		=	0;
+		}
+	}
+	OSIntExit();
+}
 
 
 //-----------------------------------------------------------------------------------------------------

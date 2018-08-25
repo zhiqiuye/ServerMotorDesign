@@ -336,12 +336,12 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 	
 	/*计算增量pid输出*/
 	spd_in					=	m_motor_rt_para.m_encoder.f_motor_cal_speed;	//获取反馈速度值
-	pid_inc					=	Increment_PID_Cal((PID_Struct*)pid,spd_in);
+	pid_inc					=	Increment_PID_Cal((PID_Struct*)pid,spd_in*2.0f);
 
 #ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
-	f_temp					=	m_motor_rt_para.m_encoder.f_motor_cal_speed + 1.5; //spd_in + 1.5f;//									//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 1365.0f);//(uint32_t)(f_temp * 819.0f);					//5rps对应3.3V
+	f_temp					=	m_motor_rt_para.m_encoder.f_motor_cal_speed + 1.5f; //spd_in + 1.5f;//									//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 819.0f);//(uint32_t)(f_temp * 409.6f);//					//5rps对应3.3V
 	if(u32_temp>4095) u32_temp 		= 	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
 #endif

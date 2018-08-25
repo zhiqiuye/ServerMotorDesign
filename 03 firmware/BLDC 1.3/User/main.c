@@ -167,6 +167,7 @@ static void	Board_Init(void)
 	Timer5_Config();								//高速端光电编码器低速测量 T法测量		0813尚未配置
 	ADC_DMA_Config();								//ADC采集DMA使能
 	DAC_Config();
+	CAN_Config();
 	
 	m_sys_state.u8_cur_state	=	Prepare_state;
 	m_sys_state.u8_pre_state	=	Idle_state;

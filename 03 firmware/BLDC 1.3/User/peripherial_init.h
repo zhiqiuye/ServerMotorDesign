@@ -16,7 +16,7 @@
 #define		__PERIPHERIAL_INIT_H
 
 #include	"stm32f4xx.h"
-
+#include	"stm32f4xx_can.h"
 
 
 
@@ -51,6 +51,7 @@ void	Timer4_Config(void);
 void	Timer5_Config(void);
 void	ADC_DMA_Config(void);
 void	CAN_Config(void);
+uint8_t CAN1_TX_Data(volatile CanTxMsg * msg,uint32_t stdID,uint8_t * data,uint8_t dataLen);
 void	BrakeControl(uint8_t	mode);
 void	LED_ON(void);
 void	LED_OFF(void);

@@ -27,6 +27,8 @@ speed_pid_para			m_speed_pid;
 
 position_pid_para		m_position_pid;
 
+can_bus					m_can;
+
 error_log				m_error;
 
 
@@ -92,8 +94,8 @@ uint8_t	ParametersInit(void)
 	m_speed_pid.spd_pid.Out_Pre				=	0.0f;
 	m_speed_pid.spd_pid.Out_Actual			=	0.0f;
 	
-	m_speed_pid.spd_pid.Kp					=	4.0f;
-	m_speed_pid.spd_pid.Ki					=	0.1f;
+	m_speed_pid.spd_pid.Kp					=	2.0f;
+	m_speed_pid.spd_pid.Ki					=	0.05f;
 	m_speed_pid.spd_pid.Kd					=	0.0f;
 //pid: 8.0 0.7 0.5 Ã«´Ì½Ï´ó
 //pid: 3.2 0.41 0.0

@@ -226,7 +226,15 @@ typedef	struct
 //	float		err_p;
 }position_pid_para;
 
-
+typedef	struct
+{
+	/*CAN 1 FIFO 0上的收发报文*/
+	CanTxMsg 	TxMessage;										//发送报文结构体
+	uint8_t		mbox;											//CAN发送邮箱
+	uint8_t		CAN_msg_num[3];									//记录哪个邮箱被使用
+	CanRxMsg 	RxMessage;										//接收报文结构体
+	uint8_t		CAN_msg_recv_flag;								//can总线接收中断时置1
+}can_bus;
 
 /*错误信息--------------------------------------------------------------------------------*/
 typedef	struct
@@ -289,6 +297,8 @@ extern	current_pid_para			m_current_pid;
 extern	speed_pid_para				m_speed_pid;
 
 extern	position_pid_para			m_position_pid;
+
+extern	can_bus						m_can;
 
 extern	error_log					m_error;
 

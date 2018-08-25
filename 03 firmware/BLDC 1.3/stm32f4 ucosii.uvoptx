@@ -174,7 +174,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -212,7 +211,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>m_current_pid</ItemText>
+          <ItemText>nosie_buf</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
