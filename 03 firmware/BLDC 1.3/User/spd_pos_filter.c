@@ -9,6 +9,8 @@
   ******************************************************************************
   */
 
+#include	"spd_pos_filter.h"
+#include	"peripherial_init.h"
 #include	"stm32f4xx.h"
 #include	"stm32f4xx_tim.h"
 #include	"stm32f4xx_dma.h"
@@ -16,6 +18,7 @@
 #include	"math.h"										//浮点计算使用头文件
 #include	"arm_math.h"
 #include	"jingle_math.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -26,32 +29,21 @@ typedef struct
 	float	f_acc;
 }noise_buf_struct;
 
-//卡尔曼滤波器参数结构体
-typedef	struct
-{
-	float	for_X[2];					//对速度位置的预测量,X1为角度预测值，X2为速度预测值
-	float	X_k[2];						//当前拍计算结果
-	float	X_k_1[2];					//前一拍计算结果	
-	
-	float	for_Pk[4];					//k时刻误差的协方差预测值
-	float	P_k_1[4];					//k-1时刻计算的误差协方差矩阵	
-	float	ctrl_a;						//控制量，加速度
-	float	Kk;							//k时刻计算的卡尔曼增益
-	float	Q[4];						//系统过程噪声，常量
-	float	R[4];						//系统测量噪声
-}KF_filter_struct;
-/* Private macro -------------------------------------------------------------*/
-#define		T		0.001f
-#define		T2		0.000001f
-#define		Q11		0.001f;
-#define		Q22		0.001f;
-#define		R11		0.001f;
-#define		R22		0.001f;
 
+/* Private macro -------------------------------------------------------------*/
+#define		T				0.001f
+#define		T_sqr			0.000001f
+#define		half_T_sqr		0.0000005f
+#define		Q11				0.001f
+#define		Q22				0.001f
+#define		R11				0.001f
+#define		R22				0.001f
 
 /* Private variables ---------------------------------------------------------*/
 //noise_buf_struct	nosie_buf;
-KF_filter_struct	m_KF;
+KF_filter_struct	m_KF;				//卡尔曼滤波器结构体
+
+
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -84,42 +76,54 @@ float	Speed_Average_X4_Filter(int32_t * new_data, int32_t * buffer, uint8_t * bu
 }
 
 
+
 	/*---------------------------------------------------------------------------
-	函数名称			：	Noise_killer()
-	参数含义			：	noise_buf_struct * noise_buf
-							float new_data
-	函数功能			：	滤除速度值中的野值
-							计算连续几次的速度变化趋势
-							出现一次野值将舍弃，用上一拍的数据加上其加速度补充
-							效果不好
+	函数名称			：	KF_Filter_Init()
+	参数含义			：	
+	函数功能			：	卡尔曼滤波器初始化
 	----------------------------------------------------------------------------*/
-float	Noise_killer(noise_buf_struct * noise_buf, float new_data)
+void	KF_Filter_Init(KF_filter_struct * KF_struct)
 {
-	float	f_temp_acc;
-	float	f_acc_acc;	
-	float	f_temp_acc_acc_abs;
-
-	/*当前拍加速度*/
-	f_temp_acc								=	new_data - noise_buf->f_raw_data[1];
-	/*计算两次加速度值差的绝对值*/
-	f_acc_acc								=	f_temp_acc	-	noise_buf->f_acc;
-	arm_abs_f32(&f_acc_acc,&f_temp_acc_acc_abs,1);
+	KF_struct->for_X[0]		=	0.0f;
+	KF_struct->for_X[1]		=	0.0f;
 	
-	if(f_temp_acc_acc_abs > 1.0f)					//当前拍速度增加量大于三倍前一拍速度增加量算作野值，避免acc_abs为0的情况
-	{
-		noise_buf->f_raw_data[0]				=	noise_buf->f_raw_data[1];
-		noise_buf->f_raw_data[1] 				=	noise_buf->f_raw_data[1] + noise_buf->f_acc;
-	}
-	else
-	{
-		noise_buf->f_raw_data[0]				=	noise_buf->f_raw_data[1];
-		noise_buf->f_raw_data[1]				=	new_data;
-		noise_buf->f_acc						=	f_temp_acc;
-	}
-	return	noise_buf->f_raw_data[1];	
-
+	KF_struct->X_k[0]		=	0.0f;
+	KF_struct->X_k[1]		=	0.0f;
+	
+	KF_struct->X_k_1[0]		=	0.0f;
+	KF_struct->X_k_1[1]		=	0.0f;
+	
+	//误差协方差矩阵为对角阵，在计算中会实时更新
+	KF_struct->for_Pk[0]	=	0.1f;
+	KF_struct->for_Pk[1]	=	0.0f;
+	KF_struct->for_Pk[2]	=	0.0f;
+	KF_struct->for_Pk[3]	=	0.1f;
+	
+	KF_struct->P_k_1[0]		=	0.1f;
+	KF_struct->P_k_1[1]		=	0.0f;
+	KF_struct->P_k_1[2]		=	0.0f;
+	KF_struct->P_k_1[3]		=	0.1f;
+	
+	KF_struct->A[0]			=	1.0f;
+	KF_struct->A[1]			=	T;
+	KF_struct->A[2]			=	0.0f;
+	KF_struct->A[3]			=	1.0f;
+	
+	KF_struct->B[0]			=	half_T_sqr;
+	KF_struct->B[1]			=	T;
+	
+	//系统过程噪声
+	KF_struct->Q[0]			=	Q11;
+	KF_struct->Q[1]			=	0.1f;
+	KF_struct->Q[2]			=	0.1f;
+	KF_struct->Q[3]			=	Q22;
+	
+	//系统测量噪声
+	KF_struct->R[0]			=	R11;
+	KF_struct->R[1]			=	0.1f;
+	KF_struct->R[2]			=	0.1f;
+	KF_struct->R[3]			=	R22;
 }
-
 
 	/*---------------------------------------------------------------------------
 	函数名称			：	KF_Filter()
@@ -128,8 +132,63 @@ float	Noise_killer(noise_buf_struct * noise_buf, float new_data)
 	----------------------------------------------------------------------------*/
 void	KF_Filter(int32_t * input_pos,float * input_spd, int32_t * output_pos, float * output_spd )
 {
+	float	PX[4];
+	float	f_temp;
 	
+	/*控制量暂时使用速度环的输出*/
+	m_KF.ctrl_a				=	m_motor_ctrl.f_set_speed;
+	
+	/*Xk的预测
+		^X_k	=	A * X_k_1 + B * a_k	
+	A:系统状态矩阵,		[1	T;	0	1]
+	B:系统控制矩阵,		[half_T_sqr	;	T]
+	*/
+	m_KF.for_X[0]			=	m_KF.X_k_1[0] + T * m_KF.X_k_1[1] + half_T_sqr * m_KF.ctrl_a;				//角度的预测量
+	m_KF.for_X[1]			=	m_KF.X_k_1[1] + T * m_KF.ctrl_a;											//转速的预测量
+	
+	/*预测误差的协方差矩阵
+		^P_k	=	A * P_k_1 * A_T + Q 
+		(将 B * Q * B_T 用Q替代)
+	*/
+	Matrix_Mult_Matrix	((volatile float *)&(m_KF.A),  	2, 2,
+						 (volatile float *)&(m_KF.P_k_1),  2, 2, PX);										//PX 	= A * P_k_1
+	
+	Matrix_Mult_MatrixT	(PX, 2, 2,
+						 (volatile float *)&(m_KF.A),  2, 2, (volatile float *)&(m_KF.P_k_1));				//P_k_1	= PX * A'= A * P_k_1 * A'
+	
+	Matrix_Plus_Matrix	((volatile float *)&(m_KF.P_k_1),  2, 2,
+						 (volatile float *)&(m_KF.Q),  2, 2,  (volatile float *)&(m_KF.for_Pk));			//Pk 	= P_k_1 + Q = A * P * A' + Q
+	
+	/*计算卡尔曼增益
+		Kk		=	for_Pk * C /(C * for_Pk * C_T + R)
+	C:系统测量矩阵,		[1	0]
+	*/
+	m_KF.Kk[0]				=	m_KF.for_Pk[0] / (m_KF.for_Pk[0] + m_KF.R[0]);
+	m_KF.Kk[1]				=	m_KF.for_Pk[2] / (m_KF.for_Pk[2] + m_KF.R[1]);
+	
+	/*计算输出Xk，更新到Xk_1中
+		Xk		=	for_Xk + Kk * [Zk - C * for_Xk]		
+	Zk:系统当前测量量,即角速度
+	*/
+	f_temp					=	*input_spd	-	m_KF.for_X[0];
+	m_KF.X_k_1[0]				=	m_KF.for_X[0] + m_KF.Kk[0] * f_temp;
+	m_KF.X_k_1[1]				=	m_KF.for_X[1] + m_KF.Kk[1] * f_temp;
+	
+	/*误差协方差矩阵更新，更新到P_k_1中
+		Pk_1		=	[I - Kk * C] * for_Pk
+	*/
+	PX[0]					=	1.0f - m_KF.Kk[0];
+	PX[1]					=	0.0f;
+	PX[2]					=	- m_KF.Kk[1];
+	PX[3]					=	1.0f;
+	Matrix_Plus_Matrix	(PX,  2, 2,
+						 (volatile float *)&(m_KF.for_Pk),  2, 2,  (volatile float *)&(m_KF.P_k_1));
+						 
+	* output_pos			=	(int32_t)m_KF.X_k_1[0];
+	* output_spd			=	m_KF.X_k_1[1];
 }
+
+
 
 	/*---------------------------------------------------------------------------
 	函数名称			：Read_IncEncoder(int32_t * encoder_num)
@@ -143,6 +202,8 @@ void	Read_IncEncoder(void)
 	float		f_temp		=	0.0f;
 	float		f_velocity	=	0.0f;
 	
+	
+	
 	m_motor_rt_para.m_encoder.u16_encoder_last_read		=	m_motor_rt_para.m_encoder.u16_encoder_curr_read;						//获取最新编码器读数
 	m_motor_rt_para.m_encoder.u16_encoder_curr_read		=	TIM3->CNT;
 	
@@ -155,9 +216,6 @@ void	Read_IncEncoder(void)
 		m_motor_rt_para.m_encoder.u8_velocity_sign		=	0;
 	else
 		m_motor_rt_para.m_encoder.u8_velocity_sign		=	1;
-	
-	/*暂时关闭dma*/
-//	TIM_DMACmd(TIM5,TIM_DMA_CC1,DISABLE);
 	
 	/*对脉宽均值*/
 	f_width		=	m_motor_rt_para.m_encoder.u32_pulse_width_buf[1];// + m_motor_rt_para.m_encoder.u32_pulse_width_buf[2] + m_motor_rt_para.m_encoder.u32_pulse_width_buf[3] +m_motor_rt_para.m_encoder.u32_pulse_width_buf[4];
@@ -200,9 +258,7 @@ void	Read_IncEncoder(void)
 			f_velocity										=	5126.953125f/((float)f_width);
 		}
 	}
-	/*开启DMA通道*/
-//	TIM_DMACmd(TIM5,TIM_DMA_CC1,ENABLE);
-	
+
 	//根据方向标志位设置速度正负
 	arm_abs_f32(&f_velocity,&(m_motor_rt_para.m_encoder.f_motor_cal_speed),1);
 	
@@ -211,17 +267,67 @@ void	Read_IncEncoder(void)
 	else
 		m_motor_rt_para.m_encoder.f_motor_cal_speed			=	m_motor_rt_para.m_encoder.f_motor_cal_speed;
 	
-	/*除野值*/
+//	/*除野值*/
 //	m_motor_rt_para.m_encoder.f_motor_cal_speed				=	Noise_killer(&nosie_buf,m_motor_rt_para.m_encoder.f_motor_cal_speed);
+	
+	/*对位置转速进行卡尔曼滤波*/
+	
 	
 	m_motor_ctrl.u8_speed_read_data_refreshed				=	1;
 }
 
 
 
+	/*---------------------------------------------------------------------------
+	函数名称			：Requir_AbsEncoder(void)
+	参数含义			：
+	函数功能			：	获取绝对值编码器数据，更新到全局变量中
+							开启spi的dma通道，绝对值编码器的接口为SSI，需要等待
+							100us左右才能接受到数据
+	----------------------------------------------------------------------------*/
+void	Requir_AbsEncoder(void)
+{
+	SPI_DMA_ReadData(4);
+}
 
 
+	/*---------------------------------------------------------------------------
+	函数名称			：	Read_AbsEncoder(int32_t * encoder_num)
+	参数含义			：
+	函数功能			：	将获取的数据写入encoder_num
+							解析m_motor_rt_para.m_encoder.u8_abs_raw_data
+	----------------------------------------------------------------------------*/
+void	Read_AbsEncoder(void)
+{
+	uint16_t	data_high,data_low ;
+	uint16_t	data_1,data_2,data_3;
+	
+//	while(m_motor_rt_para.m_encoder.u8_abs_data_refreshed	!=	1);						//等待ssi数据更新
 
+	data_low	=	(uint16_t)(m_motor_rt_para.m_encoder.u8_abs_raw_data[2] << 8) || (m_motor_rt_para.m_encoder.u8_abs_raw_data[3]);
+	
+	/*查看低9位错误位是否有报警*/
+	if(data_low & 0x01FF)																//低9位有警报错误
+	{
+		m_motor_rt_para.m_encoder.u8_abs_data_refreshed		=	0;
+		return;
+	}
+	else																				//低9位无警报错误
+	{
+		data_1		=	(uint16_t)m_motor_rt_para.m_encoder.u8_abs_raw_data[0];
+		data_2		=	(uint16_t)m_motor_rt_para.m_encoder.u8_abs_raw_data[1];
+		data_3		=	(uint16_t)m_motor_rt_para.m_encoder.u8_abs_raw_data[2];
+		
+		data_1		=	data_1 << 9;
+		data_2		=	data_2 << 1;
+		data_3		=	data_3 >> 7;
+
+		m_motor_rt_para.m_encoder.u16_abs_cnt				=	data_1 | data_2 | data_3;
+		m_motor_rt_para.m_encoder.f_abs_pos					=	(float)(m_motor_rt_para.m_encoder.u16_abs_cnt) / 182.0416f;		//当前低速端角度
+		m_motor_rt_para.m_encoder.u8_abs_data_refreshed		=	2;
+		return;
+	}
+}
 
 
 /*****************************END OF FILE************************************/

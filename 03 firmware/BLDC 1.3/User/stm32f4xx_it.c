@@ -27,11 +27,13 @@
 #include	"jingle_math.h"
 #include	"spd_pos_filter.h"
 #include	"hall_reversal_6steps.h"
+#include	"peripherial_init.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-//#define			USE_CURRENT_TRACE							//使用电流模拟跟随
-#define			USE_SPEED_TRACE								//使用速度环模拟跟随
+#define			USE_CURRENT_TRACE							//使用电流模拟跟随
+//#define			USE_SPEED_TRACE								//使用速度环模拟跟随
 //#define			USE_POSITION_TRACE							//使用位置环模拟跟随
 
 /* Private macro -------------------------------------------------------------*/
@@ -69,6 +71,8 @@ float32_t		f_sin				=	0.0f;				//正弦
 #endif
 
 float		ft;
+
+
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -101,7 +105,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				step_cnt++;
 				if(step_cnt >= (uint32_t)CURRENT_CYC)
 					step_cnt = 0;
-				m_motor_ctrl.f_set_current						=	0.6;//f_sin;
+				m_motor_ctrl.f_set_current						=	f_sin;
 				m_motor_ctrl.u8_current_set_data_refreshed		=	1;
 				if(step_cnt == 0)
 					GPIOC->ODR	|=	0x0001;
@@ -144,9 +148,11 @@ void	TIM2_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
+		Requir_AbsEncoder();															//读取绝对值编码器数据
 //		GPIOC->ODR	|=	0x0001;			
 		Read_IncEncoder();																//读取编码器数据，耗时1us
 //		GPIOC->ODR	&=	0xFFFE;	
+		Read_AbsEncoder();
 		
 		/*更新位置环*/
 		if(m_motor_ctrl.u8_is_posloop_used	==	1)
@@ -281,12 +287,9 @@ void	DMA2_Stream0_IRQHandler(void)
 {
 	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
 	{
-//		GPIOC->ODR	|=	0x0001;	
 		Current_Average_X8_Filter(&m_motor_rt_para);												//对原始电流数据进行滑动窗口滤波，以及突变点剔除
-		
 		m_motor_rt_para.f_adc_UVW_I					=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
-		
-//		GPIOC->ODR	&=	0xFFFE;
+
 		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }
@@ -402,6 +405,26 @@ void	CAN1_TX_IRQHandler(void)
 	OSIntExit();
 }
 
+
+
+	/*---------------------------------------------------------------------------
+	函数名称			：DMA2_Stream2_IRQHandler
+	参数含义			：
+	函数功能			：SPI1 RX DMA
+	----------------------------------------------------------------------------*/
+void DMA2_Stream2_IRQHandler(void)
+{
+	if(DMA_GetITStatus(DMA2_Stream2,DMA_IT_TCIF2)!=RESET)								//DMA完成中断
+	{
+		DMA_ClearITPendingBit(DMA2_Stream2,DMA_IT_TCIF2);
+		DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
+
+		m_motor_rt_para.m_encoder.u8_abs_data_refreshed		=	1;
+
+		DMA_Cmd(DMA2_Stream2,DISABLE);
+		DMA_Cmd(DMA2_Stream3,DISABLE);
+	}
+}
 
 //-----------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------

@@ -12,6 +12,8 @@
 #include	"global_parameters.h"
 #include	"stm32f4xx.h"
 #include	"motor_control.h"
+#include	"spd_pos_filter.h"
+
 
 sys_state				m_sys_state;
 
@@ -124,6 +126,7 @@ uint8_t	ParametersInit(void)
 	CurrentFilterDataInit();
 	EncoderDataInit();
 	MotorCtrlDataInit();
+	KF_Filter_Init(&m_KF);
 	
 	return	1;
 }

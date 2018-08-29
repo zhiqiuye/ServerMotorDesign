@@ -14,6 +14,7 @@
 #include	"stm32f4xx_tim.h"
 #include	"stm32f4xx_it.h"
 #include	"stm32f4xx_dac.h"
+#include	"stm32f4xx_spi.h"
 #include	"delay.h"
 #include	"peripherial_init.h"
 #include	"motor_control.h"
@@ -48,7 +49,7 @@ void	StateMachine_Task(void * parg)
 		{
 			Read_Current_Bias();															//电流采集电路电压偏置计算
 			
-			OSTimeDlyHMSM(0,0,0,20);
+			OSTimeDlyHMSM(0,0,0,200);
 			
 			BrakeControl(1);																//开启抱闸
 			
@@ -80,7 +81,9 @@ void	StateMachine_Task(void * parg)
 	----------------------------------------------------------------------------*/
 void	LED_Task(void * parg)
 {
-	uint8_t	data[2];
+	uint8_t		data[2]={0x55,0xAA};
+	uint16_t	rcv_data;
+	
 	(void)	parg;
 	while(1)
 	{
@@ -88,15 +91,13 @@ void	LED_Task(void * parg)
 		OSTimeDlyHMSM(0,0,0,10);
 		LED_ON();
 		OSTimeDlyHMSM(0,0,0,10);
-			
-		/*NMT COB报文内容*/
-		data[0]							=	0x55;
-		data[1]							=	0xAA;
-		
-		while(!CAN1_TX_Data((CanTxMsg*)&(m_can.TxMessage),
-							0x0000,
-							(uint8_t*)&data,
-							2));
+
+
+//CAN发送报文测试
+//		while(!CAN1_TX_Data((CanTxMsg*)&(m_can.TxMessage),
+//							0x0000,
+//							(uint8_t*)&data,
+//							2));
 	}
 }
 

@@ -439,11 +439,6 @@
               <FilePath>.\User\current_filter.c</FilePath>
             </File>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\delay.c</FilePath>
-            </File>
-            <File>
               <FileName>global_parameters.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\global_parameters.c</FilePath>
@@ -459,9 +454,19 @@
               <FilePath>.\User\stm32f4xx_it.c</FilePath>
             </File>
             <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\delay.c</FilePath>
+            </File>
+            <File>
               <FileName>system_stm32f4xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\system_stm32f4xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>jingle_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\jingle_math.c</FilePath>
             </File>
           </Files>
         </Group>

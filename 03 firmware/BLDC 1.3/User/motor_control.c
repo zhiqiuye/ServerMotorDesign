@@ -340,31 +340,31 @@ void	Speed_PID_Cal(volatile PID_Struct * pid)
 
 #ifdef	MEASURE_SPEED_REFIN
 //--------------------20180817test	
-	f_temp					=	m_motor_rt_para.m_encoder.f_motor_cal_speed + 1.5f; //spd_in + 1.5f;//									//跟踪目标电压
-	u32_temp				=	(uint32_t)(f_temp * 819.0f);//(uint32_t)(f_temp * 409.6f);//					//5rps对应3.3V
+	f_temp					=	m_motor_rt_para.m_encoder.f_abs_pos / 120.0f;	//跟踪目标电压
+	u32_temp				=	(uint32_t)(f_temp * 1365.3f);					//5rps对应3.3V
 	if(u32_temp>4095) u32_temp 		= 	4095;
 	DAC_SetChannel1Data(DAC_Align_12b_R,(uint16_t)u32_temp);
 #endif
 	
-	/*将pid输出值累加到电流设置值*/
-	m_motor_ctrl.f_set_current		=	pid_inc;		
-	
-	/*限定电流值为正，并且根据电流值正负来换向*/
-	if(m_motor_ctrl.f_set_current > 0.0f)
-	{
-		m_motor_ctrl.u8_dir			=	1;
-		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
-	}
-	else if(m_motor_ctrl.f_set_current < -0.0f)
-	{
-		m_motor_ctrl.u8_dir			=	0;
-		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
-	}
-	else
-	{
-		m_motor_ctrl.f_set_current	=	0.0f;
-	}
-	
+//	/*将pid输出值累加到电流设置值*/
+//	m_motor_ctrl.f_set_current		=	pid_inc;		
+//	
+//	/*限定电流值为正，并且根据电流值正负来换向*/
+//	if(m_motor_ctrl.f_set_current > 0.0f)
+//	{
+//		m_motor_ctrl.u8_dir			=	1;
+//		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+//	}
+//	else if(m_motor_ctrl.f_set_current < -0.0f)
+//	{
+//		m_motor_ctrl.u8_dir			=	0;
+//		startup_switch_table[m_motor_ctrl.u8_dir][m_motor_rt_para.u8_hall_state]();
+//	}
+//	else
+//	{
+//		m_motor_ctrl.f_set_current	=	0.0f;
+//	}
+//	
 	m_motor_ctrl.u8_current_set_data_refreshed	=	1;							//电流设置数据更新
 }
 

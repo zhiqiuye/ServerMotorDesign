@@ -62,10 +62,10 @@ int main()
 	
 /*电机参数初始化*/
 	ParametersInit();
-	
-/*芯片外设初始化*/
-	Board_Init();
 
+/*芯片外设初始化*/
+	Board_Init();	
+	
 /*进入操作系统*/
 	OSInit();
 	
@@ -160,6 +160,7 @@ static void	Board_Init(void)
 	NVIC_Config();									//中断优先级配置
 	GPIO_Config();									//端口配置
 	
+	SPI1_DMA_Config();								//绝对值编码器接口
 	Timer1_Config();								//PWM生成/电流环定时器配置				配置时已打开
 	Timer2_Config();								//产生1KHz的中断，进行速度位置环调节	配置时关闭
 	Timer3_Config();								//正交编码器定时器配置，M法测量			配置时已打开

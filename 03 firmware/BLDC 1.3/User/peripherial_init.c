@@ -26,6 +26,7 @@
 #include	"delay.h"
 #include	"motor_control.h"
 
+uint8_t		wdata_temp[5]	=	{0xAA,0xAA,0xAA,0xAA,0xAA};
 
 	/*---------------------------------------------------------------------------
 	函数名称			：NVIC_Config(void)
@@ -54,6 +55,14 @@ void	NVIC_Config(void)
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
+	/*Hall 传感器输入捕获中断，TIM4输入捕获中断*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	TIM4_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);	
+	
 	/*ADC-DMA 传输完成中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream0_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
@@ -71,33 +80,32 @@ void	NVIC_Config(void)
 	NVIC_Init(&NVIC_InitStructure);
 	
 	/*编码器输入模式，TIM3 编码器计数溢出中断*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	
-	NVIC_Init(&NVIC_InitStructure);
-	
-	/*Hall 传感器输入捕获中断，TIM4输入捕获中断*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	
-	NVIC_Init(&NVIC_InitStructure);
+//	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+//	
+//	NVIC_Init(&NVIC_InitStructure);
 	
 	/*CAN BUS 接收发送中断初始化*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_RX0_IRQn;			//FIFO0的接收中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;						//
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;						//
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
 	NVIC_Init(&NVIC_InitStructure);
 	
 	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_TX_IRQn;			//FIFO0的发送中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;						//
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;						//
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
 	NVIC_Init(&NVIC_InitStructure);	
+
+	/*SPI 1 DMA RX中断*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;						//响应优先级
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 
 }
 	
@@ -217,6 +225,26 @@ void	GPIO_Config(void)
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource11,GPIO_AF_CAN1);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource12,GPIO_AF_CAN1);
 	
+/*SPI 1 端口初始化 读取绝对值编码器数据***********/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_OType		=	GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd		=	GPIO_PuPd_NOPULL;//DOWN;
+	GPIO_InitStructure.GPIO_Speed		=	GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_Pin			=	GPIO_Pin_3|GPIO_Pin_5;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_OType		=	GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd		=	GPIO_PuPd_DOWN;//NOPULL;
+	GPIO_InitStructure.GPIO_Speed		=	GPIO_Speed_100MHz;	
+	GPIO_InitStructure.GPIO_Pin			=	GPIO_Pin_4;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);	
+	
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource3,GPIO_AF_SPI1);
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource4,GPIO_AF_SPI1);
+	GPIO_PinAFConfig(GPIOB,GPIO_PinSource5,GPIO_AF_SPI1);
+	
 /*test 20180739 pc 0*/
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Mode		=	GPIO_Mode_OUT;
@@ -254,15 +282,113 @@ void	USART3_DMA_Config(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：SPI1_DMA_Config(void)
 	参数含义			：null
-	函数功能			：与网卡芯片W5500通讯使用
+	函数功能			：	SPI1使用DMA方式通讯
+							SPI1	-	CLK		-	PB3
+							SPI1	-	MISO	-	PB4
+
+							SPI1 TX	-	DMA2 Stream3 Ch3
+							SPI1 RX	-	DMA2 Stream2 Ch3
 	----------------------------------------------------------------------------*/
 void	SPI1_DMA_Config(void)
 {
+	SPI_InitTypeDef		SPI_InitStructure;
+	DMA_InitTypeDef		DMA_InitStructure;
+	
+/*时钟配置************/
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2,ENABLE);
+	
+/*SPI 1 配置************/
+	SPI_I2S_DeInit(SPI1);
+	SPI_StructInit(&SPI_InitStructure);
+	SPI_InitStructure.SPI_BaudRatePrescaler	=	SPI_BaudRatePrescaler_256;							//外设时钟84MHz
+	SPI_InitStructure.SPI_Direction			=	SPI_Direction_2Lines_FullDuplex;//SPI_Direction_1Line_Rx;//
+	SPI_InitStructure.SPI_Mode				=	SPI_Mode_Master;
+	SPI_InitStructure.SPI_DataSize			=	SPI_DataSize_8b;
+	SPI_InitStructure.SPI_CPHA				=	SPI_CPHA_2Edge;										//第二个跳变沿读取数据
+	SPI_InitStructure.SPI_CPOL				=	SPI_CPOL_High;										//总线空闲为高电平
+	SPI_InitStructure.SPI_NSS				=	SPI_NSS_Soft;										//软件控制片选信号
+	SPI_InitStructure.SPI_FirstBit			=	SPI_FirstBit_MSB;									//高位在前
+	SPI_Init(SPI1,&SPI_InitStructure);
+	SPI_CalculateCRC(SPI1,DISABLE);																	//关闭CRC校验
+	SPI_Cmd(SPI1,ENABLE);																			//使能SPI1
+	
+/*SPI DMA Init*/
+	DMA_DeInit(DMA2_Stream2);
+	DMA_DeInit(DMA2_Stream3);
+	
+/*Rx SPI1 DMA通道初始化*/
+	DMA_StructInit(&DMA_InitStructure);
+	DMA_InitStructure.DMA_Channel				=	DMA_Channel_3;										//DMA通道选择
+	DMA_InitStructure.DMA_PeripheralBaseAddr	=	(uint32_t)(&SPI1->DR);								//DMA外设地址为SPI的数据寄存器
+	DMA_InitStructure.DMA_Memory0BaseAddr		=	(uint32_t)(&m_motor_rt_para.m_encoder.u8_abs_raw_data[0]);//DMA的内存地址设置
+	DMA_InitStructure.DMA_DIR					=	DMA_DIR_PeripheralToMemory;							//DMA方向为从外设寄存器到内存
+	DMA_InitStructure.DMA_BufferSize			=	0;													//DMA的Buffer设置大小，实际使用时再做改动
+	DMA_InitStructure.DMA_PeripheralInc			=	DMA_PeripheralInc_Disable;							//外设地址不变
+	DMA_InitStructure.DMA_MemoryInc				=	DMA_MemoryInc_Enable;								//内存地址递增
+	DMA_InitStructure.DMA_PeripheralDataSize	=	DMA_PeripheralDataSize_Byte;						//外设数据宽度为8bits
+	DMA_InitStructure.DMA_MemoryDataSize		=	DMA_MemoryDataSize_Byte;							//内存数据宽为8bits
+	DMA_InitStructure.DMA_Mode					=	DMA_Mode_Normal;									//
+	DMA_InitStructure.DMA_Priority				=	DMA_Priority_High;									//DMA优先级别
+	DMA_InitStructure.DMA_FIFOMode				=	DMA_FIFOMode_Disable;								//不用fifo模式，使用直接模式
+	DMA_InitStructure.DMA_FIFOThreshold			=	DMA_FIFOThreshold_Full;								//fifo的阈值
+	DMA_InitStructure.DMA_MemoryBurst			=	DMA_MemoryBurst_Single;								//内存单次传输数据宽度，每次转移一个数据
+	DMA_InitStructure.DMA_PeripheralBurst		=	DMA_PeripheralBurst_Single;							//外设单次传输数据宽度，每次转移一个数据
+	DMA_Init(DMA2_Stream2,&DMA_InitStructure);
+	
+/*Tx SPI1 DMA通道初始化*/
+	DMA_InitStructure.DMA_Channel				=	DMA_Channel_3;
+	DMA_InitStructure.DMA_PeripheralBaseAddr	=	(uint32_t)(&SPI1->DR);
+	DMA_InitStructure.DMA_Memory0BaseAddr		=	(uint32_t)(&wdata_temp[0]);
+	DMA_InitStructure.DMA_DIR					=	DMA_DIR_MemoryToPeripheral;	
+	DMA_InitStructure.DMA_BufferSize			=	0;
+	DMA_InitStructure.DMA_Priority				=	DMA_Priority_Low;
+	DMA_Init(DMA2_Stream3,&DMA_InitStructure);
+	
+	SPI_I2S_DMACmd(SPI1,SPI_I2S_DMAReq_Tx,ENABLE);
+	SPI_I2S_DMACmd(SPI1,SPI_I2S_DMAReq_Rx,ENABLE);
+	
+/*SPI DMA Rx中断配置*/	
+	DMA_ITConfig(DMA2_Stream2, DMA_IT_TC | DMA_IT_TE, ENABLE);
+/*SPI DMA Tx中断配置*/
+	DMA_ITConfig(DMA2_Stream3, DMA_IT_TC | DMA_IT_TE, ENABLE);
 
+	DMA_Cmd(DMA2_Stream2,DISABLE);
+	DMA_Cmd(DMA2_Stream3,DISABLE);	
+	DMA_ClearITPendingBit(DMA2_Stream2,DMA_IT_TCIF2);
+	DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
 }
 
 
 	/*---------------------------------------------------------------------------
+	函数名称			：	SPI_DMA_ReadData
+	参数含义			：	length			读取数据长度
+	函数功能			：	通过SPI DMA方式读取绝对编码器位置
+							读取数据存储在readBuf[1]开始的地方，readBuf[0]中不是
+	----------------------------------------------------------------------------*/
+void SPI_DMA_ReadData(uint16_t length)
+{
+	DMA_ClearITPendingBit(DMA2_Stream2,DMA_IT_TCIF2);
+	DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
+	DMA2_Stream2->NDTR		=	length;
+	DMA2_Stream2->M0AR		=	(uint32_t)&m_motor_rt_para.m_encoder.u8_abs_raw_data[0];
+	DMA2_Stream3->NDTR		=	length;
+	DMA2_Stream3->M0AR		=	(uint32_t)&wdata_temp[0];
+	DMA_Cmd(DMA2_Stream2,ENABLE);
+	DMA_Cmd(DMA2_Stream3,ENABLE);
+}
+
+
+
+void SPI_DMA_WriteData(uint16_t length)
+{
+	DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
+	DMA2_Stream3->NDTR		=	length;
+	DMA2_Stream3->M0AR		=	(uint32_t)&wdata_temp[0];
+	DMA_Cmd(DMA2_Stream3,ENABLE);
+}
+
+	/*PWM产生，电流环更新--------------------------------------------------------
 	函数名称			：Timer1_Config(void)
 	参数含义			：null
 	函数功能			：	三路H桥的驱动信号				timer1 APB2上 84MHz
@@ -335,7 +461,7 @@ void	Timer1_Config(void)
 }
 
 
-	/*---------------------------------------------------------------------------
+	/*速度位置环更新-------------------------------------------------------------
 	函数名称			：Timer2_Config(void)
 	参数含义			：null
 	函数功能			：产生1KHz频率中断，进行速度位置环的PI调节
@@ -364,7 +490,7 @@ void	Timer2_Config(void)
 }
 
 
-	/*---------------------------------------------------------------------------
+	/*光电增量编码器-------------------------------------------------------------
 	函数名称			：Timer3_Config(void)
 	参数含义			：null
 	函数功能			：用于接收光电编码器的信号			timer3 APB1上42MHz
@@ -416,7 +542,7 @@ void	Timer3_Config(void)
 }
 
 
-	/*---------------------------------------------------------------------------
+	/*霍尔中断信号---------------------------------------------------------------
 	函数名称			：Timer4_Config(void)
 	参数含义			：null
 	函数功能			：	用于检测霍尔传感器状态			timer4 APB1上42MHz
@@ -466,7 +592,7 @@ void	Timer4_Config(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*低速T法测速----------------------------------------------------------------
 	函数名称			：	Timer5_Config(void)
 	参数含义			：	null
 	函数功能			：	用于高速端光电编码器低速值测量，即测量脉宽
@@ -541,7 +667,7 @@ void	Timer5_Config(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*电流环检测DMA方式----------------------------------------------------------
 	函数名称			：ADC_DMA_Config(void)
 	参数含义			：null
 	函数功能			：ADC引脚与DMA初始化
@@ -648,7 +774,7 @@ void	DAC_Config(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*CAN总线接口----------------------------------------------------------------
 	函数名称			：CAN_Config(void)
 	参数含义			：null
 	函数功能			：
@@ -660,7 +786,7 @@ void	CAN_Config(void)
 	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1,ENABLE);
 	
-/*        CAN总线初始化,CAN总线在APB1总线，频率为42MHz        */
+/*        CAN总线初始化,CAN总线在APB1总线，频率为42MHz      */
 /*			baudrate	=	1/(tq + tbs1 + tbs2)			*/
 /*			tq 			=	(BRP + 1) * tpclk				*/
 /*			tbs1		=	tq * (TS1 + 1)					*/
@@ -672,7 +798,7 @@ void	CAN_Config(void)
 	CAN_InitStructure.CAN_ABOM			=	DISABLE;								//DISABLE：软件自动离线管理，ENABLE：如果检测到总线上错误，本节点自动离线
 	CAN_InitStructure.CAN_AWUM			=	DISABLE;								//DISABLE：睡眠模式通过软件唤醒，ENABLE：自动唤醒
 	CAN_InitStructure.CAN_TTCM			=	DISABLE;								//关闭时间触发通讯模式
-	CAN_InitStructure.CAN_NART			=	ENABLE;								//ENABLE：禁止报文自动传送，DISABLE：如果报文发送不成功，自动重发
+	CAN_InitStructure.CAN_NART			=	ENABLE;									//ENABLE：禁止报文自动传送，DISABLE：如果报文发送不成功，自动重发
 	CAN_InitStructure.CAN_RFLM			=	DISABLE;								//报文不锁定，在接收报文的FIFO发生溢出，DISABLE：新报文覆盖旧报文，ENABLE：不覆盖旧报文
 	CAN_InitStructure.CAN_TXFP			=	DISABLE;								//DISABLE：优先级由报文标识符决定
 	CAN_InitStructure.CAN_Mode			=	CAN_Mode_Normal;						//使用普通模式
@@ -697,6 +823,7 @@ void	CAN_Config(void)
 	CAN_FilterInit(&CAN_FilterInitStructure);
 	
 	CAN_ITConfig(CAN1,CAN_IT_FMP0 | CAN_IT_FF0 | CAN_IT_TME,ENABLE);				//FIFO0接收中断；FIFO0满中断；发送邮箱空中断
+	
 }
 
 

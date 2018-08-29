@@ -18,6 +18,7 @@
 #include	"stm32f4xx.h"
 #include	"stm32f4xx_can.h"
 
+/* Private typedef -----------------------------------------------------------*/
 
 
 void	NVIC_Config(void);
@@ -25,6 +26,8 @@ void	GPIO_Config(void);
 void	USART2_DMA_Config(void);
 void	USART3_DMA_Config(void);
 void	SPI1_DMA_Config(void);
+void	SPI_DMA_ReadData(uint16_t length);
+void 	SPI_DMA_WriteData(uint16_t length);
 void	Timer1_Config(void);
 /*上下桥臂开关*/
 void	TIM1_CH1_OFF_CH1N_ON(void);

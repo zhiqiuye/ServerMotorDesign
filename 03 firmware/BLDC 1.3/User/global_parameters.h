@@ -113,11 +113,17 @@ typedef struct
 	/*脉宽部分*/
 	uint32_t		u32_pulse_width_buf[PW_BUFFER_LENGTH];
 	
-	/*码盘数据结果*/
+	/*增量码盘数据结果*/
 	uint32_t		u32_pulse_width;					//相邻脉冲产生的时间差，低速时测量
 	float 			f_motor_cal_speed;					//计算获得的电机转速，rps
 	float			f_shaft_cal_speed;					//计算获得的减速后输出转速，rps
 	int32_t			i32_pulse_cnt;						//累加的码盘位置数据s
+	
+	/*绝对值编码器数据*/
+	uint8_t			u8_abs_data_refreshed;				//绝对值编码器数据更新完毕	0 无数据	1 获取到原始数据	2 从原始数据提取到位置值
+	uint8_t			u8_abs_raw_data[4];					//绝对值编码器原始读数，32位
+	uint16_t		u16_abs_cnt;						//从原始数据分离的角度位置数据
+	float			f_abs_pos;							//低速端角度位置
 }encoder_rt_para;
 
 
