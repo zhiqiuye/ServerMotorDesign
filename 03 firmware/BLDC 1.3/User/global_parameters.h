@@ -160,27 +160,29 @@ typedef	struct
 /*控制参数------------------------------------------------------------------------------*/
 typedef	struct
 {
-	uint8_t		u8_dir;									//转动方向
+	uint8_t		u8_dir;											//转动方向
 	
 	/*状态更新标志位*/
-	uint8_t			u8_current_read_data_refreshed;		//读取反馈电流更新标志
-	uint8_t			u8_current_set_data_refreshed;		//设置电流值更新
-	uint8_t			u8_speed_read_data_refreshed;		//读取速度值更新标志
-	uint8_t			u8_speed_set_data_refreshed;		//设置速度值更新
-	uint8_t			u8_position_read_data_refreshed;	//读取位置值更新
-	uint8_t			u8_position_set_data_refreshed;		//设置位置值更新
+	uint8_t		u8_current_read_data_refreshed;					//读取反馈电流更新标志
+	uint8_t		u8_current_set_data_refreshed;					//设置电流值更新
+	uint8_t		u8_speed_read_data_refreshed;					//读取速度值更新标志
+	uint8_t		u8_speed_set_data_refreshed;					//设置速度值更新
+	uint8_t		u8_position_read_data_refreshed;				//读取位置值更新
+	uint8_t		u8_position_set_data_refreshed;					//设置位置值更新
 	
-	uint8_t		u8_is_currloop_used;					//开启电流环标志位
-	float		f_set_current;							//设置电流值，浮点型		正负确定dir和int_set_current
-	int32_t		i32_set_current;						//设置电流值，无符号整形
+	uint8_t		u8_is_currloop_used;							//开启电流环标志位
+	float		f_set_current;									//设置电流值，浮点型		正负确定dir和int_set_current
+	int32_t		i32_set_current;								//设置电流值，无符号整形
 	
 	uint8_t		u8_is_speedloop_used;
-	float		f_set_speed;							//设置速度值，浮点型
-	int32_t		i32_set_speed;							//设置速度值，无符号整形	
+	float		f_set_speed;									//设置速度值，浮点型
+	int32_t		i32_set_speed;									//设置速度值，无符号整形	
 	
 	uint8_t		u8_is_posloop_used;
-	float		f_set_position;							//设置位置值，浮点型
-	int32_t		i32_set_position;						//设置位置值，无符号整形
+	float		f_set_position;									//设置位置值，浮点型
+	int32_t		i32_set_position;								//设置位置值，无符号整形
+	
+	uint8_t		u8_abs_encoder_used;							//是否使用增量编码器
 }motor_control_para;
 
 

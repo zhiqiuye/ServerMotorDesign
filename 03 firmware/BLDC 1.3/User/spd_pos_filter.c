@@ -302,8 +302,6 @@ void	Read_AbsEncoder(void)
 	uint16_t	data_high,data_low ;
 	uint16_t	data_1,data_2,data_3;
 	
-//	while(m_motor_rt_para.m_encoder.u8_abs_data_refreshed	!=	1);						//等待ssi数据更新
-
 	data_low	=	(uint16_t)(m_motor_rt_para.m_encoder.u8_abs_raw_data[2] << 8) || (m_motor_rt_para.m_encoder.u8_abs_raw_data[3]);
 	
 	/*查看低9位错误位是否有报警*/

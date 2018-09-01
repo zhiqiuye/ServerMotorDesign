@@ -70,17 +70,18 @@ float32_t		f_sin				=	0.0f;				//正弦
 #define			POS_CYC				(1000.0f/POS_FQC)
 #endif
 
-float		ft;
+uint8_t			tim8_cnts = 0;
 
 
 /* Private function prototypes -----------------------------------------------*/
-
+//			GPIOC->ODR	|=	0x0001;				//置高C1
+//			GPIOC->ODR	&=	0xFFFE;		
 /* Private functions ---------------------------------------------------------*/
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/
-	/*---------------------------------------------------------------------------
+	/*电流环/脉宽更新------------------------------------------------------------
 	函数名称			：TIM1_UP_TIM10_IRQHandler(void)
 	参数含义			：null
 	函数功能			：	PWM计数器溢出中断，产生频率是40KHz，是PWM频率的2倍
@@ -91,12 +92,11 @@ float		ft;
 	----------------------------------------------------------------------------*/
 void	TIM1_UP_TIM10_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM1,TIM_IT_Update)!=RESET)
+	if(TIM1->SR & TIM_IT_Update)																		//TIM_GetITStatus(TIM1,TIM_IT_Update)!=RESET)
 	{
 		/*当计数器向上溢出中断时进行ADC采集*/
 		if(TIM1->CR1 & 0x0010)
 		{
-//			GPIOC->ODR	|=	0x0001;															//置高C1
 			/*如果开启电流环更新，不做电流跟随的情况下，下面代码运行时间1.3us*/
 			if(m_motor_ctrl.u8_is_currloop_used ==	1)
 			{
@@ -108,9 +108,9 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				m_motor_ctrl.f_set_current						=	f_sin;
 				m_motor_ctrl.u8_current_set_data_refreshed		=	1;
 				if(step_cnt == 0)
-					GPIOC->ODR	|=	0x0001;
+;//					GPIOC->ODR	|=	0x0001;
 				if(step_cnt == (uint32_t)(CURRENT_CYC/2.0f))
-					GPIOC->ODR	&=	0xFFFE;
+;//					GPIOC->ODR	&=	0xFFFE;
 #endif
 				/*电流值更新后，进入电流环的DMA中断*/
 				if(m_motor_ctrl.u8_current_read_data_refreshed	==	1)
@@ -119,7 +119,6 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 					m_motor_ctrl.u8_current_read_data_refreshed	=	0;									
 				}
 			}
-//			GPIOC->ODR	&=	0xFFFE;		
 		}
 		else
 		{
@@ -137,27 +136,25 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 }
 
 
-	/*---------------------------------------------------------------------------
+	/*速度环/位置环更新----------------------------------------------------------
 	函数名称			：	TIM2_IRQHandler(void)
 	参数含义			：	null
 	函数功能			：	定时更新速度位置环，1Khz（1ms周期）更新中，
-							
+							TIM2的时钟由TIM8产生
 							速度环更新耗时	3.5us
 	----------------------------------------------------------------------------*/
 void	TIM2_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
+	if(TIM2->SR & TIM_IT_Update)														//TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
-		Requir_AbsEncoder();															//读取绝对值编码器数据
-//		GPIOC->ODR	|=	0x0001;			
+		tim8_cnts	=	0;
 		Read_IncEncoder();																//读取编码器数据，耗时1us
-//		GPIOC->ODR	&=	0xFFFE;	
-		Read_AbsEncoder();
+		if(m_motor_ctrl.u8_abs_encoder_used)
+			Read_AbsEncoder();															//解析SSI读取数据
 		
 		/*更新位置环*/
 		if(m_motor_ctrl.u8_is_posloop_used	==	1)
 		{
-			
 #ifdef	USE_POSITION_TRACE	/*产生目标正弦位置信号，*/
 			f_sin	=	POS_AMP * arm_sin_f32((float32_t)step_cnt * _2PI / POS_CYC );
 			step_cnt++;
@@ -185,8 +182,7 @@ void	TIM2_IRQHandler(void)
 		if(m_motor_ctrl.u8_is_speedloop_used	==	1)
 		{
 			if(m_motor_ctrl.u8_speed_read_data_refreshed	==	1)						//更新速度环pid参数
-			{
-				
+			{	
 #ifdef	USE_SPEED_TRACE	/*产生目标正弦速度信号，计算时间4us*/
 				f_sin	=	SPEED_AMP * arm_sin_f32( (float32_t)step_cnt * _2PI / SPEED_CYC );
 				step_cnt++;
@@ -215,18 +211,18 @@ void	TIM2_IRQHandler(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*增量编码器溢出-------------------------------------------------------------
 	函数名称			：	TIM3_IRQHandler(void)
 	参数含义			：	null
 	函数功能			：	TIM3编码器模式溢出中断，以及I相输入捕获中断							
 	----------------------------------------------------------------------------*/
 void	TIM3_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)										//AB相计数溢出中断
+	if(TIM3->SR & TIM_IT_Update)															//TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)		//AB相计数溢出中断
 	{
 	}
 	
-	if(TIM_GetITStatus(TIM3,TIM_IT_CC3) != RESET)											//I相输入捕获中断
+	if(TIM3->SR & TIM_IT_CC3)																//TIM_GetITStatus(TIM3,TIM_IT_CC3) != RESET)		//I相输入捕获中断
 	{
 		
 	}
@@ -237,14 +233,14 @@ void	TIM3_IRQHandler(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*霍尔换向捕获中断-----------------------------------------------------------
 	函数名称			：TIM4_IRQHandler(void)
 	参数含义			：null
 	函数功能			：捕获Hall传感器信号进行换向
 	----------------------------------------------------------------------------*/
 void	TIM4_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM4,TIM_IT_CC1)!=RESET)
+	if(TIM4->SR & TIM_IT_CC1)																//TIM_GetITStatus(TIM4,TIM_IT_CC1)!=RESET)
 	{
 		Hall_Start_Convert();																//霍尔换向
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
@@ -253,25 +249,29 @@ void	TIM4_IRQHandler(void)
 
 
 
-	/*---------------------------------------------------------------------------
-	函数名称			：TIM5_IRQHandler(void)
-	参数含义			：null
-	函数功能			：
+
+	/*TIM2时钟源，定时触发绝对值编码器读数---------------------------------------
+	函数名称			：	TIM8_UP_TIM13_IRQHandler(void)
+	参数含义			：	null
+	函数功能			：	TIM8定时溢出中断，用于触发TIM2并且触发SPI_DMA读取
 	----------------------------------------------------------------------------*/
-void	TIM5_IRQHandler(void)
+void	TIM8_UP_TIM13_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)!=RESET)
+	if(TIM8->SR & TIM_IT_Update)														//TIM_GetITStatus(TIM8,TIM_IT_Update)!=RESET
 	{
-		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
+		tim8_cnts++;
+		if(tim8_cnts == 8)																//计数到8，启动SSI读取绝对值编码器数据，读数时间大概为
+		{
+			if(m_motor_ctrl.u8_abs_encoder_used)
+				Requir_AbsEncoder();													//读取绝对值编码器数据
+		}
+		TIM_ClearITPendingBit(TIM8,TIM_IT_Update);
 	}
 }
 
 
 
-
-
-
-	/*---------------------------------------------------------------------------
+	/*ADC DMA传输完成，相电流采集------------------------------------------------
 	函数名称			：DMA2_Stream0_IRQHandler(void)
 	参数含义			：null
 	函数功能			：	ADC-DMA传输完成中断，在PWM高低电平中间位置开始采样，持续6us结束，
@@ -285,27 +285,27 @@ void	TIM5_IRQHandler(void)
 	----------------------------------------------------------------------------*/
 void	DMA2_Stream0_IRQHandler(void)
 {
-	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
+	if(DMA2->LISR & DMA_IT_TCIF0)																				//DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0) == SET)//					
 	{
-		Current_Average_X8_Filter(&m_motor_rt_para);												//对原始电流数据进行滑动窗口滤波，以及突变点剔除
+		Current_Average_X8_Filter(&m_motor_rt_para);															//对原始电流数据进行滑动窗口滤波，以及突变点剔除
 		m_motor_rt_para.f_adc_UVW_I					=	(float)(m_motor_rt_para.u16_uvw_current)*0.0100708f;
 
-		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
+		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF0 & 0x0F7D0F7D);												//DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }
 
 
 
 
-/******************************************************************************
-*			函数说明：	CAN1_RX0_IRQHandler(void)
-*			参数说明：	无
-*			使用范围：	CAN1  FIFO0 的接收中断
-*******************************************************************************/
+	/*CAN接收中断----------------------------------------------------------------
+	*			函数说明：	CAN1_RX0_IRQHandler(void)
+	*			参数说明：	无
+	*			使用范围：	CAN1  FIFO0 的接收中断
+	---------------------------------------------------------------------------*/
 void	CAN1_RX0_IRQHandler(void)
 {
 	OSIntEnter();
-	if(CAN_GetITStatus(CAN1,CAN_IT_FMP0) == SET)								//FIFO 0 message pending Interrupt,FIFO0接收中断
+	if(CAN_GetITStatus(CAN1,CAN_IT_FMP0) == SET)							//FIFO 0 message pending Interrupt,FIFO0接收中断
 	{
 		CAN_ClearITPendingBit(CAN1,CAN_IT_FMP0);
 		/*进行接收处理*/
@@ -367,11 +367,11 @@ void	CAN1_RX0_IRQHandler(void)
 
 
 
-/******************************************************************************
-*			函数说明：	CAN1_TX_IRQHandler(void)
-*			参数说明：	无
-*			使用范围：	CAN1  FIFO0 的接收中断
-*******************************************************************************/
+	/*CAN发送中断----------------------------------------------------------------
+	*			函数说明：	CAN1_TX_IRQHandler(void)
+	*			参数说明：	无
+	*			使用范围：	CAN1  FIFO0 的接收中断
+	----------------------------------------------------------------------------*/
 void	CAN1_TX_IRQHandler(void)
 {
 	OSIntEnter();
@@ -407,22 +407,22 @@ void	CAN1_TX_IRQHandler(void)
 
 
 
-	/*---------------------------------------------------------------------------
+	/*SPI DMA传输完成，SSI信号读完-----------------------------------------------
 	函数名称			：DMA2_Stream2_IRQHandler
 	参数含义			：
 	函数功能			：SPI1 RX DMA
 	----------------------------------------------------------------------------*/
-void DMA2_Stream2_IRQHandler(void)
+void 	DMA2_Stream2_IRQHandler(void)
 {
-	if(DMA_GetITStatus(DMA2_Stream2,DMA_IT_TCIF2)!=RESET)								//DMA完成中断
+	if(DMA2->LISR & DMA_IT_TCIF2)																					//DMA_GetITStatus(DMA2_Stream2,DMA_IT_TCIF2)!=RESET)								//DMA完成中断
 	{
-		DMA_ClearITPendingBit(DMA2_Stream2,DMA_IT_TCIF2);
-		DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
-
 		m_motor_rt_para.m_encoder.u8_abs_data_refreshed		=	1;
 
 		DMA_Cmd(DMA2_Stream2,DISABLE);
 		DMA_Cmd(DMA2_Stream3,DISABLE);
+		
+		DMA2->LIFCR		=	(uint32_t)(DMA_IT_TCIF2 & 0x0F7D0F7D);													//DMA_ClearITPendingBit(DMA2_Stream2,DMA_IT_TCIF2);
+		DMA2->LIFCR		=	(uint32_t)(DMA_IT_TCIF3 & 0x0F7D0F7D);													//DMA_ClearITPendingBit(DMA2_Stream3,DMA_IT_TCIF3);
 	}
 }
 

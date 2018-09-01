@@ -79,31 +79,31 @@ void	NVIC_Config(void)
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
-	/*编码器输入模式，TIM3 编码器计数溢出中断*/
-//	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
-//	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-//	
-//	NVIC_Init(&NVIC_InitStructure);
+	/*TIM8 速度位置环输入时钟源*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	TIM8_UP_TIM13_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);
 	
 	/*CAN BUS 接收发送中断初始化*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_RX0_IRQn;			//FIFO0的接收中断
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;						//
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;						//
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
 	NVIC_Init(&NVIC_InitStructure);
 	
 	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_TX_IRQn;			//FIFO0的发送中断
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;						//
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;						//
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
 	NVIC_Init(&NVIC_InitStructure);	
 
 	/*SPI 1 DMA RX中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//抢占优先级
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;						//响应优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;						//响应优先级
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
@@ -323,7 +323,7 @@ void	SPI1_DMA_Config(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr	=	(uint32_t)(&SPI1->DR);								//DMA外设地址为SPI的数据寄存器
 	DMA_InitStructure.DMA_Memory0BaseAddr		=	(uint32_t)(&m_motor_rt_para.m_encoder.u8_abs_raw_data[0]);//DMA的内存地址设置
 	DMA_InitStructure.DMA_DIR					=	DMA_DIR_PeripheralToMemory;							//DMA方向为从外设寄存器到内存
-	DMA_InitStructure.DMA_BufferSize			=	0;													//DMA的Buffer设置大小，实际使用时再做改动
+	DMA_InitStructure.DMA_BufferSize			=	4;													//DMA的Buffer设置大小，实际使用时再做改动
 	DMA_InitStructure.DMA_PeripheralInc			=	DMA_PeripheralInc_Disable;							//外设地址不变
 	DMA_InitStructure.DMA_MemoryInc				=	DMA_MemoryInc_Enable;								//内存地址递增
 	DMA_InitStructure.DMA_PeripheralDataSize	=	DMA_PeripheralDataSize_Byte;						//外设数据宽度为8bits
@@ -341,7 +341,7 @@ void	SPI1_DMA_Config(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr	=	(uint32_t)(&SPI1->DR);
 	DMA_InitStructure.DMA_Memory0BaseAddr		=	(uint32_t)(&wdata_temp[0]);
 	DMA_InitStructure.DMA_DIR					=	DMA_DIR_MemoryToPeripheral;	
-	DMA_InitStructure.DMA_BufferSize			=	0;
+	DMA_InitStructure.DMA_BufferSize			=	4;
 	DMA_InitStructure.DMA_Priority				=	DMA_Priority_Low;
 	DMA_Init(DMA2_Stream3,&DMA_InitStructure);
 	
@@ -464,8 +464,9 @@ void	Timer1_Config(void)
 	/*速度位置环更新-------------------------------------------------------------
 	函数名称			：Timer2_Config(void)
 	参数含义			：null
-	函数功能			：产生1KHz频率中断，进行速度位置环的PI调节
-							timer2时钟频率为84MHz APB1上42MHz，
+	函数功能			：	产生1KHz频率中断，进行速度位置环的PI调节
+							TIM2时钟作为从定时器使用，其主定时器为TIM8，
+							TIM8产生10KHz时钟信号，
 							要更新位置环速度环，需要打开TIM2
 	----------------------------------------------------------------------------*/
 void	Timer2_Config(void)
@@ -480,11 +481,15 @@ void	Timer2_Config(void)
 	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStructure);
 	TIM_TimeBaseInitStructure.TIM_ClockDivision				=	TIM_CKD_DIV1;
 	TIM_TimeBaseInitStructure.TIM_CounterMode				=	TIM_CounterMode_Up;
-	TIM_TimeBaseInitStructure.TIM_Period					=	4200-1;
-	TIM_TimeBaseInitStructure.TIM_Prescaler					=	20-1;			
+	TIM_TimeBaseInitStructure.TIM_Period					=	5-1;
+	TIM_TimeBaseInitStructure.TIM_Prescaler					=	2-1;			
 	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseInitStructure);
-	TIM_Cmd(TIM2,DISABLE);
+	
+	TIM_SelectSlaveMode(TIM2,TIM_SlaveMode_Trigger);											//TIM2选择从模式的触发模式
+	TIM_SelectInputTrigger(TIM2,TIM_TS_ITR1);													//选择TIM8的输出信号作为时钟源
+	TIM_ITRxExternalClockConfig(TIM2,TIM_TS_ITR1);												//选择外部时钟触发
 
+	TIM_Cmd(TIM2,DISABLE);
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);
 }
@@ -665,6 +670,40 @@ void	Timer5_Config(void)
 	TIM_Cmd(TIM5,ENABLE);	
 }
 
+	/*电流环速度环同步定时，读数绝对值编码器-------------------------------------------------------
+	函数名称			：	Timer8_Config(void)
+	参数含义			：	null
+	函数功能			：	用于 定时触发spi dma，
+							TIM8 挂在APB2上，时钟为168Mhz
+							工作在主模式，10KHz触发TIM2（速度位置环更新）作为从定时器
+							TIM8触发信号为ITR0
+							在定时器中断中开启spi dma读取信号，获取ssi信号值的时间在
+							200us左右
+	----------------------------------------------------------------------------*/
+void	Timer8_Master_Config(void)
+{
+	TIM_TimeBaseInitTypeDef	TIM_BaseInitStructure;
+	TIM_ICInitTypeDef		TIM_ICInitStructure;
+
+/*时钟开启*/
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8,ENABLE);
+	
+/*定时器基础设置*/
+	TIM_BaseInitStructure.TIM_ClockDivision			=	TIM_CKD_DIV1;						//时钟分频系数1，使用168Mhz时钟频率
+	TIM_BaseInitStructure.TIM_CounterMode			=	TIM_CounterMode_Up;					//向上计数模式
+	TIM_BaseInitStructure.TIM_Period				=	840 - 1;							//计数最大值
+	TIM_BaseInitStructure.TIM_Prescaler				=	20 - 1;								//预分频系数2，使用84MHz
+	TIM_TimeBaseInit(TIM8,&TIM_BaseInitStructure);
+
+	TIM_SelectOutputTrigger(TIM8,TIM_TRGOSource_Update);									//选择TIM9的级联输出信号为TRGO
+	TIM_SelectMasterSlaveMode(TIM8,TIM_MasterSlaveMode_Enable);								//打开TIM9的级联模式
+	
+/*TIM9中断配置，定时器溢出中断*/
+	TIM_ClearFlag(TIM8,TIM_IT_Update);
+	TIM_ITConfig(TIM8,TIM_IT_Update,ENABLE);												//使能更新中断
+	TIM_Cmd(TIM8,DISABLE);
+}
+
 
 
 	/*电流环检测DMA方式----------------------------------------------------------
@@ -677,7 +716,7 @@ void	Timer5_Config(void)
 							PA4				ADC12_IN_4			电源电压
 							ADC2	DMA2  stream 0 channel 0
 	----------------------------------------------------------------------------*/
-void	ADC_DMA_Config(void)
+void	ADC2_DMA_Config(void)
 {
 	ADC_InitTypeDef			ADC_InitStructure;
 	ADC_CommonInitTypeDef	ADC_CommonInitStructure;

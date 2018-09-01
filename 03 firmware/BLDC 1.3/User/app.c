@@ -43,7 +43,7 @@ void	StateMachine_Task(void * parg)
 		}
 		else if(m_sys_state.u8_cur_state == Run_state)
 		{
-
+			m_motor_ctrl.u8_abs_encoder_used	=	1;
 		}
 		else if(m_sys_state.u8_cur_state == Prepare_state)
 		{
@@ -58,9 +58,9 @@ void	StateMachine_Task(void * parg)
 //			PositionLoopRefresh_TIM_Start();
 			
 			SpeedLoopRefresh_TIM_Start();													//开启速度位置环更新定时器
-			
+
 			CurrentLoopRefresh_TIM_Start();													//开启电流环更新
-			
+
 			m_sys_state.u8_cur_state 	=	Run_state;
 			m_sys_state.u8_pre_state	=	Prepare_state;
 		}
@@ -88,9 +88,9 @@ void	LED_Task(void * parg)
 	while(1)
 	{
 		LED_OFF();
-		OSTimeDlyHMSM(0,0,0,10);
+		OSTimeDlyHMSM(0,0,0,800);
 		LED_ON();
-		OSTimeDlyHMSM(0,0,0,10);
+		OSTimeDlyHMSM(0,0,0,200);
 
 
 //CAN发送报文测试
@@ -123,9 +123,7 @@ void	RS485_Task(void * parg)
 		
 		DAC_SetChannel1Data(DAC_Align_12b_R,dac_value);*/
 		
-
-		
-		OSTimeDlyHMSM(0,0,5,100);
+		OSTimeDlyHMSM(0,0,1,0);
 	}
 }
 

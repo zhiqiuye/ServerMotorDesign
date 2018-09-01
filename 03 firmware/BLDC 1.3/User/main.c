@@ -165,8 +165,9 @@ static void	Board_Init(void)
 	Timer2_Config();								//产生1KHz的中断，进行速度位置环调节	配置时关闭
 	Timer3_Config();								//正交编码器定时器配置，M法测量			配置时已打开
 	Timer4_Config();								//Hall传感器输入捕获中断				配置时已打开
-	Timer5_Config();								//高速端光电编码器低速测量 T法测量		0813尚未配置
-	ADC_DMA_Config();								//ADC采集DMA使能
+	Timer5_Config();								//高速端光电编码器低速测量 T法测量		配置时开启
+	Timer8_Master_Config();							//定时器9作为TIM2的输入，				配置时关闭
+	ADC2_DMA_Config();								//ADC2采集DMA使能，采集相电流
 	DAC_Config();
 	CAN_Config();
 	

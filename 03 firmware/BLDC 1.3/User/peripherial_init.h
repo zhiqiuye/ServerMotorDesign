@@ -29,30 +29,12 @@ void	SPI1_DMA_Config(void);
 void	SPI_DMA_ReadData(uint16_t length);
 void 	SPI_DMA_WriteData(uint16_t length);
 void	Timer1_Config(void);
-/*上下桥臂开关*/
-void	TIM1_CH1_OFF_CH1N_ON(void);
-void	TIM1_CH1_OFF_CH1N_OFF(void);
-void	TIM1_CH1_ON_CH1N_OFF(void);
-void	TIM1_CH1_OFF_CH1N_PWM(void);
-void	TIM1_CH1_PWM_CH1N_OFF(void);
-
-void	TIM1_CH2_OFF_CH2N_ON(void);
-void	TIM1_CH2_OFF_CH2N_OFF(void);
-void	TIM1_CH2_ON_CH2N_OFF(void);
-void	TIM1_CH2_OFF_CH2N_PWM(void);
-void	TIM1_CH2_PWM_CH2N_OFF(void);
-
-void	TIM1_CH3_OFF_CH3N_ON(void);
-void	TIM1_CH3_OFF_CH3N_OFF(void);
-void	TIM1_CH3_ON_CH3N_OFF(void);
-void	TIM1_CH3_OFF_CH3N_PWM(void);
-void	TIM1_CH3_PWM_CH3N_OFF(void);
-
 void	Timer2_Config(void);
 void	Timer3_Config(void);
 void	Timer4_Config(void);
 void	Timer5_Config(void);
-void	ADC_DMA_Config(void);
+void	Timer8_Master_Config(void);
+void	ADC2_DMA_Config(void);
 void	CAN_Config(void);
 uint8_t CAN1_TX_Data(volatile CanTxMsg * msg,uint32_t stdID,uint8_t * data,uint8_t dataLen);
 void	BrakeControl(uint8_t	mode);

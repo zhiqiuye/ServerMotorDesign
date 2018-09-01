@@ -26,14 +26,16 @@ Project File Date:  08/25/2018
 
 <h2>Output:</h2>
 Build target 'uCOSII 2.92 V1.3'
-compiling spd_pos_filter.c...
-User\spd_pos_filter.c(302): warning:  #177-D: variable "data_high" was declared but never referenced
-        uint16_t        data_high,data_low ;
-User\spd_pos_filter.c: 1 warning, 0 errors
+compiling stm32f4xx_it.c...
+User\hall_reversal_6steps.h(18): warning:  #815-D: type qualifier on return type is meaningless
+  extern        const   void    (*runtime_switch_table[2][8])() ;
+User\hall_reversal_6steps.h(19): warning:  #815-D: type qualifier on return type is meaningless
+  extern        const   void    (*startup_switch_table[2][8])();
+User\stm32f4xx_it.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=23172 RO-data=2848 RW-data=244 ZI-data=10956  
+Program Size: Code=23252 RO-data=2848 RW-data=244 ZI-data=10956  
 FromELF: creating hex file...
-".\Objects\BLDC Driver.axf" - 0 Error(s), 1 Warning(s).
+".\Objects\BLDC Driver.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   E:\01 my_Project\08 SeverMotor\ServerMotorDesign\03 firmware\BLDC 1.3\RTE

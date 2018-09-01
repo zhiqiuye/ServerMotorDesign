@@ -179,6 +179,7 @@ void	SpeedLoopRefresh_TIM_Start(void)
 	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
+	TIM_Cmd(TIM8,ENABLE);
 }
 
 
@@ -208,6 +209,7 @@ void	PositionLoopRefresh_TIM_Start(void)
 	
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_Cmd(TIM2,ENABLE);
+	TIM_Cmd(TIM8,ENABLE);
 }
 
 
