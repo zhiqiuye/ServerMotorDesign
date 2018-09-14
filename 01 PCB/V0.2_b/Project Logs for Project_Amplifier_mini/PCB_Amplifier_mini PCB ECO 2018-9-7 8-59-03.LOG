@@ -1,0 +1,171 @@
+Removed Pin From Net: NetName=A_GND Pin=Abs Encoder-6
+Removed Pin From Net: NetName=A_GND Pin=Abs Encoder-7
+Removed Pin From Net: NetName=A_GND Pin=Abs Encoder-7
+Removed Pin From Net: NetName=3V3_D_GND Pin=C1-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C2-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C3-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=C4-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=C5-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=C6-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C7-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C8-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C9-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C10-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=C60-1
+Removed Pin From Net: NetName=A_GND Pin=Co2-1
+Removed Pin From Net: NetName=A_GND Pin=Co4-1
+Removed Pin From Net: NetName=A_GND Pin=Co6-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=D4-3
+Removed Pin From Net: NetName=3V3_D_GND Pin=D4-4
+Removed Pin From Net: NetName=A_GND Pin=FE2-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=FE3-2
+Removed Pin From Net: NetName=VIN Pin=FE4-2
+Removed Pin From Net: NetName=DAC_OUT1 Pin=MH3-1
+Removed Pin From Net: NetName=A_GND Pin=MH4-1
+Removed Pin From Net: NetName=5V Pin=MH5-1
+Removed Pin From Net: NetName=SEN_3_RAW Pin=MH6-1
+Removed Pin From Net: NetName=W_COIL Pin=MH7-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=R1-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=R2-1
+Removed Pin From Net: NetName=3V3_D_GND Pin=R3-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=R5-2
+Removed Pin From Net: NetName=A_GND Pin=R31-1
+Removed Pin From Net: NetName=A_GND Pin=R32-1
+Removed Pin From Net: NetName=A_GND Pin=R33-1
+Removed Pin From Net: NetName=NetC72_2 Pin=U2-1
+Removed Pin From Net: NetName=NetR75_1 Pin=U2-4
+Removed Pin From Net: NetName=A_GND Pin=U2-6
+Removed Pin From Net: NetName=15V Pin=U2-7
+Removed Pin From Net: NetName=NetC72_1 Pin=U2-8
+Removed Pin From Net: NetName=A_GND Pin=U2-9
+Removed Pin From Net: NetName=3V3_D_GND Pin=U6-3
+Removed Pin From Net: NetName=3V3_D_GND Pin=U9-18
+Removed Pin From Net: NetName=3V3_D_GND Pin=U9-63
+Removed Pin From Net: NetName=3V3_D_GND Pin=U11-4
+Removed Pin From Net: NetName=3V3_D_GND Pin=U12-4
+Removed Pin From Net: NetName=3V3_D_GND Pin=U13-4
+Removed Pin From Net: NetName=3V3_D_GND Pin=U14-4
+Removed Pin From Net: NetName=3V3_D_GND Pin=U26-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=U27-5
+Removed Pin From Net: NetName=3V3_D_GND Pin=U27-8
+Removed Pin From Net: NetName=3V3_D_GND Pin=U28-3
+Removed Pin From Net: NetName=3V3_D_GND Pin=U29-3
+Removed Pin From Net: NetName=A_GND Pin=Vin_I-1
+Removed Pin From Net: NetName=A_GND Pin=Vin_II-1
+Removed Member From Class: ClassName=电源 Member=FE3
+Removed Member From Class: ClassName=电源 Member=FE4
+Removed Member From Class: ClassName=电源 Member=U2
+Added Component: Designator=*(28-Lead SOIC(wide body))
+Added Component: Designator=U(SOIC8)
+Added Pin To Net: NetName=A_GND Pin=C1-1
+Added Pin To Net: NetName=A_GND Pin=C2-1
+Added Pin To Net: NetName=A_GND Pin=C3-2
+Added Pin To Net: NetName=A_GND Pin=C4-2
+Added Pin To Net: NetName=A_GND Pin=C5-2
+Added Pin To Net: NetName=A_GND Pin=C6-1
+Added Pin To Net: NetName=A_GND Pin=C7-1
+Added Pin To Net: NetName=A_GND Pin=C8-1
+Added Pin To Net: NetName=A_GND Pin=C9-1
+Added Pin To Net: NetName=A_GND Pin=C10-1
+Added Pin To Net: NetName=A_GND Pin=C11-1
+Added Pin To Net: NetName=A_GND Pin=C12-1
+Added Pin To Net: NetName=A_GND Pin=C34-1
+Added Pin To Net: NetName=A_GND Pin=C35-1
+Added Pin To Net: NetName=A_GND Pin=C44-1
+Added Pin To Net: NetName=A_GND Pin=C45-1
+Added Pin To Net: NetName=A_GND Pin=C54-1
+Added Pin To Net: NetName=A_GND Pin=C55-1
+Added Pin To Net: NetName=A_GND Pin=C60-1
+Added Pin To Net: NetName=A_GND Pin=C74-2
+Added Pin To Net: NetName=A_GND Pin=C75-1
+Added Pin To Net: NetName=A_GND Pin=C76-1
+Added Pin To Net: NetName=A_GND Pin=C77-2
+Added Pin To Net: NetName=A_GND Pin=C79-1
+Added Pin To Net: NetName=A_GND Pin=C80-1
+Added Pin To Net: NetName=A_GND Pin=C84-1
+Added Pin To Net: NetName=A_GND Pin=C88-1
+Added Pin To Net: NetName=A_GND Pin=D4-3
+Added Pin To Net: NetName=A_GND Pin=D4-4
+Added Pin To Net: NetName=VIN Pin=FE2-1
+Added Pin To Net: NetName=VIN Pin=FE2-2
+Added Pin To Net: NetName=NetC91_2 Pin=MH1-1
+Added Pin To Net: NetName=NetC92_2 Pin=MH2-1
+Added Pin To Net: NetName=NetC93_2 Pin=MH3-1
+Added Pin To Net: NetName=NetC94_2 Pin=MH4-1
+Added Pin To Net: NetName=NetC95_2 Pin=MH5-1
+Added Pin To Net: NetName=NetC96_2 Pin=MH6-1
+Added Pin To Net: NetName=NetC97_2 Pin=MH7-1
+Added Pin To Net: NetName=A_GND Pin=R1-1
+Added Pin To Net: NetName=A_GND Pin=R2-1
+Added Pin To Net: NetName=A_GND Pin=R3-2
+Added Pin To Net: NetName=A_GND Pin=R5-2
+Added Pin To Net: NetName=A_GND Pin=R37-2
+Added Pin To Net: NetName=A_GND Pin=R47-2
+Added Pin To Net: NetName=A_GND Pin=R57-2
+Added Pin To Net: NetName=A_GND Pin=R86-1
+Added Pin To Net: NetName=A_GND Pin=R102-1
+Added Pin To Net: NetName=A_GND Pin=U3-3
+Added Pin To Net: NetName=A_GND Pin=U6-3
+Added Pin To Net: NetName=A_GND Pin=U7-3
+Added Pin To Net: NetName=A_GND Pin=U8-3
+Added Pin To Net: NetName=A_GND Pin=U9-12
+Added Pin To Net: NetName=A_GND Pin=U9-18
+Added Pin To Net: NetName=FAULT Pin=U9-27
+Added Pin To Net: NetName=EN Pin=U9-28
+Added Pin To Net: NetName=A_GND Pin=U9-63
+Added Pin To Net: NetName=A_GND Pin=U11-4
+Added Pin To Net: NetName=A_GND Pin=U12-4
+Added Pin To Net: NetName=A_GND Pin=U13-4
+Added Pin To Net: NetName=FAULT Pin=U14-2
+Added Pin To Net: NetName=A_GND Pin=U14-4
+Added Pin To Net: NetName=A_GND Pin=U15-5
+Added Pin To Net: NetName=A_GND Pin=U16-5
+Added Pin To Net: NetName=A_GND Pin=U17-5
+Added Pin To Net: NetName=A_GND Pin=U22-4
+Added Pin To Net: NetName=A_GND Pin=U23-4
+Added Pin To Net: NetName=A_GND Pin=U24-3
+Added Pin To Net: NetName=A_GND Pin=U25-3
+Added Pin To Net: NetName=A_GND Pin=U26-2
+Added Pin To Net: NetName=A_GND Pin=U27-5
+Added Pin To Net: NetName=3V3_D Pin=U27-8
+Added Pin To Net: NetName=A_GND Pin=U28-3
+Added Pin To Net: NetName=A_GND Pin=U29-3
+Added Pin To Net: NetName=NetC72_2 Pin=U-1
+Added Pin To Net: NetName=NetR75_1 Pin=U-4
+Added Pin To Net: NetName=A_GND Pin=U-6
+Added Pin To Net: NetName=15V Pin=U-7
+Added Pin To Net: NetName=NetC72_1 Pin=U-8
+Added Pin To Net: NetName=A_GND Pin=U-9
+Change Net Name : Old Net Name=A_GND New Net Name=GND
+Change Net Name : Old Net Name=NetU9_2 New Net Name=BRAKE_CTRL
+Change Net Name : Old Net Name=NetU9_3 New Net Name=BRAKE_CLOSE
+Change Net Name : Old Net Name=NetU9_4 New Net Name=BRAKE_OPEN
+Change Net Name : Old Net Name=VIN New Net Name=VIN_P
+Added Pin To Net: NetName=A_GND Pin=Abs Encoder-6
+Added Pin To Net: NetName=A_GND Pin=Abs Encoder-7
+Added Pin To Net: NetName=A_GND Pin=Abs Encoder-7
+Added Net: Name=A_GND
+Added Pin To Net: NetName=CAN_RX Pin=U9-44
+Added Pin To Net: NetName=CAN_RX Pin=U26-1
+Added Net: Name=CAN_RX
+Added Pin To Net: NetName=CAN_TX Pin=U26-4
+Added Net: Name=CAN_TX
+Added Pin To Net: NetName=GND_PER Pin=Vin_I-1
+Added Pin To Net: NetName=GND_PER Pin=Vin_II-1
+Added Net: Name=GND_PER
+Added Pin To Net: NetName=VIN_G Pin=Co2-1
+Added Pin To Net: NetName=VIN_G Pin=Co4-1
+Added Pin To Net: NetName=VIN_G Pin=Co6-1
+Added Pin To Net: NetName=VIN_G Pin=R31-1
+Added Pin To Net: NetName=VIN_G Pin=R32-1
+Added Pin To Net: NetName=VIN_G Pin=R33-1
+Added Net: Name=VIN_G
+Added Member To Class: ClassName=H桥驱动部分 Member=Component * MOS驱动
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH1 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH2 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH3 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH4 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH5 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH6 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH7 M2 hole
+Added Member To Class: ClassName=电源 Member=Component U TPS5430

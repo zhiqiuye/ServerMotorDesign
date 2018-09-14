@@ -1,0 +1,32 @@
+Removed Pin From Net: NetName=SEN_1_RAW Pin=R34-1
+Removed Pin From Net: NetName=SEN_3_RAW Pin=R54-1
+Removed Pin From Net: NetName=5V Pin=U15-1
+Removed Pin From Net: NetName=NetC31_2 Pin=U15-2
+Removed Pin From Net: NetName=NetC31_1 Pin=U15-3
+Removed Pin From Net: NetName=A_GND Pin=U15-4
+Removed Pin From Net: NetName=3V3_A_GND Pin=U15-5
+Removed Pin From Net: NetName=NetR37_1 Pin=U15-6
+Removed Pin From Net: NetName=NetR36_1 Pin=U15-7
+Removed Pin From Net: NetName=3V3_A Pin=U15-8
+Added Component: Designator=C80(0603_C)
+Added Component: Designator=R85(0603_R)
+Added Component: Designator=R86(0603_R)
+Added Pin To Net: NetName=3V3_A_GND Pin=C80-1
+Added Pin To Net: NetName=NetC80_2 Pin=C80-2
+Added Pin To Net: NetName=SEN_3_RAW Pin=R34-1
+Added Pin To Net: NetName=SEN_1_RAW Pin=R54-1
+Added Pin To Net: NetName=NetC80_2 Pin=R85-1
+Added Pin To Net: NetName=3V3_A Pin=R85-2
+Added Pin To Net: NetName=3V3_A_GND Pin=R86-1
+Added Pin To Net: NetName=NetC80_2 Pin=R86-2
+Added Pin To Net: NetName=5V Pin=U15-1
+Added Pin To Net: NetName=NetC31_2 Pin=U15-2
+Added Pin To Net: NetName=NetC31_1 Pin=U15-3
+Added Pin To Net: NetName=A_GND Pin=U15-4
+Added Pin To Net: NetName=3V3_A_GND Pin=U15-5
+Added Pin To Net: NetName=NetR37_1 Pin=U15-6
+Added Pin To Net: NetName=NetR36_1 Pin=U15-7
+Added Pin To Net: NetName=3V3_A Pin=U15-8
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component C80 100nF (104) 10% 50V
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component R85 10KΩ (1002) ±1%
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component R86 10KΩ (1002) ±1%

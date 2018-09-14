@@ -1,0 +1,3 @@
+Removed Pin From Net: NetName=VIN Pin=FE4-1
+Change Component Footprint: Designator=U8 Old Footprint=SOT 23-5 New Footprint=5Lead SC70
+Added Pin To Net: NetName=VIN Pin=FE4-1

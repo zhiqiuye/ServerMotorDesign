@@ -1,0 +1,24 @@
+Replace Part Cff 0603 22nF (223) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 22nF (223) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part Cin 1206 10uF (106) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 1206 10uF (106) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part Css 0603 4.7nF (472) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 4.7nF (472) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part D1 0603 蟯腑 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 蟯腑 from Miscellaneous Devices LC.IntLib
+Replace Part D2 0603 蟯腑 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 蟯腑 from Miscellaneous Devices LC.IntLib
+Replace Part D3 0603 蟯腑 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 蟯腑 from Miscellaneous Devices LC.IntLib
+Replace Part FE1 0603 1次 (1R00) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1次 (1R00) 1% from Miscellaneous Devices LC.IntLib
+Replace Part FE2 0603 1次 (1R00) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1次 (1R00) 1% from Miscellaneous Devices LC.IntLib
+Replace Part FE3 0603 1次 (1R00) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1次 (1R00) 1% from Miscellaneous Devices LC.IntLib
+Replace Part FE4 0603 1次 (1R00) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1次 (1R00) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R77 0603 1K次 (1001) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1K次 (1001) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R78 0603 1K次 (1001) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1K次 (1001) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R79 0603 1K次 (1001) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1K次 (1001) 1% from Miscellaneous Devices LC.IntLib
+Replace Part Renb 0603 270K次 (2703) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 270K次 (2703) 1% from Miscellaneous Devices LC.IntLib
+Replace Part Rent 0603 270K次 (2703) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 270K次 (2703) 1% from Miscellaneous Devices LC.IntLib
+Replace Part Rfbb 0603 1.8K次 (1801) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 1.8K次 (1801) 1% from Miscellaneous Devices LC.IntLib
+Replace Part Rfbt 0603 36K次 (3602) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 36K次 (3602) 1% from Miscellaneous Devices LC.IntLib
+Replace Part Ron 0603 270K次 (2703) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with 0603 270K次 (2703) 1% from Miscellaneous Devices LC.IntLib
+Replace Part U1 LMZ14201 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with LMZ14201 from KuangJing.SchLib
+Replace Part U3 LM1117-3.3 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with LM1117-3.3 from KuangJing.SchLib
+Replace Part U4 PSM712-LF-T7_[C32677] in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with PSM712-LF-T7_[C32677] from Miscellaneous Devices LC.IntLib
+Replace Part U5 PSM712-LF-T7_[C32677] in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with PSM712-LF-T7_[C32677] from Miscellaneous Devices LC.IntLib
+Replace Part U6 PSM712-LF-T7_[C32677] in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with PSM712-LF-T7_[C32677] from Miscellaneous Devices LC.IntLib
+Replace Part U7 PSM712-LF-T7_[C32677] in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\01_power_source.SchDoc with PSM712-LF-T7_[C32677] from Miscellaneous Devices LC.IntLib

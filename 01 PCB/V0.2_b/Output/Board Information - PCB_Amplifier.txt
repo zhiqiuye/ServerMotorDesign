@@ -1,0 +1,12 @@
+Board Information Report
+Filename     : E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\PCB_Amplifier.PcbDoc
+Date         : 2018/9/6
+Time         : 15:20:15
+Time Elapsed : 00:00:00
+
+Routing Information
+    Routing completion, 100.00%
+    Connections, 537
+    Connections routed, 537
+    Connections remaining, 0
+count : 4

@@ -1,0 +1,372 @@
+Removed Pin From Net: NetName=A_GND Pin=C25-1
+Removed Pin From Net: NetName=15V Pin=C26-2
+Removed Pin From Net: NetName=A_GND Pin=D4-2
+Removed Pin From Net: NetName=VIN_G Pin=D4-3
+Removed Pin From Net: NetName=NetD5_A Pin=D5-A
+Removed Pin From Net: NetName=A_GND Pin=D5-K
+Removed Pin From Net: NetName=NetD6_A Pin=D6-A
+Removed Pin From Net: NetName=A_GND Pin=D6-K
+Removed Pin From Net: NetName=3V3_D_GND Pin=D8-K
+Removed Pin From Net: NetName=HIN2 Pin=R6-1
+Removed Pin From Net: NetName=5V Pin=R6-2
+Removed Pin From Net: NetName=HIN3 Pin=R7-1
+Removed Pin From Net: NetName=5V Pin=R7-2
+Removed Pin From Net: NetName=LIN3 Pin=R8-1
+Removed Pin From Net: NetName=5V Pin=R8-2
+Removed Pin From Net: NetName=HIN1 Pin=R9-1
+Removed Pin From Net: NetName=5V Pin=R9-2
+Removed Pin From Net: NetName=LIN1 Pin=R10-1
+Removed Pin From Net: NetName=5V Pin=R10-2
+Removed Pin From Net: NetName=LIN2 Pin=R11-1
+Removed Pin From Net: NetName=5V Pin=R11-2
+Removed Pin From Net: NetName=15V Pin=R15-2
+Removed Pin From Net: NetName=A_GND Pin=R16-2
+Removed Pin From Net: NetName=FAULT Pin=R29-1
+Removed Pin From Net: NetName=5V Pin=R29-2
+Removed Pin From Net: NetName=EN Pin=R30-1
+Removed Pin From Net: NetName=5V Pin=R30-2
+Removed Pin From Net: NetName=EN Pin=R31-2
+Removed Pin From Net: NetName=EN Pin=R32-1
+Removed Pin From Net: NetName=A_GND Pin=R33-2
+Removed Pin From Net: NetName=NetC62_2 Pin=R60-1
+Removed Pin From Net: NetName=5V Pin=R60-2
+Removed Pin From Net: NetName=NetC63_2 Pin=R61-1
+Removed Pin From Net: NetName=5V Pin=R61-2
+Removed Pin From Net: NetName=NetC64_2 Pin=R62-1
+Removed Pin From Net: NetName=5V Pin=R62-2
+Removed Pin From Net: NetName=NetC65_2 Pin=R63-1
+Removed Pin From Net: NetName=5V Pin=R63-2
+Removed Pin From Net: NetName=NetC66_2 Pin=R64-1
+Removed Pin From Net: NetName=5V Pin=R64-2
+Removed Pin From Net: NetName=NetC67_2 Pin=R65-1
+Removed Pin From Net: NetName=5V Pin=R65-2
+Removed Pin From Net: NetName=3V3_D Pin=R72-2
+Removed Pin From Net: NetName=3V3_D Pin=R73-2
+Removed Pin From Net: NetName=SPI1_MOSI Pin=R80-2
+Removed Pin From Net: NetName=SPI1_MISO Pin=R81-2
+Removed Pin From Net: NetName=EN Pin=U5-10
+Removed Pin From Net: NetName=3V3_D_GND Pin=U14-8
+Removed Pin From Net: NetName=OPEN_SIG Pin=U14-11
+Removed Pin From Net: NetName=CLOSE_SIG Pin=U14-12
+Removed Pin From Net: NetName=BRAKE_INPUT_SIG Pin=U14-13
+Removed Pin From Net: NetName=SSI_CLK Pin=U14-14
+Removed Pin From Net: NetName=SSI_DATA Pin=U14-16
+Removed Pin From Net: NetName=3V3_D_GND Pin=U15-8
+Removed Pin From Net: NetName=5V Pin=U20-1
+Removed Pin From Net: NetName=5V Pin=U20-2
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-1
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-2
+Removed Pin From Net: NetName=NetC80_2 Pin=U23-3
+Removed Pin From Net: NetName=3V3_A_GND Pin=U23-4
+Removed Pin From Net: NetName=3V3_A Pin=U23-8
+Removed Pin From Net: NetName=NetC83_2 Pin=U24-1
+Removed Pin From Net: NetName=NetC83_1 Pin=U24-2
+Removed Pin From Net: NetName=NetC82_2 Pin=U24-3
+Removed Pin From Net: NetName=3V3_A_GND Pin=U24-4
+Removed Pin From Net: NetName=NetC86_1 Pin=U24-5
+Removed Pin From Net: NetName=NetC87_1 Pin=U24-6
+Removed Pin From Net: NetName=NetC87_2 Pin=U24-7
+Removed Pin From Net: NetName=3V3_A Pin=U24-8
+Removed Member From Class: ClassName=H桥驱动部分 Member=C25
+Removed Member From Class: ClassName=H桥驱动部分 Member=C26
+Removed Member From Class: ClassName=电源 Member=D4
+Removed Member From Class: ClassName=H桥驱动部分 Member=R6
+Removed Member From Class: ClassName=H桥驱动部分 Member=R7
+Removed Member From Class: ClassName=H桥驱动部分 Member=R8
+Removed Member From Class: ClassName=H桥驱动部分 Member=R9
+Removed Member From Class: ClassName=H桥驱动部分 Member=R10
+Removed Member From Class: ClassName=H桥驱动部分 Member=R11
+Removed Member From Class: ClassName=H桥驱动部分 Member=R15
+Removed Member From Class: ClassName=H桥驱动部分 Member=R16
+Removed Member From Class: ClassName=H桥驱动部分 Member=R17
+Removed Member From Class: ClassName=H桥驱动部分 Member=R29
+Removed Member From Class: ClassName=H桥驱动部分 Member=R30
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R60
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R61
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R62
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R63
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R64
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=R65
+Removed Member From Class: ClassName=主控芯片 Member=R80
+Removed Member From Class: ClassName=主控芯片 Member=R81
+Change Component DesignItemId : Designator=D8 Old DesignItemId=0603 绿灯 New DesignItemId=0603 红灯
+Change Component DesignItemId : Designator=D5 Old DesignItemId=0603 绿灯 New DesignItemId=SMA(DO-214AC) M7
+Change Component DesignItemId : Designator=D6 Old DesignItemId=0603 绿灯 New DesignItemId=SMA(DO-214AC) M7
+Change Component DesignItemId : Designator=R81 Old DesignItemId=0603 0Ω (0R0) 1% New DesignItemId=0603 220Ω (2200) 1%
+Change Component DesignItemId : Designator=R60 Old DesignItemId=0603 4.7KΩ (4701) 1% New DesignItemId=0603 2.2KΩ (2201) 1%
+Change Component DesignItemId : Designator=R31 Old DesignItemId=0603 11KΩ (1102) 1% New DesignItemId=0603 100Ω (1000) 1%
+Change Component DesignItemId : Designator=R32 Old DesignItemId=0603 11KΩ (1102) 1% New DesignItemId=0603 100Ω (1000) 1%
+Change Component DesignItemId : Designator=R33 Old DesignItemId=0603 11KΩ (1102) 1% New DesignItemId=0603 100Ω (1000) 1%
+Change Component DesignItemId : Designator=U5 Old DesignItemId=IR2136STRPBF New DesignItemId=IR2130
+Change Component DesignItemId : Designator=U23 Old DesignItemId=TLV2772_D_8 New DesignItemId=PSM712-LF-T7_[C32677]
+Change Component DesignItemId : Designator=U24 Old DesignItemId=TLV2772_D_8 New DesignItemId=PSM712-LF-T7_[C32677]
+Change Component DesignItemId : Designator=D4 Old DesignItemId=二极管 SBRT20U60SP5 New DesignItemId=SMA(DO-214AC) M7
+Change Component Footprint: Designator=D5 Old Footprint=0603_LED_S1 New Footprint=SMA(DO-214AC)_S1
+Change Component Footprint: Designator=D6 Old Footprint=0603_LED_S1 New Footprint=SMA(DO-214AC)_S1
+Change Component Footprint: Designator=Cin Old Footprint=1206_C New Footprint=Cap 6.3x5.4
+Change Component Footprint: Designator=D4 Old Footprint=SBRT20U60SP5 New Footprint=SMA(DO-214AC)_S1
+Change Component Footprint: Designator=U23 Old Footprint=SOP-8 New Footprint=SOT-23(SOT-23-3)
+Change Component Footprint: Designator=U24 Old Footprint=SOP-8 New Footprint=SOT-23(SOT-23-3)
+Change Component Footprint: Designator=U2 Old Footprint=SOT 23-5 New Footprint=5Lead SC70
+Change Component Comment : Designator=R81 Old Comment=0Ω (0R0) ±1% New Comment=220Ω (2200) ±1%
+Change Component Comment : Designator=R31 Old Comment=1KΩ ±1% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R33 Old Comment=1KΩ ±1% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R32 Old Comment=3KΩ ±1% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R60 Old Comment=4.7KΩ (4701) ±1% New Comment=2.2KΩ (2201) ±1%
+Change Component Comment : Designator=Cin Old Comment=10uF (106) 10% 50V New Comment=10uF (106) 10% 63V
+Change Component Comment : Designator=Cin1 Old Comment=12.5x13.5 68uF 100V New Comment=12.5x13.5 220uF 63V
+Change Component Comment : Designator=Cin2 Old Comment=12.5x13.5 68uF 100V New Comment=12.5x13.5 220uF 63V
+Change Component Comment : Designator=C73 Old Comment=68uF 35V New Comment=220uF 10V
+Change Component Comment : Designator=U5 Old Comment=IR2136STRPBF New Comment=IR2130
+Change Component Comment : Designator=D4 Old Comment=SBRT20U60SP5 New Comment=RS1J
+Change Component Comment : Designator=U23 Old Comment=TLV2772_D_8 New Comment=PESD3V3L2BT
+Change Component Comment : Designator=U24 Old Comment=TLV2772_D_8 New Comment=PESD3V3L2BT
+Change Component Comment : Designator=U17 Old Comment=TPS543x New Comment=TPS5430
+Change Component Comment : Designator=D5 Old Comment=绿灯 0603 New Comment=RS1J
+Change Component Comment : Designator=D6 Old Comment=绿灯 0603 New Comment=RS1J
+Change Component Comment : Designator=D8 Old Comment=绿灯 0603 New Comment=红灯 0603
+Change Component Description : Designator=U5 Old Description=600V，三相桥式驱动器，门驱动供应电压范围：10V to 20V New Description=3-phase bridge driver
+Added Component: Designator=C91(0603_C)
+Added Component: Designator=C92(0603_C)
+Added Component: Designator=C93(0603_C)
+Added Component: Designator=C94(0603_C)
+Added Component: Designator=C95(0603_C)
+Added Component: Designator=C96(0603_C)
+Added Component: Designator=C151(0603_C)
+Added Component: Designator=C152(0603_C)
+Added Component: Designator=C153(0603_C)
+Added Component: Designator=Co1(0603_C)
+Added Component: Designator=Co2(0603_C)
+Added Component: Designator=Co3(0603_C)
+Added Component: Designator=Co4(0603_C)
+Added Component: Designator=Co5(0603_C)
+Added Component: Designator=Co6(0603_C)
+Added Component: Designator=D5(0603_LED_S1)
+Added Component: Designator=D6(0603_LED_S1)
+Added Component: Designator=D8(0603*2)
+Added Component: Designator=FE4(0603_R)
+Added Component: Designator=R104(0603_R)
+Added Component: Designator=Rp1(0603_Rx4)
+Added Component: Designator=Rp2(0603_Rx4)
+Added Component: Designator=Rp3(0603_Rx4)
+Added Component: Designator=Rp4(0603_Rx4)
+Added Component: Designator=Rp5(0603_Rx4)
+Added Component: Designator=tp1(testPoint)
+Added Component: Designator=tp2(testPoint)
+Added Component: Designator=tp3(testPoint)
+Added Component: Designator=U20(SOT-23(SOT-23-3))
+Added Component: Designator=U23(SOP-8)
+Added Component: Designator=U24(SOP-8)
+Added Component: Designator=U25(SOT-23(SOT-23-3))
+Added Component: Designator=U26(SOT-23(SOT-23-3))
+Added Pin To Net: NetName=A_GND Pin=C91-1
+Added Pin To Net: NetName=A_GND Pin=C92-1
+Added Pin To Net: NetName=A_GND Pin=C93-1
+Added Pin To Net: NetName=A_GND Pin=C94-1
+Added Pin To Net: NetName=A_GND Pin=C95-1
+Added Pin To Net: NetName=A_GND Pin=C96-1
+Added Pin To Net: NetName=A_GND Pin=C151-1
+Added Pin To Net: NetName=CLOSE_SIG Pin=C151-2
+Added Pin To Net: NetName=A_GND Pin=C152-1
+Added Pin To Net: NetName=OPEN_SIG Pin=C152-2
+Added Pin To Net: NetName=A_GND Pin=C153-1
+Added Pin To Net: NetName=5V Pin=C153-2
+Added Pin To Net: NetName=U_COIL Pin=Co1-2
+Added Pin To Net: NetName=VIN_G Pin=Co2-1
+Added Pin To Net: NetName=U_COIL Pin=Co2-2
+Added Pin To Net: NetName=V_COIL Pin=Co3-2
+Added Pin To Net: NetName=VIN_G Pin=Co4-1
+Added Pin To Net: NetName=V_COIL Pin=Co4-2
+Added Pin To Net: NetName=W_COIL Pin=Co5-2
+Added Pin To Net: NetName=VIN_G Pin=Co6-1
+Added Pin To Net: NetName=W_COIL Pin=Co6-2
+Added Pin To Net: NetName=U_COIL Pin=D4-2
+Added Pin To Net: NetName=NetD5_A Pin=D5-A
+Added Pin To Net: NetName=A_GND Pin=D5-K
+Added Pin To Net: NetName=NetD6_A Pin=D6-A
+Added Pin To Net: NetName=A_GND Pin=D6-K
+Added Pin To Net: NetName=3V3_D_GND Pin=D8-3
+Added Pin To Net: NetName=3V3_D_GND Pin=D8-4
+Added Pin To Net: NetName=VIN_G Pin=FE4-1
+Added Pin To Net: NetName=A_GND Pin=FE4-2
+Added Pin To Net: NetName=VIN_G Pin=R31-1
+Added Pin To Net: NetName=VIN_G Pin=R32-1
+Added Pin To Net: NetName=VIN_G Pin=R33-1
+Added Pin To Net: NetName=FAULT Pin=R60-2
+Added Pin To Net: NetName=5V Pin=R72-2
+Added Pin To Net: NetName=5V Pin=R73-2
+Added Pin To Net: NetName=SSI_DATA Pin=R81-2
+Added Pin To Net: NetName=NetC62_2 Pin=Rp1-2
+Added Pin To Net: NetName=NetC63_2 Pin=Rp1-3
+Added Pin To Net: NetName=NetC64_2 Pin=Rp1-4
+Added Pin To Net: NetName=5V Pin=Rp1-5
+Added Pin To Net: NetName=5V Pin=Rp1-6
+Added Pin To Net: NetName=5V Pin=Rp1-7
+Added Pin To Net: NetName=NetC65_2 Pin=Rp2-2
+Added Pin To Net: NetName=NetC66_2 Pin=Rp2-3
+Added Pin To Net: NetName=NetC67_2 Pin=Rp2-4
+Added Pin To Net: NetName=5V Pin=Rp2-5
+Added Pin To Net: NetName=5V Pin=Rp2-6
+Added Pin To Net: NetName=5V Pin=Rp2-7
+Added Pin To Net: NetName=OPEN_SIG Pin=Rp3-5
+Added Pin To Net: NetName=CLOSE_SIG Pin=Rp3-6
+Added Pin To Net: NetName=BRAKE_INPUT_SIG Pin=Rp3-7
+Added Pin To Net: NetName=SSI_CLK Pin=Rp3-8
+Added Pin To Net: NetName=HIN2 Pin=Rp4-1
+Added Pin To Net: NetName=HIN3 Pin=Rp4-2
+Added Pin To Net: NetName=LIN3 Pin=Rp4-3
+Added Pin To Net: NetName=HIN1 Pin=Rp4-4
+Added Pin To Net: NetName=5V Pin=Rp4-5
+Added Pin To Net: NetName=5V Pin=Rp4-6
+Added Pin To Net: NetName=5V Pin=Rp4-7
+Added Pin To Net: NetName=5V Pin=Rp4-8
+Added Pin To Net: NetName=LIN1 Pin=Rp5-1
+Added Pin To Net: NetName=LIN2 Pin=Rp5-2
+Added Pin To Net: NetName=FAULT Pin=Rp5-3
+Added Pin To Net: NetName=EN Pin=Rp5-4
+Added Pin To Net: NetName=5V Pin=Rp5-5
+Added Pin To Net: NetName=5V Pin=Rp5-6
+Added Pin To Net: NetName=5V Pin=Rp5-7
+Added Pin To Net: NetName=5V Pin=Rp5-8
+Added Pin To Net: NetName=VIN_G Pin=U5-13
+Added Pin To Net: NetName=SPI1_MISO Pin=U14-1
+Added Pin To Net: NetName=3V3_D Pin=U14-8
+Added Pin To Net: NetName=A_GND Pin=U15-8
+Added Pin To Net: NetName=5V Pin=U20-1
+Added Pin To Net: NetName=5V Pin=U20-2
+Added Pin To Net: NetName=A_GND Pin=U20-3
+Added Pin To Net: NetName=NetPcan_2 Pin=U23-1
+Added Pin To Net: NetName=NetR87_1 Pin=U23-1
+Added Pin To Net: NetName=NetPcan_1 Pin=U23-2
+Added Pin To Net: NetName=NetR87_1 Pin=U23-2
+Added Pin To Net: NetName=NetC80_2 Pin=U23-3
+Added Pin To Net: NetName=3V3_A_GND Pin=U23-4
+Added Pin To Net: NetName=3V3_A Pin=U23-8
+Added Pin To Net: NetName=NetC83_2 Pin=U24-1
+Added Pin To Net: NetName=NetP485_2 Pin=U24-1
+Added Pin To Net: NetName=NetC83_1 Pin=U24-2
+Added Pin To Net: NetName=NetP485_1 Pin=U24-2
+Added Pin To Net: NetName=3V3_D_GND Pin=U24-3
+Added Pin To Net: NetName=NetC82_2 Pin=U24-3
+Added Pin To Net: NetName=3V3_A_GND Pin=U24-4
+Added Pin To Net: NetName=NetC86_1 Pin=U24-5
+Added Pin To Net: NetName=NetC87_1 Pin=U24-6
+Added Pin To Net: NetName=NetC87_2 Pin=U24-7
+Added Pin To Net: NetName=3V3_A Pin=U24-8
+Added Pin To Net: NetName=SIG_1_- Pin=U25-1
+Added Pin To Net: NetName=SIG_1_+ Pin=U25-2
+Added Pin To Net: NetName=3V3_A_GND Pin=U25-3
+Added Pin To Net: NetName=SIG_2_+ Pin=U26-1
+Added Pin To Net: NetName=SIG_2_- Pin=U26-2
+Added Pin To Net: NetName=3V3_A_GND Pin=U26-3
+Added Pin To Net: NetName=ADC123_IN2 Pin=C79-2
+Added Pin To Net: NetName=ADC123_IN2 Pin=R103-1
+Added Pin To Net: NetName=ADC123_IN2 Pin=U1-16
+Added Net: Name=ADC123_IN2
+Added Pin To Net: NetName=ADC123_IN3 Pin=C35-2
+Added Pin To Net: NetName=ADC123_IN3 Pin=R38-2
+Added Pin To Net: NetName=ADC123_IN3 Pin=U1-17
+Added Net: Name=ADC123_IN3
+Added Pin To Net: NetName=DAC_OUT1 Pin=tp1-1
+Added Pin To Net: NetName=DAC_OUT1 Pin=U1-20
+Added Net: Name=DAC_OUT1
+Added Pin To Net: NetName=DAC_OUT2 Pin=tp2-1
+Added Pin To Net: NetName=DAC_OUT2 Pin=U1-21
+Added Net: Name=DAC_OUT2
+Added Pin To Net: NetName=GND Pin=U23-3
+Added Net: Name=GND
+Added Pin To Net: NetName=NetC91_2 Pin=C91-2
+Added Net: Name=NetC91_2
+Added Pin To Net: NetName=NetC92_2 Pin=C92-2
+Added Net: Name=NetC92_2
+Added Pin To Net: NetName=NetC93_2 Pin=C93-2
+Added Net: Name=NetC93_2
+Added Pin To Net: NetName=NetC94_2 Pin=C94-2
+Added Net: Name=NetC94_2
+Added Pin To Net: NetName=NetC95_2 Pin=C95-2
+Added Net: Name=NetC95_2
+Added Pin To Net: NetName=NetC96_2 Pin=C96-2
+Added Net: Name=NetC96_2
+Added Pin To Net: NetName=NetCo1_1 Pin=Co1-1
+Added Pin To Net: NetName=NetCo1_1 Pin=R31-2
+Added Net: Name=NetCo1_1
+Added Pin To Net: NetName=NetCo3_1 Pin=Co3-1
+Added Pin To Net: NetName=NetCo3_1 Pin=R32-2
+Added Net: Name=NetCo3_1
+Added Pin To Net: NetName=NetCo5_1 Pin=Co5-1
+Added Pin To Net: NetName=NetCo5_1 Pin=R33-2
+Added Net: Name=NetCo5_1
+Added Pin To Net: NetName=NetD8_1 Pin=D8-1
+Added Pin To Net: NetName=NetD8_1 Pin=R100-1
+Added Net: Name=NetD8_1
+Added Pin To Net: NetName=NetD8_2 Pin=D8-2
+Added Pin To Net: NetName=NetD8_2 Pin=R104-1
+Added Net: Name=NetD8_2
+Added Pin To Net: NetName=NetD8_K Pin=R60-1
+Added Net: Name=NetD8_K
+Added Pin To Net: NetName=NetR81_1 Pin=R81-1
+Added Pin To Net: NetName=NetR81_1 Pin=U14-16
+Added Pin To Net: NetName=NetR81_1 Pin=U20-2
+Added Net: Name=NetR81_1
+Added Pin To Net: NetName=NetR104_2 Pin=R104-2
+Added Pin To Net: NetName=NetR104_2 Pin=U1-33
+Added Net: Name=NetR104_2
+Added Pin To Net: NetName=NetRp3_1 Pin=Rp3-1
+Added Pin To Net: NetName=NetRp3_1 Pin=U14-14
+Added Pin To Net: NetName=NetRp3_1 Pin=U20-1
+Added Net: Name=NetRp3_1
+Added Pin To Net: NetName=NetRp3_2 Pin=Rp3-2
+Added Pin To Net: NetName=NetRp3_2 Pin=U14-13
+Added Net: Name=NetRp3_2
+Added Pin To Net: NetName=NetRp3_3 Pin=Rp3-3
+Added Pin To Net: NetName=NetRp3_3 Pin=U14-12
+Added Net: Name=NetRp3_3
+Added Pin To Net: NetName=NetRp3_4 Pin=Rp3-4
+Added Pin To Net: NetName=NetRp3_4 Pin=U14-11
+Added Net: Name=NetRp3_4
+Added Pin To Net: NetName=Nettp3_1 Pin=tp3-1
+Added Pin To Net: NetName=Nettp3_1 Pin=U1-8
+Added Net: Name=Nettp3_1
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C91 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C92 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C93 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C94 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C95 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component C96 1nF (102) 10% 50V
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component C151 1nF (102) 10% 50V
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component C152 1nF (102) 10% 50V
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component C153 1uF (105) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co1 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co2 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co3 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co4 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co5 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co6 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D4 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D5 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D6 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D8 红灯 0603
+Added Member To Class: ClassName=电源 Member=Component FE4 
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R60 2.2KΩ (2201) ±1%
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component R81 220Ω (2200) ±1%
+Added Member To Class: ClassName=主控芯片 Member=Component R104 1KΩ (1001) ±1%
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component Rp1 1KΩ (102) ±5%
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component Rp2 1KΩ (102) ±5%
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component Rp3 220Ω (221) ±5%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Rp4 4.7KΩ (472) ±5%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Rp5 4.7KΩ (472) ±5%
+Added Member To Class: ClassName=主控芯片 Member=Component tp1 test point
+Added Member To Class: ClassName=主控芯片 Member=Component tp2 test point
+Added Member To Class: ClassName=主控芯片 Member=Component tp3 test point
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component U20 PESD5VL2BT
+Added Member To Class: ClassName=通讯接口 Member=Component U23 PESD3V3L2BT
+Added Member To Class: ClassName=通讯接口 Member=Component U24 PESD3V3L2BT
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component U25 PESD3V3L2BT
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component U26 PESD3V3L2BT
+Added Room: Name=H桥驱动部分
+Added Room: Name=主控芯片
+Added Room: Name=外接力矩传感器接口
+Added Room: Name=电源
+Added Room: Name=绝对编码器与抱闸
+Added Room: Name=通讯接口
+Added Room: Name=霍尔传感器以及增量编码器

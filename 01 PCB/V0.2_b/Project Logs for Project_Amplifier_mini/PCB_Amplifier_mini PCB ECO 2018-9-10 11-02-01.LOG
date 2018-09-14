@@ -1,0 +1,14 @@
+Removed Pin From Net: NetName=GND Pin=C151-1
+Removed Pin From Net: NetName=CLOSE_SIG Pin=C151-2
+Removed Pin From Net: NetName=GND Pin=C152-1
+Removed Pin From Net: NetName=OPEN_SIG Pin=C152-2
+Removed Pin From Net: NetName=CLOSE_SIG Pin=R72-1
+Removed Pin From Net: NetName=5V Pin=R72-2
+Removed Pin From Net: NetName=OPEN_SIG Pin=R73-1
+Removed Pin From Net: NetName=5V Pin=R73-2
+Removed Pin From Net: NetName=OPEN_SIG Pin=U21-7
+Removed Pin From Net: NetName=CLOSE_SIG Pin=U21-9
+Removed Member From Class: ClassName=¾ø¶Ô±àÂëÆ÷Óë±§Õ¢ Member=C151
+Removed Member From Class: ClassName=¾ø¶Ô±àÂëÆ÷Óë±§Õ¢ Member=C152
+Removed Member From Class: ClassName=¾ø¶Ô±àÂëÆ÷Óë±§Õ¢ Member=R72
+Removed Member From Class: ClassName=¾ø¶Ô±àÂëÆ÷Óë±§Õ¢ Member=R73

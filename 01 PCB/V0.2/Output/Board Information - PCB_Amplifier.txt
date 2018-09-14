@@ -1,12 +1,12 @@
 Board Information Report
-Filename     : E:\01 my_Project\08 BLDCandPMSM\06 BLDC_PMSM_Board\01 PCB\V0.1\PCB_Amplifier.PcbDoc
-Date         : 2018/7/13
-Time         : 18:22:47
+Filename     : E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\PCB_Amplifier.PcbDoc
+Date         : 2018/9/7
+Time         : 10:22:34
 Time Elapsed : 00:00:00
 
 Routing Information
     Routing completion, 100.00%
-    Connections, 484
-    Connections routed, 484
+    Connections, 537
+    Connections routed, 537
     Connections remaining, 0
 count : 4

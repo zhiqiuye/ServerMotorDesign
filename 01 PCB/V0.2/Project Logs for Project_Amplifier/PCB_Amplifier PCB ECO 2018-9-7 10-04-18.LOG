@@ -1,0 +1,82 @@
+Removed Pin From Net: NetName=VIN Pin=FE4-1
+Change Component Footprint: Designator=U8 Old Footprint=5Lead SC70 New Footprint=SOT 23-5
+Change Component Footprint: Designator=R26 Old Footprint=2512 New Footprint=0603_R
+Change Component Footprint: Designator=R27 Old Footprint=2512 New Footprint=0603_R
+Change Component Footprint: Designator=R28 Old Footprint=2512 New Footprint=0603_R
+Change Component Footprint: Designator=Cin Old Footprint=Cap 6.3x5.4 New Footprint=1206_C
+Change Component Comment : Designator=FE1 Old Comment= New Comment=1Ω (1R00) ±1%
+Change Component Comment : Designator=FE2 Old Comment= New Comment=1Ω (1R00) ±1%
+Change Component Comment : Designator=FE3 Old Comment= New Comment=1Ω (1R00) ±1%
+Change Component Comment : Designator=FE4 Old Comment= New Comment=1Ω (1R00) ±1%
+Change Component Comment : Designator=C3 Old Comment=0.1uF 0% 16V New Comment=2.2uF (225) 10% 16V
+Change Component Comment : Designator=C60 Old Comment=0.1uF (104) 10% 50V New Comment=10uF (106) 10% 10V
+Change Component Comment : Designator=C61 Old Comment=0.1uF (104) 10% 50V New Comment=10uF (106) 10% 10V
+Change Component Comment : Designator=R26 Old Comment=0.01 3W 0.5% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R27 Old Comment=0.01 3W 0.5% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R28 Old Comment=0.01 3W 0.5% New Comment=100Ω (1000) ±1%
+Change Component Comment : Designator=R78 Old Comment=1.9KΩ (1901) ±1% New Comment=1KΩ (1001) ±1%
+Change Component Comment : Designator=Rfbb Old Comment=1.91KΩ (1911) ±1% New Comment=1.8KΩ (1801) ±1%
+Change Component Comment : Designator=Renb Old Comment=4.32KΩ (4321) ±1% New Comment=270KΩ (2703) ±1%
+Change Component Comment : Designator=Cin Old Comment=10uF (106) 10% 63V New Comment=10uF (106) 10% 50V
+Change Component Comment : Designator=R34 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R35 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R36 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R37 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R38 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R44 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R45 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R46 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R47 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R48 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R54 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R55 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R56 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R57 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=R58 Old Comment=12Ω (12R0) ±1% New Comment=10Ω (10R0) ±1%
+Change Component Comment : Designator=C4 Old Comment=20pF 16V New Comment=6pF (6R0) 0.25pF 50V
+Change Component Comment : Designator=C5 Old Comment=20pF 16V New Comment=6pF (6R0) 0.25pF 50V
+Change Component Comment : Designator=Rfbt Old Comment=34KΩ (3402) ±1% New Comment=36KΩ (3602) ±1%
+Change Component Comment : Designator=Rent Old Comment=68KΩ (6802) ±1% New Comment=270KΩ (2703) ±1%
+Change Component Comment : Designator=R77 Old Comment=69KΩ (6901) ±1% New Comment=1KΩ (1001) ±1%
+Change Component Comment : Designator=R4 Old Comment=120Ω  ±1% New Comment=10KΩ (1002) ±1%
+Change Component Comment : Designator=Rp3 Old Comment=220Ω (221) ±5% New Comment=1KΩ (102) ±5%
+Change Component Comment : Designator=Ron Old Comment=287KΩ (2873) ±1% New Comment=270KΩ (2703) ±1%
+Change Component Comment : Designator=U6 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U7 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U24 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U25 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U28 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U29 Old Comment=PESD3V3L2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U5 Old Comment=PESD5VL2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U20 Old Comment=PESD5VL2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=U4 Old Comment=PESD15VL2BT New Comment=PSM712-LF-T7
+Change Component Comment : Designator=D5 Old Comment=RS1J New Comment=M7
+Change Component Comment : Designator=D6 Old Comment=RS1J New Comment=M7
+Change Component Comment : Designator=D7 Old Comment=RS1J New Comment=M7
+Change Component Comment : Designator=D8 Old Comment=RS1J New Comment=M7
+Change Component Comment : Designator=D9 Old Comment=RS1J New Comment=M7
+Change Component Comment : Designator=D10 Old Comment=RS1J New Comment=M7
+Change Component Description : Designator=U27 Old Description=485电平转化芯片 New Description=
+Change Component Description : Designator=D4 Old Description=0603双色LED，红，黄绿 New Description=
+Change Component Description : Designator=U26 Old Description=CAN收发芯片 New Description=
+Change Component Description : Designator=U4 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U5 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U6 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U7 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U20 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U24 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U25 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U28 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=U29 Old Description=TVS 瞬态抑制二极管 New Description=TVS
+Change Component Description : Designator=D5 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=D6 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=D7 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=D8 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=D9 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=D10 Old Description=快速恢复二极管 600V 1A New Description=二极管
+Change Component Description : Designator=FE1 Old Description=磁珠 New Description=贴片电阻
+Change Component Description : Designator=FE2 Old Description=磁珠 New Description=贴片电阻
+Change Component Description : Designator=FE3 Old Description=磁珠 New Description=贴片电阻
+Change Component Description : Designator=FE4 Old Description=磁珠 New Description=贴片电阻
+Change Component Description : Designator=U3 Old Description=表贴线性稳压芯片 New Description=
+Added Pin To Net: NetName=VIN Pin=FE4-1

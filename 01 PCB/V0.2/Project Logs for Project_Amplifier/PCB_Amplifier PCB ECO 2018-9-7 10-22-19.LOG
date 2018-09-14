@@ -1,0 +1,5 @@
+Change Component Footprint: Designator=R26 Old Footprint=0603_R New Footprint=2512
+Change Component Footprint: Designator=R27 Old Footprint=0603_R New Footprint=2512
+Change Component Footprint: Designator=R28 Old Footprint=0603_R New Footprint=2512
+Change Component Comment : Designator=R26 Old Comment=100次 (1000) ㊣1% New Comment=0.01次 (1000) ㊣1%
+Change Component Comment : Designator=R27 Old Comment=100次 (1000) ㊣1% New Comment=0.01次 (1000) ㊣1%

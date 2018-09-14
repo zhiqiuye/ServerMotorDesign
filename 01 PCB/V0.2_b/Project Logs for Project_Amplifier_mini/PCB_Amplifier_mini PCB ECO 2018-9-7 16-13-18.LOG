@@ -1,0 +1,87 @@
+Removed Pin From Net: NetName=GND Pin=R31-1
+Removed Pin From Net: NetName=GND Pin=Vin_I-1
+Removed Pin From Net: NetName=GND Pin=Vin_II-1
+Added Component: Designator=C2(0603_C)
+Added Component: Designator=MH4(M2 Hole)
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=NetC2_2 Pin=C2-2
+Added Pin To Net: NetName=NetCo1_1 Pin=Co1-1
+Added Pin To Net: NetName=U_COIL Pin=Co1-2
+Added Pin To Net: NetName=VIN_G Pin=Co2-1
+Added Pin To Net: NetName=U_COIL Pin=Co2-2
+Added Pin To Net: NetName=NetCo3_1 Pin=Co3-1
+Added Pin To Net: NetName=V_COIL Pin=Co3-2
+Added Pin To Net: NetName=VIN_G Pin=Co4-1
+Added Pin To Net: NetName=V_COIL Pin=Co4-2
+Added Pin To Net: NetName=NetCo5_1 Pin=Co5-1
+Added Pin To Net: NetName=W_COIL Pin=Co5-2
+Added Pin To Net: NetName=VIN_G Pin=Co6-1
+Added Pin To Net: NetName=W_COIL Pin=Co6-2
+Added Pin To Net: NetName=NetC94_2 Pin=MH4-1
+Added Pin To Net: NetName=U_COIL Pin=Motor-1
+Added Pin To Net: NetName=V_COIL Pin=Motor-2
+Added Pin To Net: NetName=W_COIL Pin=Motor-3
+Added Pin To Net: NetName=VIN_G Pin=R31-1
+Added Pin To Net: NetName=NetCo1_1 Pin=R31-2
+Added Pin To Net: NetName=VIN_G Pin=R32-1
+Added Pin To Net: NetName=NetCo3_1 Pin=R32-2
+Added Pin To Net: NetName=VIN_G Pin=R33-1
+Added Pin To Net: NetName=NetCo5_1 Pin=R33-2
+Added Pin To Net: NetName=GND_PER Pin=Vin_I-1
+Added Pin To Net: NetName=GND_PER Pin=Vin_II-1
+Added Member To Class: ClassName=主控芯片 Member=Component C2 2.2uF (225) 10% 16V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C30 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C31 330pF (331) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C32 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C33 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C34 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C35 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C40 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C41 330pF (331) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C42 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C43 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C44 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C45 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C50 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C51 330pF (331) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C52 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C53 10pF (100) 5% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C54 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component C55 100nF (104) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co1 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co2 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co3 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co4 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co5 1nF (102) 10% 50V
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Co6 1nF (102) 10% 50V
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH4 M2 hole
+Added Member To Class: ClassName=H桥驱动部分 Member=Component Motor Header 3
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R31 100Ω (1000) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R32 100Ω (1000) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R33 100Ω (1000) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R34 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R35 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R36 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R37 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R38 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R44 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R45 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R46 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R47 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R48 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R54 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R55 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R56 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R57 12Ω (12R0) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R58 12Ω (12R0) ±1%
+Added Member To Class: ClassName=电源 Member=Component U6 PESD3V3L2BT
+Added Member To Class: ClassName=电源 Member=Component U7 PESD3V3L2BT
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U11 Adum1200
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U12 Adum1200
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U13 Adum1200
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U14 ADUM 1201
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U15 AMC1200-Q1
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U16 AMC1200-Q1
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U17 AMC1200-Q1
+Added Member To Class: ClassName=电源 Member=Component Vin_II Header 2
+Added Member To Class: ClassName=电源 Member=Component Vin_I Header 2

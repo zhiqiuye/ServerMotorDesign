@@ -1,0 +1,27 @@
+Removed Pin From Net: NetName=ADC123_IN3 Pin=C35-2
+Removed Pin From Net: NetName=ADC12_IN6 Pin=C45-2
+Removed Pin From Net: NetName=ADC12_IN7 Pin=C55-2
+Removed Pin From Net: NetName=ADC123_IN2 Pin=C79-2
+Removed Pin From Net: NetName=ADC123_IN3 Pin=R38-2
+Removed Pin From Net: NetName=ADC12_IN6 Pin=R48-2
+Removed Pin From Net: NetName=ADC12_IN7 Pin=R58-2
+Removed Pin From Net: NetName=ADC123_IN2 Pin=R103-1
+Added Pin To Net: NetName=ADC123_IN2 Pin=C45-2
+Added Pin To Net: NetName=ADC123_IN3 Pin=C55-2
+Added Pin To Net: NetName=ADC123_IN2 Pin=R48-2
+Added Pin To Net: NetName=ADC123_IN3 Pin=R58-2
+Added Pin To Net: NetName=ADC123_IN1 Pin=C35-2
+Added Pin To Net: NetName=ADC123_IN1 Pin=R38-2
+Added Pin To Net: NetName=ADC123_IN1 Pin=U9-15
+Added Net: Name=ADC123_IN1
+Added Pin To Net: NetName=ADC123_IN13 Pin=C79-2
+Added Pin To Net: NetName=ADC123_IN13 Pin=R103-1
+Added Pin To Net: NetName=ADC123_IN13 Pin=U9-11
+Added Net: Name=ADC123_IN13
+Added Room: Name=H桥驱动部分
+Added Room: Name=主控芯片
+Added Room: Name=外接力矩传感器接口
+Added Room: Name=电源
+Added Room: Name=绝对编码器与抱闸
+Added Room: Name=通讯接口
+Added Room: Name=霍尔传感器以及增量编码器

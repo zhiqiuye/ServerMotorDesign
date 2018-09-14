@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=A_GND Pin=Brake-2
+Removed Pin From Net: NetName=A_GND Pin=U21-2
+Added Pin To Net: NetName=SEN_1_GND Pin=Brake-2
+Added Pin To Net: NetName=SEN_1_GND Pin=U21-2

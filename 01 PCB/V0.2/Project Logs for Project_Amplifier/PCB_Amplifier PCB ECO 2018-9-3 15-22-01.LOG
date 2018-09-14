@@ -1,0 +1,155 @@
+Removed Pin From Net: NetName=NetD8_1 Pin=D8-1
+Removed Pin From Net: NetName=NetD8_2 Pin=D8-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=D8-3
+Removed Pin From Net: NetName=3V3_D_GND Pin=D8-4
+Removed Pin From Net: NetName=15V Pin=U5-1
+Removed Pin From Net: NetName=HIN1 Pin=U5-2
+Removed Pin From Net: NetName=HIN2 Pin=U5-3
+Removed Pin From Net: NetName=HIN3 Pin=U5-4
+Removed Pin From Net: NetName=LIN1 Pin=U5-5
+Removed Pin From Net: NetName=LIN2 Pin=U5-6
+Removed Pin From Net: NetName=LIN3 Pin=U5-7
+Removed Pin From Net: NetName=FAULT Pin=U5-8
+Removed Pin From Net: NetName=A_GND Pin=U5-12
+Removed Pin From Net: NetName=VIN_G Pin=U5-13
+Removed Pin From Net: NetName=DRIVE_L3 Pin=U5-14
+Removed Pin From Net: NetName=DRIVE_L2 Pin=U5-15
+Removed Pin From Net: NetName=DRIVE_L1 Pin=U5-16
+Removed Pin From Net: NetName=W_COIL Pin=U5-18
+Removed Pin From Net: NetName=DRIVE_H3 Pin=U5-19
+Removed Pin From Net: NetName=NetC23_1 Pin=U5-20
+Removed Pin From Net: NetName=V_COIL Pin=U5-22
+Removed Pin From Net: NetName=DRIVE_H2 Pin=U5-23
+Removed Pin From Net: NetName=NetC22_1 Pin=U5-24
+Removed Pin From Net: NetName=U_COIL Pin=U5-26
+Removed Pin From Net: NetName=DRIVE_H1 Pin=U5-27
+Removed Pin From Net: NetName=NetC21_1 Pin=U5-28
+Removed Pin From Net: NetName=5V Pin=U10-1
+Removed Pin From Net: NetName=NetC31_2 Pin=U10-2
+Removed Pin From Net: NetName=NetC31_1 Pin=U10-3
+Removed Pin From Net: NetName=A_GND Pin=U10-4
+Removed Pin From Net: NetName=3V3_A_GND Pin=U10-5
+Removed Pin From Net: NetName=NetR37_1 Pin=U10-6
+Removed Pin From Net: NetName=NetR36_1 Pin=U10-7
+Removed Pin From Net: NetName=3V3_A Pin=U10-8
+Removed Pin From Net: NetName=5V Pin=U20-1
+Removed Pin From Net: NetName=5V Pin=U20-2
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-1
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-2
+Removed Pin From Net: NetName=NetC80_2 Pin=U23-3
+Removed Pin From Net: NetName=NetC83_2 Pin=U24-1
+Removed Pin From Net: NetName=NetC83_1 Pin=U24-2
+Removed Pin From Net: NetName=NetC82_2 Pin=U24-3
+Removed Member From Class: ClassName=H桥驱动部分 Member=U5
+Removed Member From Class: ClassName=通讯接口 Member=U23
+Removed Member From Class: ClassName=通讯接口 Member=U24
+Change Component DesignItemId : Designator=D8 Old DesignItemId=0603*2 LED New DesignItemId=0603 红灯
+Change Component DesignItemId : Designator=D8 Old DesignItemId=0603 红灯 New DesignItemId=0603*2 LED
+Change Component DesignItemId : Designator=U10 Old DesignItemId=AMC1200 New DesignItemId=IR2130
+Change Component Footprint: Designator=D8 Old Footprint=0603*2 New Footprint=0603_LED_S1
+Change Component Footprint: Designator=D8 Old Footprint=0603_LED_S1 New Footprint=0603*2
+Change Component Footprint: Designator=U10 Old Footprint=SOP_4.85mm New Footprint=28-Lead SOIC(wide body)
+Change Component Comment : Designator=U10 Old Comment=AMC1200-Q1 New Comment=IR2130
+Change Component Comment : Designator=D8 Old Comment=LED*2 New Comment=红灯 0603
+Change Component Comment : Designator=D8 Old Comment=红灯 0603 New Comment=LED*2
+Change Component Designator: OldDesignator=U1 NewDesignator=U9
+Change Component Designator: OldDesignator=U2 NewDesignator=U8
+Change Component Designator: OldDesignator=U3 NewDesignator=U26
+Change Component Designator: OldDesignator=U4 NewDesignator=U27
+Change Component Designator: OldDesignator=U6 NewDesignator=U11
+Change Component Designator: OldDesignator=U7 NewDesignator=U12
+Change Component Designator: OldDesignator=U8 NewDesignator=U13
+Change Component Designator: OldDesignator=U9 NewDesignator=U14
+Change Component Designator: OldDesignator=U11 NewDesignator=U16
+Change Component Designator: OldDesignator=U12 NewDesignator=U17
+Change Component Designator: OldDesignator=U13 NewDesignator=U18
+Change Component Designator: OldDesignator=U14 NewDesignator=U19
+Change Component Designator: OldDesignator=U15 NewDesignator=U21
+Change Component Designator: OldDesignator=U16 NewDesignator=U1
+Change Component Designator: OldDesignator=U17 NewDesignator=U2
+Change Component Designator: OldDesignator=U18 NewDesignator=U3
+Change Component Designator: OldDesignator=U19 NewDesignator=U4
+Change Component Designator: OldDesignator=U20 NewDesignator=U5
+Change Component Designator: OldDesignator=U21 NewDesignator=U6
+Change Component Designator: OldDesignator=U22 NewDesignator=U7
+Change Component Designator: OldDesignator=U23 NewDesignator=U22
+Change Component Designator: OldDesignator=U24 NewDesignator=U23
+Change Component Designator: OldDesignator=U25 NewDesignator=U24
+Change Component Designator: OldDesignator=U26 NewDesignator=U25
+Added Component: Designator=U15(SOP_4.85mm)
+Added Component: Designator=U28(SOT-23(SOT-23-3))
+Added Component: Designator=U29(SOT-23(SOT-23-3))
+Added Pin To Net: NetName=5V Pin=D8-A
+Added Pin To Net: NetName=NetD8_K Pin=D8-K
+Added Pin To Net: NetName=5V Pin=U5-1
+Added Pin To Net: NetName=5V Pin=U5-2
+Added Pin To Net: NetName=15V Pin=U10-1
+Added Pin To Net: NetName=HIN1 Pin=U10-2
+Added Pin To Net: NetName=HIN2 Pin=U10-3
+Added Pin To Net: NetName=HIN3 Pin=U10-4
+Added Pin To Net: NetName=LIN1 Pin=U10-5
+Added Pin To Net: NetName=LIN2 Pin=U10-6
+Added Pin To Net: NetName=LIN3 Pin=U10-7
+Added Pin To Net: NetName=FAULT Pin=U10-8
+Added Pin To Net: NetName=A_GND Pin=U10-12
+Added Pin To Net: NetName=VIN_G Pin=U10-13
+Added Pin To Net: NetName=DRIVE_L3 Pin=U10-14
+Added Pin To Net: NetName=DRIVE_L2 Pin=U10-15
+Added Pin To Net: NetName=DRIVE_L1 Pin=U10-16
+Added Pin To Net: NetName=W_COIL Pin=U10-18
+Added Pin To Net: NetName=DRIVE_H3 Pin=U10-19
+Added Pin To Net: NetName=NetC23_1 Pin=U10-20
+Added Pin To Net: NetName=V_COIL Pin=U10-22
+Added Pin To Net: NetName=DRIVE_H2 Pin=U10-23
+Added Pin To Net: NetName=NetC22_1 Pin=U10-24
+Added Pin To Net: NetName=U_COIL Pin=U10-26
+Added Pin To Net: NetName=DRIVE_H1 Pin=U10-27
+Added Pin To Net: NetName=NetC21_1 Pin=U10-28
+Added Pin To Net: NetName=5V Pin=U15-1
+Added Pin To Net: NetName=NetC31_2 Pin=U15-2
+Added Pin To Net: NetName=NetC31_1 Pin=U15-3
+Added Pin To Net: NetName=A_GND Pin=U15-4
+Added Pin To Net: NetName=3V3_A_GND Pin=U15-5
+Added Pin To Net: NetName=NetR37_1 Pin=U15-6
+Added Pin To Net: NetName=NetR36_1 Pin=U15-7
+Added Pin To Net: NetName=3V3_A Pin=U15-8
+Added Pin To Net: NetName=NetRp3_1 Pin=U20-1
+Added Pin To Net: NetName=NetR81_1 Pin=U20-2
+Added Pin To Net: NetName=NetR87_1 Pin=U22-1
+Added Pin To Net: NetName=NetR87_1 Pin=U22-2
+Added Pin To Net: NetName=NetC80_2 Pin=U22-3
+Added Pin To Net: NetName=3V3_A_GND Pin=U22-4
+Added Pin To Net: NetName=3V3_A Pin=U22-8
+Added Pin To Net: NetName=NetC83_2 Pin=U23-1
+Added Pin To Net: NetName=NetC83_1 Pin=U23-2
+Added Pin To Net: NetName=NetC82_2 Pin=U23-3
+Added Pin To Net: NetName=3V3_A_GND Pin=U23-4
+Added Pin To Net: NetName=NetC86_1 Pin=U23-5
+Added Pin To Net: NetName=NetC87_1 Pin=U23-6
+Added Pin To Net: NetName=NetC87_2 Pin=U23-7
+Added Pin To Net: NetName=3V3_A Pin=U23-8
+Added Pin To Net: NetName=NetPcan_2 Pin=U28-1
+Added Pin To Net: NetName=NetPcan_1 Pin=U28-2
+Added Pin To Net: NetName=GND Pin=U28-3
+Added Pin To Net: NetName=NetP485_2 Pin=U29-1
+Added Pin To Net: NetName=NetP485_1 Pin=U29-2
+Added Pin To Net: NetName=3V3_D_GND Pin=U29-3
+Change Net Name : Old Net Name=NetU1_2 New Net Name=NetU9_2
+Change Net Name : Old Net Name=NetU1_3 New Net Name=NetU9_3
+Change Net Name : Old Net Name=NetU1_4 New Net Name=NetU9_4
+Change Net Name : Old Net Name=NetU1_27 New Net Name=NetU9_27
+Change Net Name : Old Net Name=NetU1_28 New Net Name=NetU9_28
+Change Net Name : Old Net Name=NetU1_44 New Net Name=NetU9_44
+Change Net Name : Old Net Name=NetU1_45 New Net Name=NetU9_45
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D8 红灯 0603
+Added Member To Class: ClassName=主控芯片 Member=Component D8 LED*2
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U15 AMC1200-Q1
+Added Member To Class: ClassName=通讯接口 Member=Component U28 PESD3V3L2BT
+Added Member To Class: ClassName=通讯接口 Member=Component U29 PESD3V3L2BT
+Added Room: Name=H桥驱动部分
+Added Room: Name=主控芯片
+Added Room: Name=外接力矩传感器接口
+Added Room: Name=电源
+Added Room: Name=绝对编码器与抱闸
+Added Room: Name=通讯接口
+Added Room: Name=霍尔传感器以及增量编码器

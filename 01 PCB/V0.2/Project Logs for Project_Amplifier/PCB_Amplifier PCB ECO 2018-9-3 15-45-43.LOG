@@ -1,0 +1,85 @@
+Removed Pin From Net: NetName=A_GND Pin=D4-1
+Removed Pin From Net: NetName=U_COIL Pin=D4-2
+Removed Pin From Net: NetName=A_GND Pin=D5-1
+Removed Pin From Net: NetName=V_COIL Pin=D5-2
+Removed Pin From Net: NetName=W_COIL Pin=D6-2
+Removed Pin From Net: NetName=5V Pin=D8-A
+Removed Pin From Net: NetName=NetD8_K Pin=D8-K
+Removed Pin From Net: NetName=5V Pin=U15-1
+Removed Pin From Net: NetName=NetC31_2 Pin=U15-2
+Removed Pin From Net: NetName=NetC31_1 Pin=U15-3
+Removed Pin From Net: NetName=A_GND Pin=U15-4
+Removed Pin From Net: NetName=3V3_A_GND Pin=U15-5
+Removed Pin From Net: NetName=NetR37_1 Pin=U15-6
+Removed Pin From Net: NetName=NetR36_1 Pin=U15-7
+Removed Pin From Net: NetName=3V3_A Pin=U15-8
+Removed Member From Class: ClassName=H桥驱动部分 Member=D4
+Removed Member From Class: ClassName=H桥驱动部分 Member=D5
+Removed Member From Class: ClassName=H桥驱动部分 Member=U2
+Removed Member From Class: ClassName=霍尔传感器以及增量编码器 Member=U3
+Removed Member From Class: ClassName=绝对编码器与抱闸 Member=U4
+Removed Member From Class: ClassName=H桥驱动部分 Member=U9
+Removed Member From Class: ClassName=电源 Member=U9
+Removed Member From Class: ClassName=主控芯片 Member=U13
+Removed Member From Class: ClassName=电源 Member=U17
+Removed Member From Class: ClassName=H桥驱动部分 Member=U21
+Removed Member From Class: ClassName=通讯接口 Member=U25
+Change Component DesignItemId : Designator=D8 Old DesignItemId=0603 红灯 New DesignItemId=SMA(DO-214AC) M7
+Change Component Comment : Designator=D8 Old Comment=红灯 0603 New Comment=RS1J
+Change Component Designator: OldDesignator=D1 NewDesignator=D5
+Change Component Designator: OldDesignator=D2 NewDesignator=D7
+Change Component Designator: OldDesignator=D3 NewDesignator=D9
+Change Component Designator: OldDesignator=D5 NewDesignator=D1
+Change Component Designator: OldDesignator=D6 NewDesignator=D2
+Change Component Designator: OldDesignator=D7 NewDesignator=D3
+Change Component Designator: OldDesignator=D8 NewDesignator=D4
+Change Component Description : Designator=D8 Old Description=发光二极管 New Description=快速恢复二极管 600V 1A
+Added Component: Designator=D8(0603_LED_S1)
+Added Component: Designator=D10(SMA(DO-214AC)_S1)
+Added Component: Designator=U15(SOP_4.85mm)
+Added Pin To Net: NetName=A_GND Pin=D1-K
+Added Pin To Net: NetName=A_GND Pin=D2-K
+Added Pin To Net: NetName=3V3_D_GND Pin=D4-3
+Added Pin To Net: NetName=3V3_D_GND Pin=D4-4
+Added Pin To Net: NetName=U_COIL Pin=D6-2
+Added Pin To Net: NetName=5V Pin=D8-A
+Added Pin To Net: NetName=NetD8_K Pin=D8-K
+Added Pin To Net: NetName=A_GND Pin=D10-1
+Added Pin To Net: NetName=W_COIL Pin=D10-2
+Added Pin To Net: NetName=5V Pin=U15-1
+Added Pin To Net: NetName=NetC31_2 Pin=U15-2
+Added Pin To Net: NetName=NetC31_1 Pin=U15-3
+Added Pin To Net: NetName=A_GND Pin=U15-4
+Added Pin To Net: NetName=3V3_A_GND Pin=U15-5
+Added Pin To Net: NetName=NetR37_1 Pin=U15-6
+Added Pin To Net: NetName=NetR36_1 Pin=U15-7
+Added Pin To Net: NetName=3V3_A Pin=U15-8
+Change Net Name : Old Net Name=NetD1_1 New Net Name=NetD5_1
+Change Net Name : Old Net Name=NetD2_1 New Net Name=NetD7_1
+Change Net Name : Old Net Name=NetD3_1 New Net Name=NetD9_1
+Change Net Name : Old Net Name=NetD7_A New Net Name=NetD3_A
+Added Pin To Net: NetName=NetD1_A Pin=D1-A
+Added Pin To Net: NetName=NetD1_A Pin=R77-1
+Added Net: Name=NetD1_A
+Added Pin To Net: NetName=NetD2_A Pin=D2-A
+Added Pin To Net: NetName=NetD2_A Pin=R78-1
+Added Net: Name=NetD2_A
+Added Pin To Net: NetName=NetD4_1 Pin=D4-1
+Added Pin To Net: NetName=NetD4_1 Pin=R100-1
+Added Net: Name=NetD4_1
+Added Pin To Net: NetName=NetD4_2 Pin=D4-2
+Added Pin To Net: NetName=NetD4_2 Pin=R104-1
+Added Net: Name=NetD4_2
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D10 RS1J
+Added Member To Class: ClassName=电源 Member=Component U1 LMZ14201
+Added Member To Class: ClassName=电源 Member=Component U5 PESD5VL2BT
+Added Member To Class: ClassName=主控芯片 Member=Component U8 NC7S86
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U15 AMC1200-Q1
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U16 AMC1200-Q1
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U17 AMC1200-Q1
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component U18 TXB0106
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component U19 TXB0106
+Added Member To Class: ClassName=绝对编码器与抱闸 Member=Component U20 PESD5VL2BT
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component U23 TLV2772_D_8
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component U24 PESD3V3L2BT
+Added Member To Class: ClassName=通讯接口 Member=Component U26 VP230

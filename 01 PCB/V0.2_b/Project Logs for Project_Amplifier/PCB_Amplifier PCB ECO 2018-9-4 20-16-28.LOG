@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=NetR104_2 Pin=U9-9
+Removed Pin From Net: NetName=NetR100_2 Pin=U9-10
+Added Pin To Net: NetName=NetR100_2 Pin=U9-9
+Added Pin To Net: NetName=NetR104_2 Pin=U9-10
+Added Member To Class: ClassName=HÇÅÇý¶¯²¿·Ö Member=Component U15 AMC1200-Q1

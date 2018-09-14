@@ -1,0 +1,35 @@
+Removed Pin From Net: NetName=REF_165 Pin=C82-1
+Removed Pin From Net: NetName=GND Pin=C84-1
+Removed Pin From Net: NetName=ADC12_IN14 Pin=C84-2
+Removed Pin From Net: NetName=5V Pin=P torque-1
+Removed Pin From Net: NetName=GND Pin=P torque-4
+Removed Pin From Net: NetName=SIG_2_+ Pin=P torque-5
+Removed Pin From Net: NetName=SIG_2_- Pin=P torque-6
+Removed Pin From Net: NetName=REF_165 Pin=R91-1
+Removed Pin From Net: NetName=ADC12_IN14 Pin=R93-2
+Removed Pin From Net: NetName=GND Pin=U23-4
+Removed Pin From Net: NetName=NetC86_1 Pin=U23-5
+Removed Pin From Net: NetName=NetC87_1 Pin=U23-6
+Removed Pin From Net: NetName=NetC87_2 Pin=U23-7
+Removed Pin From Net: NetName=3V3_A Pin=U23-8
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=C81
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=C82
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=C83
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=C84
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=P torque
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R88
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R89
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R90
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R91
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R92
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=R93
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=U23
+Added Component: Designator=Ptorq(HDR1X4)
+Added Pin To Net: NetName=5V Pin=Ptorq-1
+Added Pin To Net: NetName=SIG_2_+ Pin=Ptorq-2
+Added Pin To Net: NetName=SIG_2_- Pin=Ptorq-3
+Added Pin To Net: NetName=GND Pin=Ptorq-4
+Added Pin To Net: NetName=NetC86_1 Pin=U22-5
+Added Pin To Net: NetName=NetC87_1 Pin=U22-6
+Added Pin To Net: NetName=NetC87_2 Pin=U22-7
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component Ptorq Header 4

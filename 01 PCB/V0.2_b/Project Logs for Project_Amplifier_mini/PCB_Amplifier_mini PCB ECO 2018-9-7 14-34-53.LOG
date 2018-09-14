@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=VIN_P Pin=FE2-1
+Added Component: Designator=MH5(M2 Hole)
+Added Component: Designator=MH7(M2 Hole)
+Added Pin To Net: NetName=VIN Pin=FE2-1
+Added Pin To Net: NetName=NetC95_2 Pin=MH5-1
+Added Pin To Net: NetName=NetC97_2 Pin=MH7-1
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH5 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH7 M2 hole

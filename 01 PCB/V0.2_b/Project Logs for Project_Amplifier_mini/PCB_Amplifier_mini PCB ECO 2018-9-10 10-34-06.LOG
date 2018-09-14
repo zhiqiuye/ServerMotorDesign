@@ -1,0 +1,13 @@
+Removed Pin From Net: NetName=15V Pin=U4-1
+Removed Pin From Net: NetName=15V Pin=U4-2
+Removed Pin From Net: NetName=GND Pin=U4-3
+Removed Pin From Net: NetName=SIG_1_+ Pin=U24-1
+Removed Pin From Net: NetName=SIG_1_- Pin=U24-2
+Removed Pin From Net: NetName=GND Pin=U24-3
+Removed Pin From Net: NetName=SIG_2_- Pin=U25-1
+Removed Pin From Net: NetName=SIG_2_+ Pin=U25-2
+Removed Pin From Net: NetName=GND Pin=U25-3
+Removed Member From Class: ClassName=电源 Member=U4
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=U24
+Removed Member From Class: ClassName=外接力矩传感器接口 Member=U25
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component C81 47pF (470) 5% 50V

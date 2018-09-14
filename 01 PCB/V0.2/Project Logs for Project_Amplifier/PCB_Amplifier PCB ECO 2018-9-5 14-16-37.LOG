@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=SIG_2_- Pin=P torque-5
+Removed Pin From Net: NetName=SIG_2_+ Pin=P torque-6
+Added Pin To Net: NetName=SIG_2_+ Pin=P torque-5
+Added Pin To Net: NetName=SIG_2_- Pin=P torque-6

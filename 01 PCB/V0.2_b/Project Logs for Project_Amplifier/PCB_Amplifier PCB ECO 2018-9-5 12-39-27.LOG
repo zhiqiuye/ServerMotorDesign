@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=SIG_1_- Pin=U24-1
+Removed Pin From Net: NetName=SIG_1_+ Pin=U24-2
+Removed Pin From Net: NetName=SIG_2_+ Pin=U25-1
+Removed Pin From Net: NetName=SIG_2_- Pin=U25-2
+Added Pin To Net: NetName=SIG_1_+ Pin=U24-1
+Added Pin To Net: NetName=SIG_1_- Pin=U24-2
+Added Pin To Net: NetName=SIG_2_- Pin=U25-1
+Added Pin To Net: NetName=SIG_2_+ Pin=U25-2

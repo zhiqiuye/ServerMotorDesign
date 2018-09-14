@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=SIG_2_+ Pin=Ptorq-2
+Removed Pin From Net: NetName=SIG_2_- Pin=Ptorq-3
+Added Pin To Net: NetName=SIG_2_- Pin=Ptorq-2
+Added Pin To Net: NetName=SIG_2_+ Pin=Ptorq-3

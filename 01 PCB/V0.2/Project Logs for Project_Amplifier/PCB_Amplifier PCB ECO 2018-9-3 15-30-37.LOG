@@ -1,0 +1,51 @@
+Change Physical Footprint: Designator=Abs Encoder Old Footprint=FPC Con 6pin 1mm New Footprint=FPC Con 6pin 1mm
+Change Physical Footprint: Designator=C70 Old Footprint=Cap Tan 3015 New Footprint=Cap Tan 3015
+Change Physical Footprint: Designator=C74 Old Footprint=Cap Tan 3015 New Footprint=Cap Tan 3015
+Change Physical Footprint: Designator=C77 Old Footprint=Cap Tan 3015 New Footprint=Cap Tan 3015
+Change Physical Footprint: Designator=Cin Old Footprint=Cap 6.3x5.4 New Footprint=Cap 6.3x5.4
+Change Physical Footprint: Designator=Cin1 Old Footprint=Cap 12.5x13.5 New Footprint=Cap 12.5x13.5
+Change Physical Footprint: Designator=Cin2 Old Footprint=Cap 12.5x13.5 New Footprint=Cap 12.5x13.5
+Change Physical Footprint: Designator=D8 Old Footprint=0603*2 New Footprint=0603*2
+Change Physical Footprint: Designator=L1 Old Footprint=L 5x5mm New Footprint=L 5x5mm
+Change Physical Footprint: Designator=MH1 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=MH2 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=MH3 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=MH4 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=MH5 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=MH6 Old Footprint=M2 Hole New Footprint=M2 Hole
+Change Physical Footprint: Designator=Motor Old Footprint=3P 5mm New Footprint=3P 5mm
+Change Physical Footprint: Designator=Q1 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=Q2 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=Q3 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=Q4 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=Q5 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=Q6 Old Footprint=TO-252AA New Footprint=TO-252AA
+Change Physical Footprint: Designator=R26 Old Footprint=2512 New Footprint=2512
+Change Physical Footprint: Designator=R27 Old Footprint=2512 New Footprint=2512
+Change Physical Footprint: Designator=R28 Old Footprint=2512 New Footprint=2512
+Change Physical Footprint: Designator=T1 Old Footprint=DO214 SS12 New Footprint=DO214 SS12
+Change Physical Footprint: Designator=tp1 Old Footprint=testPoint New Footprint=testPoint
+Change Physical Footprint: Designator=tp2 Old Footprint=testPoint New Footprint=testPoint
+Change Physical Footprint: Designator=tp3 Old Footprint=testPoint New Footprint=testPoint
+Change Physical Footprint: Designator=U1 Old Footprint=LMZ14201H New Footprint=LMZ14201H
+Change Physical Footprint: Designator=U2 Old Footprint=SOIC8 New Footprint=SOIC8
+Change Physical Footprint: Designator=U3 Old Footprint=SOT-223 LM1117-3.3 New Footprint=SOT-223 LM1117-3.3
+Change Physical Footprint: Designator=U8 Old Footprint=5Lead SC70 New Footprint=5Lead SC70
+Change Physical Footprint: Designator=U10 Old Footprint=28-Lead SOIC(wide body) New Footprint=28-Lead SOIC(wide body)
+Change Physical Footprint: Designator=U11 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U12 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U13 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U14 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U15 Old Footprint=SOP_4.85mm New Footprint=SOP_4.85mm
+Change Physical Footprint: Designator=U16 Old Footprint=SOP_4.85mm New Footprint=SOP_4.85mm
+Change Physical Footprint: Designator=U17 Old Footprint=SOP_4.85mm New Footprint=SOP_4.85mm
+Change Physical Footprint: Designator=U18 Old Footprint=TSSOP 16PIN New Footprint=TSSOP 16PIN
+Change Physical Footprint: Designator=U19 Old Footprint=TSSOP 16PIN New Footprint=TSSOP 16PIN
+Change Physical Footprint: Designator=U21 Old Footprint=TQ2SA New Footprint=TQ2SA
+Change Physical Footprint: Designator=U22 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U23 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U26 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=U27 Old Footprint=SOP-8 New Footprint=SOP-8
+Change Physical Footprint: Designator=Vin_I Old Footprint=2P 5mm New Footprint=2P 5mm
+Change Physical Footprint: Designator=Vin_II Old Footprint=2P 5mm New Footprint=2P 5mm
+Change Physical Footprint: Designator=Y1 Old Footprint=XTAL CPX53GB New Footprint=XTAL CPX53GB

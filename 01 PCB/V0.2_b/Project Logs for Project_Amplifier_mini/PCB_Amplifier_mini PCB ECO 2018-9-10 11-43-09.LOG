@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=3V3_A Pin=U7-2
+Removed Pin From Net: NetName=NetP485_1 Pin=U29-1
+Removed Pin From Net: NetName=NetP485_2 Pin=U29-2
+Added Pin To Net: NetName=NetP485_2 Pin=U29-1
+Added Pin To Net: NetName=NetP485_1 Pin=U29-2

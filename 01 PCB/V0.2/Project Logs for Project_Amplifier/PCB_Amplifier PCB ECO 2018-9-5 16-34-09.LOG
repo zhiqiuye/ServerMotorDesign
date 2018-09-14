@@ -1,0 +1,8 @@
+Added Pin To Net: NetName=3V3_D_GND Pin=U28-3
+Added Room: Name=H桥驱动部分
+Added Room: Name=主控芯片
+Added Room: Name=外接力矩传感器接口
+Added Room: Name=电源
+Added Room: Name=绝对编码器与抱闸
+Added Room: Name=通讯接口
+Added Room: Name=霍尔传感器以及增量编码器

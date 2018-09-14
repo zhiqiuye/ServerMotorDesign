@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=GND Pin=Abs Encoder-7
+Removed Pin From Net: NetName=GND Pin=Abs Encoder-7
+Added Pin To Net: NetName=A_GND Pin=Abs Encoder-7
+Added Pin To Net: NetName=A_GND Pin=Abs Encoder-7
+Added Net: Name=A_GND

@@ -1,0 +1,3 @@
+Removed Member From Class: ClassName=电源 Member=U7
+Added Pin To Net: NetName=ADC12_IN15 Pin=U7-2
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component U7 PESD3V3L2BT

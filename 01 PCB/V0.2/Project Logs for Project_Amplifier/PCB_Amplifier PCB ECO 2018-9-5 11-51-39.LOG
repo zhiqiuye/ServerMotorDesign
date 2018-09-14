@@ -1,0 +1,27 @@
+Removed Pin From Net: NetName=Nettp3_1 Pin=01-1
+Removed Pin From Net: NetName=DAC_OUT1 Pin=DA1-1
+Removed Pin From Net: NetName=DAC_OUT2 Pin=DA2-1
+Removed Pin From Net: NetName=NetPcan_2 Pin=U28-1
+Removed Pin From Net: NetName=NetPcan_1 Pin=U28-2
+Removed Pin From Net: NetName=NetP485_2 Pin=U29-1
+Removed Pin From Net: NetName=NetP485_1 Pin=U29-2
+Removed Member From Class: ClassName=主控芯片 Member=01
+Removed Member From Class: ClassName=主控芯片 Member=DA1
+Removed Member From Class: ClassName=主控芯片 Member=DA2
+Added Component: Designator=tp1(testPoint)
+Added Component: Designator=tp2(testPoint)
+Added Component: Designator=tp3(testPoint)
+Added Pin To Net: NetName=DAC_OUT1 Pin=tp1-1
+Added Pin To Net: NetName=DAC_OUT2 Pin=tp2-1
+Added Pin To Net: NetName=Nettp3_1 Pin=tp3-1
+Added Pin To Net: NetName=NetPcan_1 Pin=U28-1
+Added Pin To Net: NetName=NetPcan_2 Pin=U28-2
+Added Pin To Net: NetName=NetP485_1 Pin=U29-1
+Added Pin To Net: NetName=NetP485_2 Pin=U29-2
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component C81 47pF (470) 5% 50V
+Added Member To Class: ClassName=主控芯片 Member=Component R2 10KΩ (1002) ±1%
+Added Member To Class: ClassName=外接力矩传感器接口 Member=Component R88 47KΩ (4702) ±1%
+Added Member To Class: ClassName=主控芯片 Member=Component tp1 test point
+Added Member To Class: ClassName=主控芯片 Member=Component tp2 test point
+Added Member To Class: ClassName=主控芯片 Member=Component tp3 test point
+Added Member To Class: ClassName=主控芯片 Member=Component U8 NC7S86

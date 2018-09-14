@@ -1,0 +1,25 @@
+Replace Part C1 0603 2.2uF (225) 10% 16V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 2.2uF (225) 10% 16V from Miscellaneous Devices LC.IntLib
+Replace Part C2 0603 2.2uF (225) 10% 16V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 2.2uF (225) 10% 16V from Miscellaneous Devices LC.IntLib
+Replace Part C3 0603 2.2uF (225) 10% 16V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 2.2uF (225) 10% 16V from Miscellaneous Devices LC.IntLib
+Replace Part C4 0603 6pF (6R0) 0.25pF 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 6pF (6R0) 0.25pF 50V from Miscellaneous Devices LC.IntLib
+Replace Part C5 0603 6pF (6R0) 0.25pF 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 6pF (6R0) 0.25pF 50V from Miscellaneous Devices LC.IntLib
+Replace Part C6 0603 10uF (106) 10% 10V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 10uF (106) 10% 10V from Miscellaneous Devices LC.IntLib
+Replace Part C7 0603 1uF (105) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 1uF (105) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C8 0603 100nF (104) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 100nF (104) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C9 0603 100nF (104) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 100nF (104) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C10 0603 100nF (104) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 100nF (104) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C11 0603 100nF (104) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 100nF (104) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C12 0603 100nF (104) 10% 50V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 100nF (104) 10% 50V from Miscellaneous Devices LC.IntLib
+Replace Part C79 0603 4.7uF (475) 10% 16V in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 4.7uF (475) 10% 16V from Miscellaneous Devices LC.IntLib
+Replace Part D4 0603*2 LED in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603*2 LED from KuangJing.SchLib
+Replace Part R1 0603 10K次 (1002) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 10K次 (1002) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R2 0603 10K次 (1002) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 10K次 (1002) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R100 0603 1K次 (1001) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 1K次 (1001) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R101 0603 82K次 (8202) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 82K次 (8202) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R102 0603 10K次 (1002) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 10K次 (1002) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R103 0603 10K次 (1002) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 10K次 (1002) 1% from Miscellaneous Devices LC.IntLib
+Replace Part R104 0603 1K次 (1001) 1% in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with 0603 1K次 (1001) 1% from Miscellaneous Devices LC.IntLib
+Replace Part tp1 test point in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with test point from KuangJing.SchLib
+Replace Part tp2 test point in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with test point from KuangJing.SchLib
+Replace Part tp3 test point in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with test point from KuangJing.SchLib
+Replace Part U8 NC7S86 in E:\01 my_Project\08 SeverMotor\ServerMotorDesign\01 PCB\V0.2\02_MCU.SchDoc with NC7S86 from KuangJing.SchLib

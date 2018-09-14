@@ -1,0 +1,38 @@
+Removed Pin From Net: NetName=5V Pin=U15-1
+Removed Pin From Net: NetName=NetC31_2 Pin=U15-2
+Removed Pin From Net: NetName=NetC31_1 Pin=U15-3
+Removed Pin From Net: NetName=A_GND Pin=U15-4
+Removed Pin From Net: NetName=3V3_A_GND Pin=U15-5
+Removed Pin From Net: NetName=NetR37_1 Pin=U15-6
+Removed Pin From Net: NetName=NetR36_1 Pin=U15-7
+Removed Pin From Net: NetName=3V3_A Pin=U15-8
+Removed Member From Class: ClassName=H桥驱动部分 Member=D1
+Removed Member From Class: ClassName=H桥驱动部分 Member=D2
+Removed Member From Class: ClassName=电源 Member=D7
+Added Component: Designator=D8(SMA(DO-214AC)_S1)
+Added Component: Designator=D11(0603_LED_S1)
+Added Component: Designator=R60(0603_R)
+Added Component: Designator=U15(SOP_4.85mm)
+Added Pin To Net: NetName=A_GND Pin=D8-1
+Added Pin To Net: NetName=V_COIL Pin=D8-2
+Added Pin To Net: NetName=5V Pin=D11-A
+Added Pin To Net: NetName=FAULT Pin=R60-2
+Added Pin To Net: NetName=5V Pin=U15-1
+Added Pin To Net: NetName=NetC31_2 Pin=U15-2
+Added Pin To Net: NetName=NetC31_1 Pin=U15-3
+Added Pin To Net: NetName=A_GND Pin=U15-4
+Added Pin To Net: NetName=3V3_A_GND Pin=U15-5
+Added Pin To Net: NetName=NetR37_1 Pin=U15-6
+Added Pin To Net: NetName=NetR36_1 Pin=U15-7
+Added Pin To Net: NetName=3V3_A Pin=U15-8
+Added Pin To Net: NetName=NetD11_K Pin=D11-K
+Added Pin To Net: NetName=NetD11_K Pin=R60-1
+Added Net: Name=NetD11_K
+Added Member To Class: ClassName=电源 Member=Component D2 绿灯 0603
+Added Member To Class: ClassName=主控芯片 Member=Component D4 LED*2
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D5 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D6 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D8 RS1J
+Added Member To Class: ClassName=H桥驱动部分 Member=Component D11 红灯 0603
+Added Member To Class: ClassName=H桥驱动部分 Member=Component R60 2.2KΩ (2201) ±1%
+Added Member To Class: ClassName=H桥驱动部分 Member=Component U15 AMC1200-Q1

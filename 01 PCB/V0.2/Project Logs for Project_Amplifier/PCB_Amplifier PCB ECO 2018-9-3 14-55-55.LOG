@@ -1,0 +1,4 @@
+Change Component Footprint: Designator=D5 Old Footprint=SMA(DO-214AC)_S1 New Footprint=0603_LED_S1
+Change Component Footprint: Designator=D6 Old Footprint=SMA(DO-214AC)_S1 New Footprint=0603_LED_S1
+Change Component Footprint: Designator=U23 Old Footprint=SOT-23(SOT-23-3) New Footprint=SOP-8
+Change Component Footprint: Designator=U24 Old Footprint=SOT-23(SOT-23-3) New Footprint=SOP-8

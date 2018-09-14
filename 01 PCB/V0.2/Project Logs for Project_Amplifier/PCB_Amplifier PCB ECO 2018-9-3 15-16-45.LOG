@@ -1,0 +1,76 @@
+Removed Pin From Net: NetName=NetD5_A Pin=D5-A
+Removed Pin From Net: NetName=A_GND Pin=D5-K
+Removed Pin From Net: NetName=NetD6_A Pin=D6-A
+Removed Pin From Net: NetName=A_GND Pin=D6-K
+Removed Pin From Net: NetName=NetD8_1 Pin=D8-1
+Removed Pin From Net: NetName=NetD8_2 Pin=D8-2
+Removed Pin From Net: NetName=3V3_D_GND Pin=D8-3
+Removed Pin From Net: NetName=3V3_D_GND Pin=D8-4
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-1
+Removed Pin From Net: NetName=NetR87_1 Pin=U23-2
+Removed Pin From Net: NetName=3V3_A_GND Pin=U23-4
+Removed Pin From Net: NetName=3V3_A Pin=U23-8
+Removed Pin From Net: NetName=NetC82_2 Pin=U24-3
+Removed Pin From Net: NetName=3V3_A_GND Pin=U24-4
+Removed Pin From Net: NetName=NetC86_1 Pin=U24-5
+Removed Pin From Net: NetName=NetC87_1 Pin=U24-6
+Removed Pin From Net: NetName=NetC87_2 Pin=U24-7
+Removed Pin From Net: NetName=3V3_A Pin=U24-8
+Removed Member From Class: ClassName=电源 Member=D4
+Change Component DesignItemId : Designator=D8 Old DesignItemId=0603*2 LED New DesignItemId=0603 红灯
+Change Component DesignItemId : Designator=D5 Old DesignItemId=0603 绿灯 New DesignItemId=SMA(DO-214AC) M7
+Change Component DesignItemId : Designator=D6 Old DesignItemId=0603 绿灯 New DesignItemId=SMA(DO-214AC) M7
+Change Component DesignItemId : Designator=U23 Old DesignItemId=TLV2772_D_8 New DesignItemId=PSM712-LF-T7_[C32677]
+Change Component DesignItemId : Designator=U24 Old DesignItemId=TLV2772_D_8 New DesignItemId=PSM712-LF-T7_[C32677]
+Change Component Footprint: Designator=D8 Old Footprint=0603*2 New Footprint=0603_LED_S1
+Change Component Footprint: Designator=D5 Old Footprint=0603_LED_S1 New Footprint=SMA(DO-214AC)_S1
+Change Component Footprint: Designator=D6 Old Footprint=0603_LED_S1 New Footprint=SMA(DO-214AC)_S1
+Change Component Footprint: Designator=U23 Old Footprint=SOP-8 New Footprint=SOT-23(SOT-23-3)
+Change Component Footprint: Designator=U24 Old Footprint=SOP-8 New Footprint=SOT-23(SOT-23-3)
+Change Component Comment : Designator=D8 Old Comment=LED*2 New Comment=红灯 0603
+Change Component Comment : Designator=U23 Old Comment=PESD3V3L2BT New Comment=TLV2772_D_8
+Change Component Comment : Designator=U24 Old Comment=PESD3V3L2BT New Comment=TLV2772_D_8
+Change Component Comment : Designator=D5 Old Comment=RS1J New Comment=绿灯 0603
+Change Component Comment : Designator=D6 Old Comment=RS1J New Comment=绿灯 0603
+Change Component Comment : Designator=U23 Old Comment=TLV2772_D_8 New Comment=PESD3V3L2BT
+Change Component Comment : Designator=U24 Old Comment=TLV2772_D_8 New Comment=PESD3V3L2BT
+Change Component Comment : Designator=D5 Old Comment=绿灯 0603 New Comment=RS1J
+Change Component Comment : Designator=D6 Old Comment=绿灯 0603 New Comment=RS1J
+Added Component: Designator=D8(0603*2)
+Added Component: Designator=MH1(M2 Hole)
+Added Component: Designator=MH2(M2 Hole)
+Added Component: Designator=MH3(M2 Hole)
+Added Component: Designator=MH4(M2 Hole)
+Added Component: Designator=MH5(M2 Hole)
+Added Component: Designator=MH6(M2 Hole)
+Added Pin To Net: NetName=A_GND Pin=D5-1
+Added Pin To Net: NetName=V_COIL Pin=D5-2
+Added Pin To Net: NetName=A_GND Pin=D6-1
+Added Pin To Net: NetName=W_COIL Pin=D6-2
+Added Pin To Net: NetName=NetD8_1 Pin=D8-1
+Added Pin To Net: NetName=NetD8_2 Pin=D8-2
+Added Pin To Net: NetName=3V3_D_GND Pin=D8-3
+Added Pin To Net: NetName=3V3_D_GND Pin=D8-4
+Added Pin To Net: NetName=NetC91_2 Pin=MH1-1
+Added Pin To Net: NetName=NetC92_2 Pin=MH2-1
+Added Pin To Net: NetName=NetC93_2 Pin=MH3-1
+Added Pin To Net: NetName=NetC94_2 Pin=MH4-1
+Added Pin To Net: NetName=NetC95_2 Pin=MH5-1
+Added Pin To Net: NetName=NetC96_2 Pin=MH6-1
+Added Pin To Net: NetName=5V Pin=U20-1
+Added Pin To Net: NetName=5V Pin=U20-2
+Added Pin To Net: NetName=NetPcan_2 Pin=U23-1
+Added Pin To Net: NetName=NetR87_1 Pin=U23-1
+Added Pin To Net: NetName=NetPcan_1 Pin=U23-2
+Added Pin To Net: NetName=NetR87_1 Pin=U23-2
+Added Pin To Net: NetName=NetC80_2 Pin=U23-3
+Added Pin To Net: NetName=NetC83_2 Pin=U24-1
+Added Pin To Net: NetName=NetC83_1 Pin=U24-2
+Added Pin To Net: NetName=3V3_D_GND Pin=U24-3
+Added Pin To Net: NetName=NetC82_2 Pin=U24-3
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH1 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH2 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH3 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH4 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH5 M2 hole
+Added Member To Class: ClassName=霍尔传感器以及增量编码器 Member=Component MH6 M2 hole

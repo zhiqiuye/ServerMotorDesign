@@ -1,0 +1,21 @@
+Removed Pin From Net: NetName=A_GND Pin=Cin1-2
+Removed Pin From Net: NetName=A_GND Pin=Cin2-2
+Removed Pin From Net: NetName=5V Pin=U15-1
+Removed Pin From Net: NetName=NetC31_2 Pin=U15-2
+Removed Pin From Net: NetName=NetC31_1 Pin=U15-3
+Removed Pin From Net: NetName=A_GND Pin=U15-4
+Removed Pin From Net: NetName=3V3_A_GND Pin=U15-5
+Removed Pin From Net: NetName=NetR37_1 Pin=U15-6
+Removed Pin From Net: NetName=NetR36_1 Pin=U15-7
+Removed Pin From Net: NetName=3V3_A Pin=U15-8
+Added Pin To Net: NetName=5V Pin=U15-1
+Added Pin To Net: NetName=NetC31_2 Pin=U15-2
+Added Pin To Net: NetName=NetC31_1 Pin=U15-3
+Added Pin To Net: NetName=A_GND Pin=U15-4
+Added Pin To Net: NetName=3V3_A_GND Pin=U15-5
+Added Pin To Net: NetName=NetR37_1 Pin=U15-6
+Added Pin To Net: NetName=NetR36_1 Pin=U15-7
+Added Pin To Net: NetName=3V3_A Pin=U15-8
+Added Pin To Net: NetName=V_GND Pin=Cin1-2
+Added Pin To Net: NetName=V_GND Pin=Cin2-2
+Added Net: Name=V_GND
