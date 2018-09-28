@@ -6,6 +6,7 @@
 ".\objects\spd_pos_filter.o"
 ".\objects\current_filter.o"
 ".\objects\global_parameters.o"
+".\objects\hall_reversal_svpwm.o"
 ".\objects\hall_reversal_6steps.o"
 ".\objects\stm32f4xx_it.o"
 ".\objects\delay.o"

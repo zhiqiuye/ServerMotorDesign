@@ -25,11 +25,7 @@
 
 void	Current_Filter_Init(void);
 
-void	Current_Average_X4_Filter(current_sensor_state * m_parg);
-
 void	Current_Average_X8_Filter(current_sensor_state * m_parg);
-
-
 
 
 #endif

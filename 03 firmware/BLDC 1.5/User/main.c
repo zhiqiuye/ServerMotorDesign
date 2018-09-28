@@ -24,6 +24,7 @@
 #include	"stm32f4xx_it.h"
 #include	"motor_control.h"
 #include	"delay.h"
+#include	"hall_reversal_6steps.h"
 
 
 
@@ -171,10 +172,11 @@ static void	Board_Init(void)
 	DAC_Config();
 	CAN_Config();
 	
-	Hall_Start_Convert();							//立刻知道电机相位，后面滤波器初始化需要用到
+	//部分参数的获取与设置
+	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();								//立刻知道电机相位，后面滤波器初始化需要用到
 	BrakeControl(1);
-	m_motor_ctrl.m_sys_state.u8_cur_state	=	Prepare_state;
-	m_motor_ctrl.m_sys_state.u8_pre_state	=	Idle_state;
+	m_motor_ctrl.m_sys_state.u8_cur_state		=	Prepare_state;
+	m_motor_ctrl.m_sys_state.u8_pre_state		=	Idle_state;
 }
 
 

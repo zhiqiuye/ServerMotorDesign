@@ -400,12 +400,12 @@ const void	H3_L2(void)
 
 
 /* Private variables ---------------------------------------------------------*/
-const	void	(*runtime_switch_table[2][8])()			=	{	{NULL_Switch,	CW_H2_L3,		CW_H1_L2,		CW_H1_L3,		CW_H3_L1,		CW_H2_L1,		CW_H3_L2,	NULL_Switch},
-																{NULL_Switch,	CCW_H3_L2,		CCW_H2_L1,		CCW_H3_L1,		CCW_H1_L3,		CCW_H1_L2,		CCW_H2_L3,	NULL_Switch}}; 
+const	void	(*runtime_6steps_switch_table[2][8])()	=	{	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2,	NULL_Switch},
+																{NULL_Switch,	H3_L2,		H2_L1,		H3_L1,		H1_L3,		H1_L2,		H2_L3,	NULL_Switch}}; 
 
 
 //霍尔换向表好用
-const	void	(*startup_switch_table[2][8])() 		=	{	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2,	NULL_Switch},
+const	void	(*startup_6steps_switch_table[2][8])() 	=	{	{NULL_Switch,	H2_L3,		H1_L2,		H1_L3,		H3_L1,		H2_L1,		H3_L2,	NULL_Switch},
 																{NULL_Switch,	H3_L2,		H2_L1,		H3_L1,		H1_L3,		H1_L2,		H2_L3,	NULL_Switch}}; 
 
 

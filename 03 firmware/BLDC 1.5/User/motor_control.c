@@ -19,9 +19,12 @@
 #include	"ucos_ii.h"
 #include	"current_filter.h"
 #include	"hall_reversal_6steps.h"
+#include	"hall_reversal_svpwm.h"
 #include	"node_can_config.h"
 #include	"delay.h"
 #include	"arm_math.h"
+
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -133,7 +136,14 @@ void	Hall_Start_Convert(void)
 {
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();							//记录hall状态
 	
-	startup_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	1)											//使用SVPWM模式
+	{
+		runtime_svpwm_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
+	}
+	else																						//使用梯形6步换向
+	{
+		startup_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
+	}
 }
 
 
@@ -146,7 +156,14 @@ void	Hall_Runtime_Convert(void)
 {
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();							//记录hall状态
 	
-	runtime_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	1)											//使用SVPWM模式
+	{
+		runtime_svpwm_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
+	}
+	else																						//使用梯形6步换向
+	{
+		runtime_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
+	}
 }
 
 
@@ -342,21 +359,21 @@ void	Current_PID_Cal(volatile PID_struct * pid)
 	DAC_SetChannel2Data(DAC_Align_12b_R,(uint16_t)u32_temp2);
 #endif
 
-	/*将pid输出值转化到10-4190之间*/
-	m_pid.PW				=	pid_inc * 420.0f;							
-	
-	/*由设置电流值进行换向*/
-	if(m_pid.PW > 1.5f)
-	{
-		m_motor_ctrl.m_motion_ctrl.u8_dir			=	1;
-	}
-	else if(m_pid.PW < -1.5f)
-	{
-		m_motor_ctrl.m_motion_ctrl.u8_dir			=	0;
-	}
-	
-	/*换向*/
-	startup_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
+//	/*将pid输出值转化到10-4190之间*/
+//	m_pid.PW				=	pid_inc * 420.0f;							
+//	
+//	/*由设置电流值进行换向*/
+//	if(m_pid.PW > 1.5f)
+//	{
+//		m_motor_ctrl.m_motion_ctrl.u8_dir			=	1;
+//	}
+//	else if(m_pid.PW < -1.5f)
+//	{
+//		m_motor_ctrl.m_motion_ctrl.u8_dir			=	0;
+//	}
+//	
+//	/*换向*/
+//	startup_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
 	
 	arm_abs_f32(&m_pid.PW,&m_pid.PW,1);
 	
@@ -369,7 +386,7 @@ void	Current_PID_Cal(volatile PID_struct * pid)
 		;
 	
 	/*更改PWM占空比*/
-	ccr						=	(uint16_t)m_pid.PW;
+	ccr						=	2500;//(uint16_t)m_pid.PW;
 	TIM1->CCR1				=	ccr;
 	TIM1->CCR2				=	ccr;
 	TIM1->CCR3				=	ccr;

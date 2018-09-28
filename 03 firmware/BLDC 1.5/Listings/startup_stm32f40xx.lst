@@ -907,16 +907,16 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\objects\startup_stm32f40xx.d -o.\objects\startup_stm32f40xx.o
- -I"E:\19 SeverMotor\ServerMotorDesign\03 firmware\BLDC 1.5\RTE" -ID:\Keil_v5\A
+ -I"E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\R
 
 
 
 ARM Macro Assembler    Page 15 
 
 
-RM\PACK\Keil\STM32F4xx_DFP\2.6.0 -ID:\Keil_v5\ARM\CMSIS\Include --predefine="__
-UVISION_VERSION SETA 514" --predefine="STM32F405xx SETA 1" --list=.\listings\st
-artup_stm32f40xx.lst CMSIS\startup_stm32f40xx.s
+TE" -ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0 -ID:\Keil_v5\ARM\CMSIS\Inclu
+de --predefine="__UVISION_VERSION SETA 514" --predefine="STM32F405xx SETA 1" --
+list=.\listings\startup_stm32f40xx.lst CMSIS\startup_stm32f40xx.s
 
 
 

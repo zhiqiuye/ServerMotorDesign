@@ -112,11 +112,19 @@ typedef	struct
 	uint16_t		adc_dma_shadow[3];					//dma数据的影子寄存器，防止使用时dma数据改变
 	int16_t			i16_uvw_current;					//UVW相电流
 	
+	/*svpwm使用电流值*/
+	int16_t			i16_u_current;
+	int16_t			i16_v_current;
+	int16_t			i16_w_current;
+	
 	/*电流传感器偏置*/
 	int16_t			i16_uvw_curr_bias;					//UVW相电流测量偏置
 	
 	/*实际使用的电流值，转化为浮点型数据*/
 	float			f_adc_UVW_I;
+	float			f_adc_U_I;
+	float			f_adc_V_I;
+	float			f_adc_W_I;
 
 }current_sensor_state;
 
@@ -124,8 +132,11 @@ typedef	struct
 typedef	struct
 {
 	/*电流滑动均值滤波器*/
-	uint16_t		history_data[CURRENT_BUFFER_LENGTH];	//存放电流值历史
+	uint16_t		history_data[3][CURRENT_BUFFER_LENGTH];	//存放电流值历史
 	int16_t			i16_uvw_sum;							//窗口求和值存放
+	int16_t			i16_u_sum;
+	int16_t			i16_v_sum;
+	int16_t			i16_w_sum;
 	uint8_t			filter_index_uvw;						//用于指向电流值buf的位置
 	uint8_t			uvw_buffer_used;						//buffer中存放的数据量
 
@@ -223,8 +234,9 @@ typedef	struct
 {
 	uint8_t		u8_cur_state;
 	uint8_t		u8_pre_state;
-	uint8_t		u8_node_id;										//节点ID
+	uint32_t	u32_node_id;									//节点ID
 	uint8_t		u8_abs_encoder_used;							//是否使用增量编码器
+	uint8_t		u8_use_svpwm;									//是否使用SVPWM
 }sys_state;
 
 
@@ -388,6 +400,8 @@ void	CurrentFilterDataInit(void);
 void	EncoderDataInit(void);
 
 void	MotorCtrlDataInit(void);
+
+void	SystemStateDataInit(void);
 
 uint8_t	ParametersSave(void);
 

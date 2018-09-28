@@ -15,8 +15,28 @@
 #include	"stm32f4xx.h"
 #include	"global_parameters.h"
 
-extern	const	void	(*runtime_switch_table[2][8])()	;
-extern	const	void	(*startup_switch_table[2][8])();
+void	TIM1_CH1_OFF_CH1N_ON(void);
+void	TIM1_CH1_OFF_CH1N_OFF(void);
+void	TIM1_CH1_ON_CH1N_OFF(void);
+void	TIM1_CH1_OFF_CH1N_PWM(void);
+void	TIM1_CH1_PWM_CH1N_OFF(void);
+void	TIM1_CH2_OFF_CH2N_ON(void);
+void	TIM1_CH2_OFF_CH2N_OFF(void);
+void	TIM1_CH2_ON_CH2N_OFF(void);
+void	TIM1_CH2_OFF_CH2N_PWM(void);
+void	TIM1_CH2_PWM_CH2N_OFF(void);
+void	TIM1_CH3_OFF_CH3N_ON(void);
+void	TIM1_CH3_OFF_CH3N_OFF(void);
+void	TIM1_CH3_ON_CH3N_OFF(void);
+void	TIM1_CH3_OFF_CH3N_PWM(void);
+void	TIM1_CH3_PWM_CH3N_OFF(void);
+
+
+
+
+
+extern	const		void	(*runtime_6steps_switch_table[2][8])();
+extern	const		void	(*startup_6steps_switch_table[2][8])();
 
 uint16_t	Hall_State_Read(void);
 

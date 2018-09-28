@@ -256,7 +256,7 @@ void	TIM4_IRQHandler(void)
 {
 	if(TIM4->SR & TIM_IT_CC1)																//TIM_GetITStatus(TIM4,TIM_IT_CC1)!=RESET)
 	{
-		Hall_Start_Convert();																//霍尔换向
+		Hall_Runtime_Convert();																//霍尔换向
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
 	}
 }
@@ -311,7 +311,14 @@ void	DMA2_Stream0_IRQHandler(void)
 		if(m_motor_rt_para.m_current_sensor.u8_curr_bias_ready >= 16)
 		{
 			Current_Average_X8_Filter(&(m_motor_rt_para.m_current_sensor));															//对原始电流数据进行滑动窗口滤波，以及突变点剔除
-			m_motor_rt_para.m_current_sensor.f_adc_UVW_I					=	(float)(m_motor_rt_para.m_current_sensor.i16_uvw_current)*0.0100708f;
+			if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	0)
+				m_motor_rt_para.m_current_sensor.f_adc_UVW_I					=	(float)(m_motor_rt_para.m_current_sensor.i16_uvw_current)*0.0100708f;
+			else
+			{
+				m_motor_rt_para.m_current_sensor.f_adc_U_I						=	(float)(m_motor_rt_para.m_current_sensor.i16_u_current)*0.0100708f;
+				m_motor_rt_para.m_current_sensor.f_adc_V_I						=	(float)(m_motor_rt_para.m_current_sensor.i16_v_current)*0.0100708f;
+				m_motor_rt_para.m_current_sensor.f_adc_W_I						=	(float)(m_motor_rt_para.m_current_sensor.i16_w_current)*0.0100708f;
+			}
 		}
 		else
 		{

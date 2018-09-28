@@ -444,6 +444,11 @@
               <FilePath>.\User\global_parameters.c</FilePath>
             </File>
             <File>
+              <FileName>hall_reversal_svpwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\hall_reversal_svpwm.c</FilePath>
+            </File>
+            <File>
               <FileName>hall_reversal_6steps.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\hall_reversal_6steps.c</FilePath>

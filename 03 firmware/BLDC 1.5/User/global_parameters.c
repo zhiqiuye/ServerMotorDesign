@@ -13,6 +13,7 @@
 #include	"stm32f4xx.h"
 #include	"motor_control.h"
 #include	"spd_pos_filter.h"
+#include	"node_can_config.h"
 
 
 servo_motor_attribute_para		m_motor_attribute_para;
@@ -69,12 +70,12 @@ uint8_t	ParametersInit(void)
 	m_pid.curr.Out_Pre			=	0.0f;
 	m_pid.curr.Out_Actual		=	0.0f;
 	
-	m_pid.curr.Kp				=	10.4f;
-	m_pid.curr.Ki				=	0.25f;//0.01
+	m_pid.curr.Kp				=	2.0f;
+	m_pid.curr.Ki				=	0.02f;//0.01
 	m_pid.curr.Kd				=	0.0f;
 //pid: 20.0 1.0 0.0
 //pid: 40.0 0.8 0.0
-//pid: 0.6  0.02 0.0
+//
 //
 	/*速度环pid参数初始化*/
 	m_pid.spd.Ref_In			=	0.0f;
@@ -117,11 +118,11 @@ uint8_t	ParametersInit(void)
 //pid 0.4 0.05 0.1
 //
 //
-	CurrentFilterDataInit();
-	EncoderDataInit();
-	MotorCtrlDataInit();
-	KF_Filter_Init(&m_KF);
-	
+	CurrentFilterDataInit();									//电流滤波器参数初始化
+	EncoderDataInit();											//编码器数据初始化
+	MotorCtrlDataInit();										//电机控制数据初始化
+	KF_Filter_Init(&m_KF);										//速度位置预估卡尔曼滤波器初始化
+	SystemStateDataInit();										//系统状态相关数据初始化设置
 	return	1;
 }
 
@@ -137,7 +138,7 @@ uint8_t	ParametersInit(void)
 	----------------------------------------------------------------------------*/
 void	CurrentFilterDataInit(void)
 {
-	uint8_t	j;
+	uint8_t	i,j;
 	//停止电流环更新
 	CurrentLoopRefresh_TIM_Halt();
 	//滤波器数据清除
@@ -145,9 +146,12 @@ void	CurrentFilterDataInit(void)
 	m_motor_rt_para.m_current_filter.i16_uvw_sum				=	0;
 	m_motor_rt_para.m_current_filter.filter_index_uvw			=	0;
 	m_motor_rt_para.m_current_filter.uvw_buffer_used			=	0;
-	for(j=0;j<CURRENT_BUFFER_LENGTH;j++)
+	for(i=0;i<3;i++)
 	{
-		m_motor_rt_para.m_current_filter.history_data[j]		=	0;
+		for(j=0;j<CURRENT_BUFFER_LENGTH;j++)
+		{
+			m_motor_rt_para.m_current_filter.history_data[i][j]		=	0;
+		}
 	}
 	m_motor_rt_para.m_current_sensor.i16_uvw_current			=	0;
 	m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias			=	0;
@@ -210,6 +214,19 @@ void	MotorCtrlDataInit(void)
 }
 
 
+	/*---------------------------------------------------------------------------
+	函数名称			：SystemStateDataInit(void)
+	参数含义			：null
+	函数功能			：系统状态数据初始化
+	----------------------------------------------------------------------------*/
+void	SystemStateDataInit(void)
+{
+	m_motor_ctrl.m_sys_state.u8_abs_encoder_used					=	1;
+	m_motor_ctrl.m_sys_state.u8_cur_state							=	Idle_state;
+	m_motor_ctrl.m_sys_state.u8_pre_state							=	Idle_state;
+	m_motor_ctrl.m_sys_state.u32_node_id							=	NODE_ID;
+	m_motor_ctrl.m_sys_state.u8_use_svpwm							=	1;
+}
 	/*---------------------------------------------------------------------------
 	函数名称			：ParametersSave(void)
 	参数含义			：null

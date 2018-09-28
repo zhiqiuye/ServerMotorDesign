@@ -460,10 +460,10 @@ ARM Macro Assembler    Page 8
 
 
 erwork --depend=.\objects\cpu_a.d -o.\objects\cpu_a.o -I"E:\19 SeverMotor\Serve
-rMotorDesign\03 firmware\BLDC 1.5\RTE" -ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP
-\2.6.0 -ID:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 514" 
---predefine="STM32F405xx SETA 1" --list=.\listings\cpu_a.lst UCOSII\ucosii_cpu\
-cpu_a.asm
+rMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE" -ID:\Keil_v5\ARM\PACK\
+Keil\STM32F4xx_DFP\2.6.0 -ID:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_
+VERSION SETA 514" --predefine="STM32F405xx SETA 1" --list=.\listings\cpu_a.lst 
+UCOSII\ucosii_cpu\cpu_a.asm
 
 
 
