@@ -20,17 +20,21 @@ void	TIM1_CH1_OFF_CH1N_OFF(void);
 void	TIM1_CH1_ON_CH1N_OFF(void);
 void	TIM1_CH1_OFF_CH1N_PWM(void);
 void	TIM1_CH1_PWM_CH1N_OFF(void);
+void	TIM1_CH1_PWM_CH1N_PWM(void);
+
 void	TIM1_CH2_OFF_CH2N_ON(void);
 void	TIM1_CH2_OFF_CH2N_OFF(void);
 void	TIM1_CH2_ON_CH2N_OFF(void);
 void	TIM1_CH2_OFF_CH2N_PWM(void);
 void	TIM1_CH2_PWM_CH2N_OFF(void);
+void	TIM1_CH2_PWM_CH2N_PWM(void);
+	
 void	TIM1_CH3_OFF_CH3N_ON(void);
 void	TIM1_CH3_OFF_CH3N_OFF(void);
 void	TIM1_CH3_ON_CH3N_OFF(void);
 void	TIM1_CH3_OFF_CH3N_PWM(void);
 void	TIM1_CH3_PWM_CH3N_OFF(void);
-
+void	TIM1_CH3_PWM_CH3N_PWM(void);
 
 
 

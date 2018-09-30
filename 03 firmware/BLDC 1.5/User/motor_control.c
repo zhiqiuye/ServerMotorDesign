@@ -138,6 +138,9 @@ void	Hall_Start_Convert(void)
 	
 	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	USE_FOC)									//使用SVPWM模式
 	{
+		TIM1_CH1_PWM_CH1N_PWM();
+		TIM1_CH2_PWM_CH2N_PWM();
+		TIM1_CH3_PWM_CH3N_PWM();
 		RotorRecognition(m_motor_rt_para.m_reverse.u8_hall_state);
 	}
 	else																						//使用梯形6步换向
@@ -314,6 +317,8 @@ void	Read_Current_Bias(void)
 	Current_Filter_Init();															//初始化电流滤波器
 
 	CurrentLoopRefresh_TIM_Start();
+	
+	
 }
 
 

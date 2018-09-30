@@ -38,7 +38,7 @@ error_log						m_error;
 void	IndirectParaInit(void)
 {
 	m_motor_attribute_para.m_motor_ind_att.f_Udc			=	24.0f;
-	m_motor_attribute_para.m_motor_ind_att.f_root3_Ts_Udc	=	41.56921938165f * PWM_CYCLE_F;
+	m_motor_attribute_para.m_motor_ind_att.f_root3_Ts_Udc	=	0.0020785;//41.56921938165f * PWM_CYCLE_F;
 	m_motor_attribute_para.m_motor_ind_att.f_rad_per_cnts	=	6.283185307f/(float)(m_motor_attribute_para.m_encoder_att.u32_pulse_per_loop / m_motor_attribute_para.m_motor_att.u8_number_of_pole_pairs);
 }
 
@@ -256,6 +256,7 @@ uint8_t	ParametersInit(void)
 	m_motor_attribute_para.m_motor_att.f_mechanical_time_constant		=	0.0f;
 	m_motor_attribute_para.m_motor_att.u8_number_of_pole_pairs			=	P/2;
 	
+	IndirectParaInit();
 
 	CurrentPID6StepsDataInit();
 	CurrentPIDSVPWMDataInit();

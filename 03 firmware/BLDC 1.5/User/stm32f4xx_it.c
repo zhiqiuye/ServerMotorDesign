@@ -102,7 +102,7 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 		if(TIM1->CR1 & 0x0010)
 		{
 			/*如果开启电流环更新，不做电流跟随的情况下，下面代码运行时间1.3us*/
-			if(m_motor_ctrl.m_motion_ctrl.u8_is_currloop_used ==	1)
+			if(m_motor_ctrl.m_motion_ctrl.u8_is_currloop_used 	==	1)
 			{
 #ifdef	USE_CURRENT_TRACE	/*产生目标正弦电流信号，计算时间4us*/
 				f_sin	=	1.0f + CURRENT_AMP * arm_sin_f32( (float32_t)step_cnt * _2PI / CURRENT_CYC );
@@ -148,8 +148,8 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				{
 					m_pid.iq.Ref_In												=	0.6f;
 					m_pid.id.Ref_In												=	0.0f;
+					m_motor_rt_para.m_park.f_theta_rad							+=	0.01f;
 				}
-					
 				m_motor_ctrl.m_motion_ctrl.u8_current_set_data_refreshed		=	0;
 			}
 		}

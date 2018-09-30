@@ -52,7 +52,7 @@ void	StateMachine_Task(void * parg)
 			Read_Current_Bias();															//电流采集电路电压偏置计算
 			
 			m_motor_ctrl.m_sys_state.u8_abs_encoder_used	=	1;							//启用绝对值编码器
-			
+
 			OSTimeDlyHMSM(0,0,0,100);
 			
 			BrakeControl(1);																//开启抱闸
