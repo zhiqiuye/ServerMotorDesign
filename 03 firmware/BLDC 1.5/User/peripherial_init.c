@@ -433,7 +433,7 @@ void	Timer1_Config(void)
 	TIM_BaseInitStructure.TIM_CounterMode			=	TIM_CounterMode_CenterAligned1;			//中心对齐模式1，在计数器递减时产生比较中断
 																								//中心对齐模式2，在计数器递增时产生比较中断
 																								//中心对齐模式3，在计数器递增或递减时产生比较中断
-	TIM_BaseInitStructure.TIM_Period				=	4200-1;									//计数值溢出界限
+	TIM_BaseInitStructure.TIM_Period				=	PWM_CYCLE_U16;							//计数值溢出界限
 	TIM_BaseInitStructure.TIM_Prescaler				=	0;										//预分频数为1
 	TIM_BaseInitStructure.TIM_RepetitionCounter		=	0;
 	TIM_TimeBaseInit(TIM1,&TIM_BaseInitStructure);
@@ -441,13 +441,13 @@ void	Timer1_Config(void)
 /*初始化定时器的各通道*/
 	TIM_OCStructInit(&TIM_OCInitStructure);
 	TIM_OCInitStructure.TIM_OCMode					=	TIM_OCMode_PWM2;						//pwm模式1输出，向上计数时，cnt<ccr时为有效电平，向下计数时，cnt>ccr时为无效电平																								//pwm模式2输出，向上计数时，cnt<ccr时为无效电平，向下计数时，cnt>ccr时为有效电平
-	TIM_OCInitStructure.TIM_OCIdleState				=	TIM_OCIdleState_Reset;//TIM_OCIdleState_Reset;					//计数到pulse值后拉低管脚
-	TIM_OCInitStructure.TIM_OCNIdleState			=	TIM_OCNIdleState_Reset;//TIM_OCNIdleState_Reset;
-	TIM_OCInitStructure.TIM_OCPolarity				=	TIM_OCPolarity_Low;//TIM_OCPolarity_Low;						//有效电平为低
-	TIM_OCInitStructure.TIM_OCNPolarity				=	TIM_OCNPolarity_Low;//TIM_OCNPolarity_Low;					//互补输出通道，有效电平为低，与TIM_OCPolarity保持一致才能互补
+	TIM_OCInitStructure.TIM_OCIdleState				=	TIM_OCIdleState_Reset;					//计数到pulse值后拉低管脚
+	TIM_OCInitStructure.TIM_OCNIdleState			=	TIM_OCNIdleState_Reset;
+	TIM_OCInitStructure.TIM_OCPolarity				=	TIM_OCPolarity_Low;						//有效电平为低
+	TIM_OCInitStructure.TIM_OCNPolarity				=	TIM_OCNPolarity_Low;					//互补输出通道，有效电平为低，与TIM_OCPolarity保持一致才能互补
 	TIM_OCInitStructure.TIM_OutputState				=	TIM_OutputState_Enable;					//输出通道使能
 	TIM_OCInitStructure.TIM_OutputNState			=	TIM_OutputNState_Enable;				//互补输出通道，输出使能
-	TIM_OCInitStructure.TIM_Pulse					=	10;									//占空比设置
+	TIM_OCInitStructure.TIM_Pulse					=	10;										//占空比设置
 	TIM_OC1Init(TIM1,&TIM_OCInitStructure);
 	TIM_OC1PreloadConfig(TIM1,TIM_OCPreload_Enable);
 	

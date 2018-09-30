@@ -93,7 +93,7 @@ void	Current_Average_X8_Filter(current_sensor_state * m_parg)
 	int16_t		real_i;
 	int16_t		real_u,real_v,real_w;
 	/*梯形脉冲时电流的滤波*/
-	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	0)
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)
 	{
 		if(m_motor_ctrl.m_motion_ctrl.u8_dir	== 	0)
 		{

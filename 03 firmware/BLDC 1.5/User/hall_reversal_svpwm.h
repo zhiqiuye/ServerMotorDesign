@@ -34,7 +34,9 @@ void	U_OFF_V_ON_W_ON(void);
 void	U_ON_V_ON_W_ON(void);
 
 
-
+void	RotorCorrection(uint8_t hall_state);
+void	RotorRecognition(uint8_t hall_state);
+void	FOC_Cal(void);
 
 
 

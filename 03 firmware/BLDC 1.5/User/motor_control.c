@@ -136,9 +136,9 @@ void	Hall_Start_Convert(void)
 {
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();							//记录hall状态
 	
-	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	1)											//使用SVPWM模式
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	USE_FOC)									//使用SVPWM模式
 	{
-		runtime_svpwm_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
+		RotorRecognition(m_motor_rt_para.m_reverse.u8_hall_state);
 	}
 	else																						//使用梯形6步换向
 	{
@@ -156,7 +156,7 @@ void	Hall_Runtime_Convert(void)
 {
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();							//记录hall状态
 	
-	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	1)											//使用SVPWM模式
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	USE_FOC)											//使用SVPWM模式
 	{
 		runtime_svpwm_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
 	}
@@ -359,34 +359,34 @@ void	Current_PID_Cal(volatile PID_struct * pid)
 	DAC_SetChannel2Data(DAC_Align_12b_R,(uint16_t)u32_temp2);
 #endif
 
-//	/*将pid输出值转化到10-4190之间*/
-//	m_pid.PW				=	pid_inc * 420.0f;							
-//	
-//	/*由设置电流值进行换向*/
-//	if(m_pid.PW > 1.5f)
-//	{
-//		m_motor_ctrl.m_motion_ctrl.u8_dir			=	1;
-//	}
-//	else if(m_pid.PW < -1.5f)
-//	{
-//		m_motor_ctrl.m_motion_ctrl.u8_dir			=	0;
-//	}
-//	
-//	/*换向*/
-//	startup_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
+	/*将pid输出值转化到10-4190之间*/
+	m_pid.PW				=	pid_inc * 420.0f;							
+	
+	/*由设置电流值进行换向*/
+	if(m_pid.PW > 1.5f)
+	{
+		m_motor_ctrl.m_motion_ctrl.u8_dir			=	1;
+	}
+	else if(m_pid.PW < -1.5f)
+	{
+		m_motor_ctrl.m_motion_ctrl.u8_dir			=	0;
+	}
+	
+	/*换向*/
+	startup_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
 	
 	arm_abs_f32(&m_pid.PW,&m_pid.PW,1);
 	
 	/*对PID输出做出赋值限制*/
-	if(m_pid.PW > MAX_DUTY_CYCLE)
-		m_pid.PW	=	MAX_DUTY_CYCLE;
-	else if(m_pid.PW < MIN_DUTY_CYCLE)
-		m_pid.PW	=	MIN_DUTY_CYCLE;
+	if(m_pid.PW > MAX_DUTY_CYCLE_F)
+		m_pid.PW	=	MAX_DUTY_CYCLE_F;
+	else if(m_pid.PW < MIN_DUTY_CYCLE_F)
+		m_pid.PW	=	MIN_DUTY_CYCLE_F;
 	else
 		;
 	
 	/*更改PWM占空比*/
-	ccr						=	2500;//(uint16_t)m_pid.PW;
+	ccr						=	(uint16_t)m_pid.PW;
 	TIM1->CCR1				=	ccr;
 	TIM1->CCR2				=	ccr;
 	TIM1->CCR3				=	ccr;

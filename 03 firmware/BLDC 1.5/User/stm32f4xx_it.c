@@ -27,6 +27,7 @@
 #include	"jingle_math.h"
 #include	"spd_pos_filter.h"
 #include	"hall_reversal_6steps.h"
+#include	"hall_reversal_svpwm.h"
 #include	"peripherial_init.h"
 #include	"node_can_config.h"
 
@@ -124,7 +125,10 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 				/*电流值更新后，进入电流环的DMA中断*/
 				if(m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed	==	1)
 				{
-					Current_PID_Cal(&(m_pid.curr));											//有刷新反馈电流值，电流环更新程序部分
+					if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)						//使用六步梯形换向
+						Current_PID_Cal(&(m_pid.curr));													//有刷新反馈电流值，电流环更新程序部分
+					else																				//使用FOC
+						FOC_Cal();
 					m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed	=	0;									
 				}
 			}
@@ -138,7 +142,14 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 			/*速度环数据更新后，更新目标电流*/
 			if(m_motor_ctrl.m_motion_ctrl.u8_current_set_data_refreshed			== 1)
 			{
-				m_pid.curr.Ref_In												=	(float)fabs((double)m_motor_ctrl.m_motion_ctrl.f_set_current);	//电流值取绝对值
+				if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)							//使用六步梯形换向
+					m_pid.curr.Ref_In											=	(float)fabs((double)m_motor_ctrl.m_motion_ctrl.f_set_current);	//电流值取绝对值
+				else																					//使用FOC
+				{
+					m_pid.iq.Ref_In												=	0.6f;
+					m_pid.id.Ref_In												=	0.0f;
+				}
+					
 				m_motor_ctrl.m_motion_ctrl.u8_current_set_data_refreshed		=	0;
 			}
 		}
@@ -182,12 +193,10 @@ void	TIM2_IRQHandler(void)
 			if(m_motor_ctrl.m_motion_ctrl.u8_position_set_data_refreshed	==	1)
 			{
 				m_pid.pos.Ref_In				=	m_motor_ctrl.m_motion_ctrl.f_set_position + m_motor_rt_para.m_abs_encoder.f_abs_pos_init;
-				
 				Position_PID_Cal(&(m_pid.pos));
 				m_motor_ctrl.m_motion_ctrl.u8_position_set_data_refreshed	=	0;
 			}
 		}
-
 		
 		/*更新速度环*/
 		if(m_motor_ctrl.m_motion_ctrl.u8_is_speedloop_used	==	1)
@@ -217,9 +226,9 @@ void	TIM2_IRQHandler(void)
 			}
 		}
 		
-		CAN_SEND_CVP();				//can发送电流速度位置值
+		CAN_SEND_CVP();																					//can发送电流速度位置值
 		
-		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);										//清除中断标志位
+		TIM_ClearITPendingBit(TIM2,TIM_IT_Update);														//清除中断标志位
 	}
 }
 
@@ -256,7 +265,14 @@ void	TIM4_IRQHandler(void)
 {
 	if(TIM4->SR & TIM_IT_CC1)																//TIM_GetITStatus(TIM4,TIM_IT_CC1)!=RESET)
 	{
-		Hall_Runtime_Convert();																//霍尔换向
+		if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)						//使用梯形换向
+			Hall_Runtime_Convert();															//霍尔换向
+		else																				//如果使用FOC
+		{
+			m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();				//记录hall状态
+			RotorCorrection(m_motor_rt_para.m_reverse.u8_hall_state);						//FOC
+		}
+			
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
 	}
 }
@@ -272,7 +288,7 @@ void	TIM4_IRQHandler(void)
 	----------------------------------------------------------------------------*/
 void	TIM8_UP_TIM13_IRQHandler(void)
 {
-	if(TIM8->SR & TIM_IT_Update)														//TIM_GetITStatus(TIM8,TIM_IT_Update)!=RESET
+	if(TIM8->SR & TIM_IT_Update)														
 	{
 		tim8_cnts++;
 		if(tim8_cnts == 8)																//计数到8，启动SSI读取绝对值编码器数据，读数时间大概为0.2ms
@@ -302,7 +318,7 @@ void	DMA2_Stream0_IRQHandler(void)
 {
 	uint16_t	temp_sum;
 	
-	if(DMA2->LISR & DMA_IT_TCIF0)																									//DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0) == SET)//					
+	if(DMA2->LISR & DMA_IT_TCIF0)																																	
 	{
 		m_motor_rt_para.m_current_sensor.adc_dma_shadow[0]	=	m_motor_rt_para.m_current_sensor.ADC_DMA_buf[0];
 		m_motor_rt_para.m_current_sensor.adc_dma_shadow[1]	=	m_motor_rt_para.m_current_sensor.ADC_DMA_buf[1];
@@ -310,8 +326,8 @@ void	DMA2_Stream0_IRQHandler(void)
 		
 		if(m_motor_rt_para.m_current_sensor.u8_curr_bias_ready >= 16)
 		{
-			Current_Average_X8_Filter(&(m_motor_rt_para.m_current_sensor));															//对原始电流数据进行滑动窗口滤波，以及突变点剔除
-			if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	0)
+			Current_Average_X8_Filter(&(m_motor_rt_para.m_current_sensor));																		//对原始电流数据进行滑动窗口滤波，以及突变点剔除
+			if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)
 				m_motor_rt_para.m_current_sensor.f_adc_UVW_I					=	(float)(m_motor_rt_para.m_current_sensor.i16_uvw_current)*0.0100708f;
 			else
 			{
@@ -323,13 +339,13 @@ void	DMA2_Stream0_IRQHandler(void)
 		else
 		{
 			temp_sum			=	m_motor_rt_para.m_current_sensor.ADC_DMA_buf[0] + m_motor_rt_para.m_current_sensor.ADC_DMA_buf[1] + m_motor_rt_para.m_current_sensor.ADC_DMA_buf[2];
-			m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias				+=	(temp_sum /3);
+			m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias					+=	(temp_sum /3);
 			m_motor_rt_para.m_current_sensor.u8_curr_bias_ready++;
 			if(m_motor_rt_para.m_current_sensor.u8_curr_bias_ready == 16)
-				m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias			=	m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias>>4;		//取均值作为偏置
+				m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias				=	m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias>>4;		//取均值作为偏置
 		}
-		m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed			=	1;													//读取电流反馈数据更新
-		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF0 & 0x0F7D0F7D);																	//DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
+		m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed				=	1;															//读取电流反馈数据更新
+		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF0 & 0x0F7D0F7D);																				//DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }
 
@@ -343,12 +359,12 @@ void	DMA2_Stream0_IRQHandler(void)
 	----------------------------------------------------------------------------*/
 void	DMA2_Stream3_IRQHandler(void)
 {
-	if(DMA2->LISR & DMA_IT_TCIF3)																				//DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0) == SET)//					
+	if(DMA2->LISR & DMA_IT_TCIF3)																									
 	{
 		m_motor_rt_para.m_torque_sensor.f_torque_A						=	(float)(m_motor_rt_para.m_torque_sensor.torque_adc_buf[0]);
 		m_motor_rt_para.m_torque_sensor.f_torque_B						=	(float)(m_motor_rt_para.m_torque_sensor.torque_adc_buf[1]);
 
-		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF3 & 0x0F7D0F7D);												//DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
+		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF3 & 0x0F7D0F7D);												
 	}
 }	
 

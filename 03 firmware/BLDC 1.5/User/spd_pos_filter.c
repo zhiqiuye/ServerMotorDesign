@@ -342,7 +342,7 @@ void	Read_AbsEncoder(void)
 
 
 	/*---------------------------------------------------------------------------
-	函数名称			：Noise_killer(void)
+	函数名称			：	Noise_killer(void)
 	参数含义			：	buf			存储历史数据的buf
 							curr_value	当前的输入值
 	函数功能			：	滤除野值

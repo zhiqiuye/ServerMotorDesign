@@ -25,7 +25,7 @@
 #include	"motor_control.h"
 #include	"delay.h"
 #include	"hall_reversal_6steps.h"
-
+#include	"hall_reversal_svpwm.h"
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -174,6 +174,7 @@ static void	Board_Init(void)
 	
 	//部分参数的获取与设置
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();								//立刻知道电机相位，后面滤波器初始化需要用到
+	
 	BrakeControl(1);
 	m_motor_ctrl.m_sys_state.u8_cur_state		=	Prepare_state;
 	m_motor_ctrl.m_sys_state.u8_pre_state		=	Idle_state;
