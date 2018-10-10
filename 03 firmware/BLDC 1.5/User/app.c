@@ -19,7 +19,7 @@
 #include	"peripherial_init.h"
 #include	"motor_control.h"
 #include	"global_parameters.h"
-#include	"hall_reversal_svpwm.h"
+#include	"foc_reversal_svpwm.h"
 
 /*Private Function---------------------------------------------------------------*/
 

@@ -197,7 +197,7 @@ void	KF_Filter(int32_t * input_pos,float * input_spd, int32_t * output_pos, floa
 	----------------------------------------------------------------------------*/
 void	Read_IncEncoder(void)
 {
-	int32_t		temp_delta;
+	uint16_t		temp_delta;
 	uint32_t	f_width		=	0;
 	float		f_temp		=	0.0f;
 	float		f_velocity	=	0.0f;
@@ -207,9 +207,9 @@ void	Read_IncEncoder(void)
 	m_motor_rt_para.m_inc_encoder.u16_encoder_last_read		=	m_motor_rt_para.m_inc_encoder.u16_encoder_curr_read;						//获取最新编码器读数
 	m_motor_rt_para.m_inc_encoder.u16_encoder_curr_read		=	TIM3->CNT;
 	
-	temp_delta	=	(int32_t)(m_motor_rt_para.m_inc_encoder.u16_encoder_curr_read - m_motor_rt_para.m_inc_encoder.u16_encoder_last_read);
+	temp_delta	=	(m_motor_rt_para.m_inc_encoder.u16_encoder_curr_read - m_motor_rt_para.m_inc_encoder.u16_encoder_last_read);
 	
-	m_motor_rt_para.m_inc_encoder.i32_pulse_cnt				=	m_motor_rt_para.m_inc_encoder.i32_pulse_cnt + temp_delta;																//获取当前位置信息
+	m_motor_rt_para.m_inc_encoder.i32_pulse_cnt				+=	(int32_t)temp_delta;																//获取当前位置信息
 	
 	/*根据temp_dalta判断转速方向*/
 	if(temp_delta < 0)

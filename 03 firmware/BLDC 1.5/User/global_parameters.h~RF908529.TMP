@@ -111,8 +111,6 @@ typedef	struct
 	float			f_Udc;
 	float			f_root3_Ts_Udc;								//FOC控制方法中使用的常量
 	float			f_rad_per_cnts;								//用于估算转子位置theta的量，增量编码器每个脉冲对应的弧度值
-	float			f_delta_theta_0;							//编码器I相与a轴的夹角，由于装配问题带来的偏差
-	int32_t			i32_cnts_AB;								//foc初始化时，从获取I相中断到foc矢量电压到0时的脉冲计数值
 }motor_indirect_para;
 
 
@@ -309,25 +307,12 @@ typedef	struct
 	uint8_t		u8_use_svpwm;									//是否使用SVPWM
 }sys_state;
 
-enum FOC_STATE													//foc初始化状态
-{
-	foc_init_state_0,
-	foc_init_state_1,
-	foc_init_state_2,
-	foc_init_over,
-};
-
 
 /*控制参数------------------------------------------------------------------------------*/
 typedef	struct
 {
 	uint8_t		u8_dir;											//转动方向
 
-	uint8_t		u8_foc_state;									//驱动器foc状态，0：foc初始定位转子位置到0电角度
-																//				1：电流开环旋转，开启增量编码器读数，查找霍尔与实际电角度差
-                                                                //              2：继续沿原方向旋转电压矢量，找到0电角度
-                                                            	//              3：正常使用foc
-	
 	/*状态更新标志位*/
 	uint8_t		u8_current_read_data_refreshed;					//读取反馈电流更新标志
 	uint8_t		u8_current_set_data_refreshed;					//设置电流值更新

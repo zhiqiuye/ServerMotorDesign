@@ -19,7 +19,7 @@
 #include	"ucos_ii.h"
 #include	"current_filter.h"
 #include	"hall_reversal_6steps.h"
-#include	"hall_reversal_svpwm.h"
+#include	"foc_reversal_svpwm.h"
 #include	"node_can_config.h"
 #include	"delay.h"
 #include	"arm_math.h"
@@ -153,20 +153,14 @@ void	Hall_Start_Convert(void)
 	/*---------------------------------------------------------------------------
 	函数名称			：Hall_Runtime_Convert(void)
 	参数含义			：null
-	函数功能			：运行时Hall换向函数
+	函数功能			：运行时Hall换向函数，用于梯形换向
 	----------------------------------------------------------------------------*/
 void	Hall_Runtime_Convert(void)
 {
 	m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();							//记录hall状态
 	
-	if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	USE_FOC)											//使用SVPWM模式
-	{
-		runtime_svpwm_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();
-	}
-	else																						//使用梯形6步换向
-	{
-		runtime_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
-	}
+	runtime_6steps_switch_table[m_motor_ctrl.m_motion_ctrl.u8_dir][m_motor_rt_para.m_reverse.u8_hall_state]();		//根据方向以及hall相位进行换向，采用函数指针方式
+
 }
 
 
@@ -318,7 +312,13 @@ void	Read_Current_Bias(void)
 
 	CurrentLoopRefresh_TIM_Start();
 	
+	while(1)
+	{
+		if(m_motor_rt_para.m_current_sensor.u8_curr_bias_ready >= 16)
+			break;
+	}
 	
+	m_motor_ctrl.m_motion_ctrl.u8_is_currloop_used	=	0;							//电流滤波器偏置电压采集完毕，关闭电流环更新
 }
 
 

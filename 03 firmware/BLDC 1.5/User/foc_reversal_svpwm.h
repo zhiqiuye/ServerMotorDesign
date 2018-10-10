@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    Project/user/hallreversal.h
+  * @file    Project/user/foc_reversal_svpwm.h
   * @author  Kuangjing
   * @version ucosii
   * @date    20170928
@@ -10,8 +10,8 @@
   */
   
   
-#ifndef		__HALL_REVERSAL_SVPWM_H
-#define		__HALL_REVERSAL_SVPWM_H
+#ifndef		__FOC_REVERSAL_SVPWM_H
+#define		__FOC_REVERSAL_SVPWM_H
 
 
 #include	"stm32f4xx.h"
@@ -33,8 +33,7 @@ void	U_ON_V_OFF_W_ON(void);
 void	U_OFF_V_ON_W_ON(void);
 void	U_ON_V_ON_W_ON(void);
 
-
-void	RotorCorrection(uint8_t hall_state);
+void	RotorCorrection(void);
 void	RotorRecognition(uint8_t hall_state);
 void	FOC_Cal(void);
 

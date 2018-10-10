@@ -27,7 +27,7 @@
 #include	"jingle_math.h"
 #include	"spd_pos_filter.h"
 #include	"hall_reversal_6steps.h"
-#include	"hall_reversal_svpwm.h"
+#include	"foc_reversal_svpwm.h"
 #include	"peripherial_init.h"
 #include	"node_can_config.h"
 
@@ -75,7 +75,6 @@ float32_t		f_sin				=	0.0f;				//正弦
 #endif
 
 uint8_t			tim8_cnts = 0;
-
 
 /* Private function prototypes -----------------------------------------------*/
 //			GPIOC->ODR	|=	0x0001;				//置高C1
@@ -144,11 +143,11 @@ void	TIM1_UP_TIM10_IRQHandler(void)
 			{
 				if(m_motor_ctrl.m_sys_state.u8_use_svpwm	==	NOT_USE_FOC)							//使用六步梯形换向
 					m_pid.curr.Ref_In											=	(float)fabs((double)m_motor_ctrl.m_motion_ctrl.f_set_current);	//电流值取绝对值
+				
 				else																					//使用FOC
 				{
-					m_pid.iq.Ref_In												=	0.6f;
-					m_pid.id.Ref_In												=	0.0f;
-					m_motor_rt_para.m_park.f_theta_rad							+=	0.01f;
+					m_motor_ctrl.m_motion_ctrl.f_set_iq							=	0.6f;
+					m_motor_ctrl.m_motion_ctrl.f_set_id							=	0.0f;
 				}
 				m_motor_ctrl.m_motion_ctrl.u8_current_set_data_refreshed		=	0;
 			}
@@ -241,13 +240,23 @@ void	TIM2_IRQHandler(void)
 	----------------------------------------------------------------------------*/
 void	TIM3_IRQHandler(void)
 {
-	if(TIM3->SR & TIM_IT_Update)															//TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)		//AB相计数溢出中断
-	{
-	}
+
+//	if(TIM3->SR & TIM_IT_Update)															//TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)		//AB相计数溢出中断
+//	{
+//	}
 	
 	if(TIM3->SR & TIM_IT_CC3)																//TIM_GetITStatus(TIM3,TIM_IT_CC3) != RESET)		//I相输入捕获中断
 	{
-		
+		/*FOC初始化寻找编码器I相，开始时*/
+		if(m_motor_ctrl.m_motion_ctrl.u8_foc_state == foc_init_state_1)
+		{
+			m_motor_attribute_para.m_motor_ind_att.i32_cnts_AB	=	m_motor_rt_para.m_inc_encoder.i32_pulse_cnt;				//捕获到0相位时增量编码器的位置
+			m_motor_ctrl.m_motion_ctrl.u8_foc_state	=	foc_init_state_2;
+		}
+		if(m_motor_ctrl.m_motion_ctrl.u8_foc_state == foc_init_over)						//FOC相位已经校准，可以获得精确转子位置
+		{
+			RotorCorrection();
+		}
 	}
 	
 	TIM_ClearITPendingBit(TIM3,TIM_IT_CC3|TIM_IT_Update);									//清除中断
@@ -270,7 +279,6 @@ void	TIM4_IRQHandler(void)
 		else																				//如果使用FOC
 		{
 			m_motor_rt_para.m_reverse.u8_hall_state		=	Hall_State_Read();				//记录hall状态
-			RotorCorrection(m_motor_rt_para.m_reverse.u8_hall_state);						//FOC
 		}
 			
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
@@ -335,6 +343,7 @@ void	DMA2_Stream0_IRQHandler(void)
 				m_motor_rt_para.m_current_sensor.f_adc_V_I						=	(float)(m_motor_rt_para.m_current_sensor.i16_v_current)*0.0100708f;
 				m_motor_rt_para.m_current_sensor.f_adc_W_I						=	(float)(m_motor_rt_para.m_current_sensor.i16_w_current)*0.0100708f;
 			}
+			m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed			=	1;															//读取电流反馈数据更新
 		}
 		else
 		{
@@ -343,8 +352,9 @@ void	DMA2_Stream0_IRQHandler(void)
 			m_motor_rt_para.m_current_sensor.u8_curr_bias_ready++;
 			if(m_motor_rt_para.m_current_sensor.u8_curr_bias_ready == 16)
 				m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias				=	m_motor_rt_para.m_current_sensor.i16_uvw_curr_bias>>4;		//取均值作为偏置
+			m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed			=	0;
 		}
-		m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed				=	1;															//读取电流反馈数据更新
+		
 		DMA2->LIFCR 	=	(uint32_t)(DMA_IT_TCIF0 & 0x0F7D0F7D);																				//DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 	}
 }

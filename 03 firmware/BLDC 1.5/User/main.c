@@ -25,7 +25,7 @@
 #include	"motor_control.h"
 #include	"delay.h"
 #include	"hall_reversal_6steps.h"
-#include	"hall_reversal_svpwm.h"
+#include	"foc_reversal_svpwm.h"
 
 
 /* Private function prototypes -----------------------------------------------*/

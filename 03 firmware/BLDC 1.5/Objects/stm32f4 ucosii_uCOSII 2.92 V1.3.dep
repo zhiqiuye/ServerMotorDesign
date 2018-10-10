@@ -1,5 +1,5 @@
 Dependencies for Project 'stm32f4 ucosii', Target 'uCOSII 2.92 V1.3': (DO NOT MODIFY !)
-F (.\User\main.c)(0x5BB075F6)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\User\main.c)(0x5BBD9398)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -56,13 +56,13 @@ I (.\UCOSII\ucosii_lib\lib_ascii.h)(0x53211E90)
 I (.\UCOSII\ucosii_lib\lib_cfg.h)(0x58005D3D)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (User\app.h)(0x5B68FE2F)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\stm32f4xx_it.h)(0x5B5C0120)
 I (User\motor_control.h)(0x5BA9E0CA)
 I (User\delay.h)(0x5B56D843)
 I (User\hall_reversal_6steps.h)(0x5BB09060)
-I (User\hall_reversal_svpwm.h)(0x5BB039F5)
-F (.\User\app.c)(0x5BB07EEF)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\app.o --omf_browse .\objects\app.crf --depend .\objects\app.d)
+I (User\foc_reversal_svpwm.h)(0x5BBD9392)
+F (.\User\app.c)(0x5BBD9395)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\app.o --omf_browse .\objects\app.crf --depend .\objects\app.d)
 I (User\app.h)(0x5B68FE2F)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
@@ -120,9 +120,9 @@ I (.\UCOSII\ucosii_lib\lib_cfg.h)(0x58005D3D)
 I (User\stm32f4xx_it.h)(0x5B5C0120)
 I (User\delay.h)(0x5B56D843)
 I (User\motor_control.h)(0x5BA9E0CA)
-I (User\global_parameters.h)(0x5BB07552)
-I (User\hall_reversal_svpwm.h)(0x5BB039F5)
-F (.\User\peripherial_init.c)(0x5BAF6AC2)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\peripherial_init.o --omf_browse .\objects\peripherial_init.crf --depend .\objects\peripherial_init.d)
+I (User\global_parameters.h)(0x5BBD6FCB)
+I (User\foc_reversal_svpwm.h)(0x5BBD9392)
+F (.\User\peripherial_init.c)(0x5BBD5EC7)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\peripherial_init.o --omf_browse .\objects\peripherial_init.crf --depend .\objects\peripherial_init.d)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
@@ -176,10 +176,10 @@ I (.\UCOSII\ucosii_cpu\cpu_core.h)(0x54E15FDA)
 I (.\UCOSII\ucosii_lib\lib_str.h)(0x58004E43)
 I (.\UCOSII\ucosii_lib\lib_ascii.h)(0x53211E90)
 I (.\UCOSII\ucosii_lib\lib_cfg.h)(0x58005D3D)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\delay.h)(0x5B56D843)
 I (User\motor_control.h)(0x5BA9E0CA)
-F (.\User\motor_control.c)(0x5BB0909E)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\motor_control.o --omf_browse .\objects\motor_control.crf --depend .\objects\motor_control.d)
+F (.\User\motor_control.c)(0x5BBDB46B)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\motor_control.o --omf_browse .\objects\motor_control.crf --depend .\objects\motor_control.d)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -215,20 +215,20 @@ I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
 I (User\motor_control.h)(0x5BA9E0CA)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (.\UCOSII\ucosii_src\ucos_ii.h)(0x58004D25)
 I (.\User\os_cfg.h)(0x5800546B)
 I (.\UCOSII\ucosii_port\os_cpu.h)(0x537C5B12)
 I (User\current_filter.h)(0x5BAE0752)
 I (User\hall_reversal_6steps.h)(0x5BB09060)
-I (User\hall_reversal_svpwm.h)(0x5BB039F5)
+I (User\foc_reversal_svpwm.h)(0x5BBD9392)
 I (User\node_can_config.h)(0x5BA4A17F)
 I (User\delay.h)(0x5B56D843)
 I (User\arm_math.h)(0x573CA1AB)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
-F (.\User\spd_pos_filter.c)(0x5BB0305A)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\spd_pos_filter.o --omf_browse .\objects\spd_pos_filter.crf --depend .\objects\spd_pos_filter.d)
+F (.\User\spd_pos_filter.c)(0x5BBD6C33)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\spd_pos_filter.o --omf_browse .\objects\spd_pos_filter.crf --depend .\objects\spd_pos_filter.d)
 I (User\spd_pos_filter.h)(0x5BA9AB2F)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
@@ -264,7 +264,7 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (User\arm_math.h)(0x573CA1AB)
@@ -306,11 +306,11 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (User\hall_reversal_6steps.h)(0x5BB09060)
-F (.\User\global_parameters.c)(0x5BB08860)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\global_parameters.o --omf_browse .\objects\global_parameters.crf --depend .\objects\global_parameters.d)
-I (User\global_parameters.h)(0x5BB07552)
+F (.\User\global_parameters.c)(0x5BBDC397)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\global_parameters.o --omf_browse .\objects\global_parameters.crf --depend .\objects\global_parameters.d)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -348,7 +348,7 @@ I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
 I (User\motor_control.h)(0x5BA9E0CA)
 I (User\spd_pos_filter.h)(0x5BA9AB2F)
 I (User\node_can_config.h)(0x5BA4A17F)
-F (.\User\hall_reversal_svpwm.c)(0x5BB068E3)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\hall_reversal_svpwm.o --omf_browse .\objects\hall_reversal_svpwm.crf --depend .\objects\hall_reversal_svpwm.d)
+F (.\User\foc_reversal_svpwm.c)(0x5BBDC381)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\foc_reversal_svpwm.o --omf_browse .\objects\foc_reversal_svpwm.crf --depend .\objects\foc_reversal_svpwm.d)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -383,8 +383,8 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
-I (User\hall_reversal_svpwm.h)(0x5BB039F5)
+I (User\global_parameters.h)(0x5BBD6FCB)
+I (User\foc_reversal_svpwm.h)(0x5BBD9392)
 I (User\arm_math.h)(0x573CA1AB)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
@@ -423,9 +423,9 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\hall_reversal_6steps.h)(0x5BB09060)
-F (.\User\stm32f4xx_it.c)(0x5BB07BDC)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\stm32f4xx_it.o --omf_browse .\objects\stm32f4xx_it.crf --depend .\objects\stm32f4xx_it.d)
+F (.\User\stm32f4xx_it.c)(0x5BBDC39A)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\stm32f4xx_it.o --omf_browse .\objects\stm32f4xx_it.crf --depend .\objects\stm32f4xx_it.d)
 I (User\stm32f4xx_it.h)(0x5B5C0120)
 I (.\CMSIS\stm32f4xx.h)(0x580070A4)
 I (.\CMSIS\core_cm4.h)(0x573CA1AC)
@@ -461,7 +461,7 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\peripherial_init.h)(0x5BA1C360)
 I (User\motor_control.h)(0x5BA9E0CA)
 I (.\UCOSII\ucosii_src\ucos_ii.h)(0x58004D25)
@@ -488,7 +488,7 @@ I (User\arm_math.h)(0x573CA1AB)
 I (User\jingle_math.h)(0x585B7906)
 I (User\spd_pos_filter.h)(0x5BA9AB2F)
 I (User\hall_reversal_6steps.h)(0x5BB09060)
-I (User\hall_reversal_svpwm.h)(0x5BB039F5)
+I (User\foc_reversal_svpwm.h)(0x5BBD9392)
 I (User\node_can_config.h)(0x5BA4A17F)
 F (.\User\delay.c)(0x5B56C846)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\delay.o --omf_browse .\objects\delay.crf --depend .\objects\delay.d)
 I (User\delay.h)(0x5B56D843)
@@ -635,7 +635,7 @@ I (.\Liberaries\inc\stm32f4xx_can.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dac.h)(0x573F17FB)
 I (.\Liberaries\inc\stm32f4xx_dcmi.h)(0x573F1800)
 I (.\Liberaries\inc\stm32f4xx_fsmc.h)(0x573F17FB)
-I (User\global_parameters.h)(0x5BB07552)
+I (User\global_parameters.h)(0x5BBD6FCB)
 I (User\node_can_config.h)(0x5BA4A17F)
 F (.\CMSIS\startup_stm32f40xx.s)(0x580089BE)(--cpu Cortex-M4.fp -g --apcs=interwork -I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 514" --pd "STM32F405xx SETA 1"--list .\listings\startup_stm32f40xx.lst --xref -o .\objects\startup_stm32f40xx.o --depend .\objects\startup_stm32f40xx.d)
 F (.\Liberaries\src\misc.c)(0x573F17FB)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I.\CMSIS -I.\Liberaries -I.\Liberaries\inc -I.\Liberaries\src -I.\User -I.\UCOSII\ucosii_cpu -I.\UCOSII\ucosii_lib -I.\UCOSII\ucosii_port -I.\UCOSII\ucosii_src-I "E:\19 SeverMotor\ServerMotorDesign\ServerMotorDesign\03 firmware\BLDC 1.5\RTE"-I D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.6.0-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F405xx -D__FPU_PRESENT -D__FPU_USED -D__CC_ARM -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_SOFTVFP-o .\objects\misc.o --omf_browse .\objects\misc.crf --depend .\objects\misc.d)

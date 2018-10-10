@@ -38,9 +38,12 @@ error_log						m_error;
 void	IndirectParaInit(void)
 {
 	m_motor_attribute_para.m_motor_ind_att.f_Udc			=	24.0f;
-	m_motor_attribute_para.m_motor_ind_att.f_root3_Ts_Udc	=	0.0020785;//41.56921938165f * PWM_CYCLE_F;
+	m_motor_attribute_para.m_motor_ind_att.f_root3_Ts_Udc	=	303.10889132455352636730310976353f;//3^0.5 * PWM_CYCLE_F /24;
 	m_motor_attribute_para.m_motor_ind_att.f_rad_per_cnts	=	6.283185307f/(float)(m_motor_attribute_para.m_encoder_att.u32_pulse_per_loop / m_motor_attribute_para.m_motor_att.u8_number_of_pole_pairs);
+	m_motor_attribute_para.m_motor_ind_att.f_delta_theta_0	=	0.15f;
+	
 }
+
 
 	/*---------------------------------------------------------------------------
 	函数名称			：CurrentPID6StepsDataInit(void)
@@ -79,6 +82,7 @@ void	CurrentPID6StepsDataInit(void)
 	----------------------------------------------------------------------------*/
 void	CurrentPIDSVPWMDataInit(void)
 {
+	//d轴pid参数
 	m_pid.id.Ref_In				=	0.0f;
 	m_pid.id.Feed_Back			=	0.0f;
 	m_pid.id.Err_T_0			=	0.0f;
@@ -92,10 +96,11 @@ void	CurrentPIDSVPWMDataInit(void)
 	m_pid.id.Out_Pre			=	0.0f;
 	m_pid.id.Out_Actual			=	0.0f;
 	
-	m_pid.id.Kp					=	8.0f;
-	m_pid.id.Ki					=	0.4f;
+	m_pid.id.Kp					=	1.0f;
+	m_pid.id.Ki					=	0.1f;
 	m_pid.id.Kd					=	0.0f;
 	
+	//q轴参数
 	m_pid.iq.Ref_In				=	0.0f;
 	m_pid.iq.Feed_Back			=	0.0f;
 	m_pid.iq.Err_T_0			=	0.0f;
@@ -109,8 +114,8 @@ void	CurrentPIDSVPWMDataInit(void)
 	m_pid.iq.Out_Pre			=	0.0f;
 	m_pid.iq.Out_Actual			=	0.0f;
 	
-	m_pid.iq.Kp					=	8.0f;
-	m_pid.iq.Ki					=	0.4f;
+	m_pid.iq.Kp					=	1.0f;
+	m_pid.iq.Ki					=	0.1f;
 	m_pid.iq.Kd					=	0.0f;	
 }
 
@@ -207,6 +212,7 @@ void	EncoderDataInit(void)
 void	MotorCtrlDataInit(void)
 {
 	m_motor_ctrl.m_motion_ctrl.u8_dir								=	0;
+	m_motor_ctrl.m_motion_ctrl.u8_foc_state							=	foc_init_over;//foc_init_state_0;//
 	m_motor_ctrl.m_motion_ctrl.u8_current_read_data_refreshed		=	0;
 	m_motor_ctrl.m_motion_ctrl.u8_current_set_data_refreshed		=	0;
 	m_motor_ctrl.m_motion_ctrl.u8_speed_read_data_refreshed			=	0;
@@ -319,7 +325,7 @@ void	SystemStateDataInit(void)
 	m_motor_ctrl.m_sys_state.u8_cur_state							=	Idle_state;
 	m_motor_ctrl.m_sys_state.u8_pre_state							=	Idle_state;
 	m_motor_ctrl.m_sys_state.u32_node_id							=	NODE_ID;
-	m_motor_ctrl.m_sys_state.u8_use_svpwm							=	USE_FOC;
+	m_motor_ctrl.m_sys_state.u8_use_svpwm							=	USE_FOC;//NOT_USE_FOC;//
 }
 	/*---------------------------------------------------------------------------
 	函数名称			：ParametersSave(void)

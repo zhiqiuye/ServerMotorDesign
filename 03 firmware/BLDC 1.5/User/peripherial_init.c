@@ -71,22 +71,14 @@ void	NVIC_Config(void)
 	
 	NVIC_Init(&NVIC_InitStructure);
 	
-	/*ADC-DMA 传输完成中断，力矩传感器检测*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	
-	NVIC_Init(&NVIC_InitStructure);	
-	
 	/*速度环、位置环更新中断，TIM2 计数溢出中断*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
-	NVIC_Init(&NVIC_InitStructure);
-	
+	NVIC_Init(&NVIC_InitStructure);	
+
 	/*TIM8 速度位置环输入时钟源*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	TIM8_UP_TIM13_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;
@@ -94,6 +86,30 @@ void	NVIC_Config(void)
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
 	
 	NVIC_Init(&NVIC_InitStructure);
+	
+	/*SPI 1 DMA RX中断*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	1;						//响应优先级
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);	
+		
+	/*TIM3 CH3捕获中断*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	TIM3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	2;						//响应优先级
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);			
+		
+	/*ADC-DMA 传输完成中断，力矩传感器检测*/
+	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	2;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
+	
+	NVIC_Init(&NVIC_InitStructure);	
 	
 	/*CAN BUS 接收发送中断初始化*/
 	NVIC_InitStructure.NVIC_IRQChannel						=	CAN1_RX0_IRQn;			//FIFO0的接收中断
@@ -108,12 +124,9 @@ void	NVIC_Config(void)
 	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;					//
 	NVIC_Init(&NVIC_InitStructure);	
 
-	/*SPI 1 DMA RX中断*/
-	NVIC_InitStructure.NVIC_IRQChannel						=	DMA2_Stream2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority	=	1;						//抢占优先级
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority			=	3;						//响应优先级
-	NVIC_InitStructure.NVIC_IRQChannelCmd					=	ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
+
+	
+	
 
 }
 	
@@ -441,10 +454,20 @@ void	Timer1_Config(void)
 /*初始化定时器的各通道*/
 	TIM_OCStructInit(&TIM_OCInitStructure);
 	TIM_OCInitStructure.TIM_OCMode					=	TIM_OCMode_PWM2;						//pwm模式1输出，向上计数时，cnt<ccr时为有效电平，向下计数时，cnt>ccr时为无效电平																								//pwm模式2输出，向上计数时，cnt<ccr时为无效电平，向下计数时，cnt>ccr时为有效电平
-	TIM_OCInitStructure.TIM_OCIdleState				=	TIM_OCIdleState_Reset;					//计数到pulse值后拉低管脚
-	TIM_OCInitStructure.TIM_OCNIdleState			=	TIM_OCNIdleState_Reset;
-	TIM_OCInitStructure.TIM_OCPolarity				=	TIM_OCPolarity_Low;						//有效电平为低
-	TIM_OCInitStructure.TIM_OCNPolarity				=	TIM_OCNPolarity_Low;					//互补输出通道，有效电平为低，与TIM_OCPolarity保持一致才能互补
+	if(m_motor_ctrl.m_sys_state.u8_use_svpwm		==	USE_FOC)
+	{
+		TIM_OCInitStructure.TIM_OCIdleState				=	TIM_OCIdleState_Set;				//计数到pulse值后拉低管脚，空闲时输出低
+		TIM_OCInitStructure.TIM_OCNIdleState			=	TIM_OCNIdleState_Set;
+		TIM_OCInitStructure.TIM_OCPolarity				=	TIM_OCPolarity_High;				//有效电平为低
+		TIM_OCInitStructure.TIM_OCNPolarity				=	TIM_OCNPolarity_High;				//互补输出通道，有效电平为低，与TIM_OCPolarity保持一致才能互补
+	}
+	else
+	{
+		TIM_OCInitStructure.TIM_OCIdleState				=	TIM_OCIdleState_Reset;				//计数到pulse值后拉低管脚，空闲时输出低
+		TIM_OCInitStructure.TIM_OCNIdleState			=	TIM_OCNIdleState_Reset;
+		TIM_OCInitStructure.TIM_OCPolarity				=	TIM_OCPolarity_Low;					//有效电平为低
+		TIM_OCInitStructure.TIM_OCNPolarity				=	TIM_OCNPolarity_Low;				//互补输出通道，有效电平为低，与TIM_OCPolarity保持一致才能互补	
+	}
 	TIM_OCInitStructure.TIM_OutputState				=	TIM_OutputState_Enable;					//输出通道使能
 	TIM_OCInitStructure.TIM_OutputNState			=	TIM_OutputNState_Enable;				//互补输出通道，输出使能
 	TIM_OCInitStructure.TIM_Pulse					=	10;										//占空比设置
@@ -467,7 +490,7 @@ void	Timer1_Config(void)
 	TIM_BDTRInitStructure.TIM_OSSRState				=	TIM_OSSRState_Disable;					//运行模式下输出选择
 	TIM_BDTRInitStructure.TIM_OSSIState				=	TIM_OSSIState_Enable;					//空闲模式下输出选择
 	TIM_BDTRInitStructure.TIM_LOCKLevel				=	TIM_LOCKLevel_OFF;						//锁定设置
-	TIM_BDTRInitStructure.TIM_DeadTime				=	0xE0;									//死区时间，中间对齐模式下，前后加起来死区时间是N/84 us,IR2130S的死区时间为2us，具体计算，参见BDTR寄存器设置
+	TIM_BDTRInitStructure.TIM_DeadTime				=	0x54;//0xE0;							//死区时间，中间对齐模式下，前后加起来死区时间是N/84 us,IR2130S的死区时间为2us，具体计算，参见BDTR寄存器设置
 	TIM_BDTRInitStructure.TIM_Break					=	TIM_Break_Disable;						//刹车功能使能
 	TIM_BDTRInitStructure.TIM_BreakPolarity			=	TIM_BreakPolarity_High;					//刹车极性
 	TIM_BDTRInitStructure.TIM_AutomaticOutput		=	TIM_AutomaticOutput_Enable;				//自动输出使能
@@ -509,7 +532,7 @@ void	Timer2_Config(void)
 	TIM_SelectInputTrigger(TIM2,TIM_TS_ITR1);													//选择TIM8的输出信号作为时钟源
 	TIM_ITRxExternalClockConfig(TIM2,TIM_TS_ITR1);												//选择外部时钟触发
 
-	TIM_Cmd(TIM2,DISABLE);
+	TIM_Cmd(TIM2,ENABLE);
 	TIM_ClearFlag(TIM2,TIM_IT_Update);
 	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);
 }
@@ -560,8 +583,8 @@ void	Timer3_Config(void)
 	TIM_ICInitStructure.TIM_ICPrescaler					=	0;
 	TIM_ICInit(TIM3,&TIM_ICInitStructure);
 	
-//	TIM_ClearFlag(TIM3,TIM_FLAG_Update);
-//	TIM_ITConfig(TIM3,TIM_IT_Update|TIM_IT_CC3,ENABLE);
+	TIM_ClearFlag(TIM3,TIM_FLAG_Update);
+	TIM_ITConfig(TIM3,TIM_IT_CC3,ENABLE);//TIM_IT_Update|TIM_IT_CC3
 	TIM3->CNT = 0;
 	TIM_Cmd(TIM3,ENABLE);	
 }
@@ -721,7 +744,7 @@ void	Timer8_Master_Config(void)
 /*TIM9中断配置，定时器溢出中断*/
 	TIM_ClearFlag(TIM8,TIM_IT_Update);
 	TIM_ITConfig(TIM8,TIM_IT_Update,ENABLE);												//使能更新中断
-	TIM_Cmd(TIM8,DISABLE);
+	TIM_Cmd(TIM8,ENABLE);
 }
 
 

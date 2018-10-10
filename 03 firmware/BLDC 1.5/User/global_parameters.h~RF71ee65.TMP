@@ -111,8 +111,6 @@ typedef	struct
 	float			f_Udc;
 	float			f_root3_Ts_Udc;								//FOC控制方法中使用的常量
 	float			f_rad_per_cnts;								//用于估算转子位置theta的量，增量编码器每个脉冲对应的弧度值
-	float			f_delta_theta_0;							//编码器I相与a轴的夹角，由于装配问题带来的偏差
-	int32_t			i32_cnts_AB;								//foc初始化时，从获取I相中断到foc矢量电压到0时的脉冲计数值
 }motor_indirect_para;
 
 
